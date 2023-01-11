@@ -1,15 +1,34 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 // const ts_preset = require('ts-jest/jest-preset');
+
+import tsConfig from './tsconfig.json';
+
+function makeModuleNameMapper(srcPath, tsconfigPath) {
+  // Get paths from tsconfig
+  const {paths} = tsConfig.compilerOptions;
+
+  const aliases = {};
+
+  // Iterate over paths and convert them into moduleNameMapper format
+  Object.keys(paths).forEach((item) => {
+    const key = item.replace('/*', '/(.*)');
+    const path = paths[item][0].replace('/*', '/$1');
+    aliases[key] = srcPath + '/' + path;
+  });
+  return aliases;
+}
+
+
 module.exports = {
   testEnvironment: 'node',
   preset: 'jest-puppeteer',
-  testMatch: [ '**/?(*.)+(spec|test).[t]s' ],
+  testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testPathIgnorePatterns: [
     '/node_modules/', 'dist',
   ],
   resetMocks: false,
   setupFiles: [
-    "jest-localstorage-mock",
+    'jest-localstorage-mock',
     require.resolve('./.jest/setupEnv.ts'),
   ],
   setupFilesAfterEnv: [
@@ -22,6 +41,7 @@ module.exports = {
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
+  moduleNameMapper: makeModuleNameMapper(__dirname, './tsconfig.json'),
   globalSetup: require.resolve('jest-environment-puppeteer/setup'),
   globalTeardown: require.resolve('jest-environment-puppeteer/teardown'),
 };

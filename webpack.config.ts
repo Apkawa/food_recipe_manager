@@ -5,6 +5,8 @@ import glob from 'glob';
 import TerserPlugin from 'terser-webpack-plugin';
 import {PackageJson} from 'type-fest';
 import fromEntries from 'fromentries';
+import {TsconfigPathsPlugin} from 'tsconfig-paths-webpack-plugin';
+
 
 const packageJson: PackageJson = require('./package.json');
 
@@ -122,9 +124,6 @@ const config: webpack.Configuration = {
     clean: true,
   },
   resolve: {
-    alias: {
-      'app': path.resolve(__dirname, 'src'),
-    },
     modules: [
       'node_modules',
       'src',
@@ -133,6 +132,9 @@ const config: webpack.Configuration = {
     fallback: {
       path: require.resolve('path-browserify'),
     },
+    plugins: [
+      new TsconfigPathsPlugin(),
+    ]
   },
   optimization: {
     // We no not want to minimize our code.

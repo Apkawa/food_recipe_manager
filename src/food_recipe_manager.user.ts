@@ -9,5 +9,5 @@
 // ==/UserScript==
 
 (function () {
- console.log("EMPTY")
-})()
+  console.log('EMPTY');
+})();
