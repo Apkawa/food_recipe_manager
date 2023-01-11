@@ -7,6 +7,27 @@
   "bugs": {
     "url": "https://github.com/Apkawa/food_recipe_manager/issues"
   },
+  "scripts": {
+    "build": "cross-env TS_NODE_PROJECT='tsconfig.json' webpack --mode=production",
+    "build:watch": "npm run build -- --watch",
+    "postinstall": "patch-package",
+    "prepare": "husky install",
+    "synctypes": "typesync && npm i",
+    "prettier": "prettier src/ --write",
+    "test": "npm run test:unit",
+    "test:jsdom:snapshot-sync": "ts-node ./tests/jsdom/snapshot_sync.ts",
+    "test:unit": "jest tests/unit/ tests/jsdom/ src/ --coverage --colors --verbose=false",
+    "test:e2e": "jest tests/e2e/ --config jest-e2e.config.js",
+    "lint": "eslint --ext js,ts,tsx --max-warnings=0 --fix src",
+    "check": "npm run test && npm run lint",
+    "pre-commit": "npm run prettier && npm run check && npm run build",
+    "commitlint": "commitlint --config '.config/.commitlintrc.json'",
+    "commit": "npm run pre-commit && ts-node node_modules/.bin/cz",
+    "release": "standard-version",
+    "release:pre": "npm run release -- --prerelease --skip.tag",
+    "release:patch": "npm run release -- --release-as patch",
+    "release:minor": "npm run release -- --release-as minor"
+  },
   "readme": "README.md",
   "devDependencies": {
     "@babel/plugin-proposal-pipeline-operator": "^7.18.9",
@@ -68,27 +89,6 @@
     "user-agents": "^1.0.1245",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1"
-  },
-  "scripts": {
-    "build": "cross-env TS_NODE_PROJECT='tsconfig.json' webpack --mode=production",
-    "build:watch": "npm run build -- --watch",
-    "postinstall": "patch-package",
-    "prepare": "husky install",
-    "synctypes": "typesync && npm i",
-    "prettier": "prettier src/ --write",
-    "test": "npm run test:unit",
-    "test:jsdom:snapshot-sync": "ts-node ./tests/jsdom/snapshot_sync.ts",
-    "test:unit": "jest tests/unit/ tests/jsdom/ src/ --coverage --colors --verbose=false",
-    "test:e2e": "jest tests/e2e/ --config jest-e2e.config.js",
-    "lint": "eslint --ext js,ts,tsx --max-warnings=0 --fix src",
-    "check": "npm run test && npm run lint",
-    "pre-commit": "npm run prettier && npm run check && npm run build",
-    "commitlint": "commitlint --config '.config/.commitlintrc.json'",
-    "commit": "ts-node node_modules/.bin/cz",
-    "release": "standard-version",
-    "release:pre": "npm run release -- --prerelease --skip.tag",
-    "release:patch": "npm run release -- --release-as patch",
-    "release:minor": "npm run release -- --release-as minor"
   },
   "engines": {
     "npm": ">=7.0.0",

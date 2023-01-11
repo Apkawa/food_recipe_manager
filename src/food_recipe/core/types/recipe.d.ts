@@ -1,6 +1,8 @@
+import {MEASURE_UNITS, UNITS, VOLUME_UNITS, WEIGHT_UNITS} from '@app/core/constants';
+
 export interface Recipe {
   name: string;
-  description: string;
+  description?: string;
   ingredient_groups: IngredientGroup[];
 }
 
@@ -11,8 +13,12 @@ export interface IngredientGroup {
 
 export interface Ingredient {
   name: string;
-  // Если нет, это значит "по вкусу"
-  value?: number;
+  // Какое то уточнение
+  note?: string;
+  // Если нет, это значит "по вкусу" или еще какое то безразмерное значение
+  // Если number[] - это значит 1-2 ложки, т.е. диапазон
+  value?: number | number[];
+  calculated_value?: number | number[];
   unit?: Unit;
   type?: IngredientType;
 }
@@ -24,12 +30,7 @@ export interface IngredientType {
   density?: number;
 }
 
-export type VolumeUnit = 'l' | 'ml';
-export type WeightUnit = 'kg' | 'g';
-export type MeasureUnit =
-  | 'tsp' // чайная ложка (tea spoon)
-  | 'tbsp' // столовая ложка (table spoon)
-  | 'cup' // Чашка  или стакан
-  | 'pinch' // Щепотка, 1/16 tsp
-  | 'pcs'; // шт, штуки, piece
-export type Unit = VolumeUnit | WeightUnit | MeasureUnit;
+export type VolumeUnit = (typeof VOLUME_UNITS)[number];
+export type WeightUnit = (typeof WEIGHT_UNITS)[number];
+export type MeasureUnit = (typeof MEASURE_UNITS)[number];
+export type Unit = (typeof UNITS)[number];

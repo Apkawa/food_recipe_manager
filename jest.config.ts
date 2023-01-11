@@ -21,10 +21,11 @@ function makeModuleNameMapper(srcPath, tsconfigPath) {
 
 module.exports = {
   testEnvironment: 'node',
-  preset: 'jest-puppeteer',
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testPathIgnorePatterns: [
-    '/node_modules/', 'dist',
+    '/node_modules/',
+    'dist',
+    'tests/e2e/'
   ],
   resetMocks: false,
   setupFiles: [
@@ -42,6 +43,4 @@ module.exports = {
     '^.+\\.ts?$': 'ts-jest',
   },
   moduleNameMapper: makeModuleNameMapper(__dirname, './tsconfig.json'),
-  globalSetup: require.resolve('jest-environment-puppeteer/setup'),
-  globalTeardown: require.resolve('jest-environment-puppeteer/teardown'),
 };
