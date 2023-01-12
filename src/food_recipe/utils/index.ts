@@ -1,24 +1,3 @@
-export default function isRegexp(value: unknown): value is RegExp {
-  return toString.call(value) === '[object RegExp]';
-}
-
-/**
- * For multiline regexps
- */
-export function mRegExp(regExps: (RegExp | string)[], flags?: string): RegExp {
-  return RegExp(
-    regExps
-      .map(function (r) {
-        if (isRegexp(r)) {
-          return r.source;
-        }
-        return r;
-      })
-      .join(''),
-    flags,
-  );
-}
-
 export function round(n: number, parts = 2): number {
   const i = Math.pow(10, parts);
   return Math.round(n * i) / i;

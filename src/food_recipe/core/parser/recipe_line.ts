@@ -1,8 +1,9 @@
 import {Ingredient, Unit} from '@app/core/types/recipe';
-import {mRegExp, stripLine} from '@app/utils';
+import {stripLine} from '@app/utils';
 import {NO_VALUE_UNITS, UNITS, VALUE_UNITS} from '@app/core/constants';
 import {UNIT_MAP} from '@app/core/parser/unit_map';
 import {parseNumber, VULGAR_LETTER_REGEXP} from '@app/utils/number';
+import {mRegExp} from '@app/utils/regexp';
 
 const WORD_BOUNDARY_END = /(?=\s+|[.,);/]|$)/;
 
