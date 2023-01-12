@@ -11,17 +11,30 @@ export interface IngredientGroup {
   ingredients: Ingredient[];
 }
 
-export interface Ingredient {
+interface RangeValue {
+  // Если number[] - это значит 1-2 ложки, т.е. диапазон
+  value?: number[];
+  calculated_value?: number[];
+}
+
+interface Value {
+  // Если нет, это значит "по вкусу" или еще какое то безразмерное значение
+  value?: number;
+  calculated_value?: number;
+}
+
+export interface BaseIngredient {
   name: string;
   // Какое то уточнение
   note?: string;
-  // Если нет, это значит "по вкусу" или еще какое то безразмерное значение
-  // Если number[] - это значит 1-2 ложки, т.е. диапазон
-  value?: number | number[];
-  calculated_value?: number | number[];
   unit?: Unit;
   type?: IngredientType;
 }
+
+export type SimpleIngredient = BaseIngredient & Value;
+export type RangeIngredient = BaseIngredient & RangeValue;
+
+export type Ingredient = SimpleIngredient | RangeIngredient;
 
 export interface IngredientType {
   // Например, соль, сахар имеют определенную плотность.
