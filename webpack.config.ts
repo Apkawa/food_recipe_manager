@@ -6,10 +6,10 @@ import TerserPlugin from 'terser-webpack-plugin';
 import {PackageJson} from 'type-fest';
 import fromEntries from 'fromentries';
 import {TsconfigPathsPlugin} from 'tsconfig-paths-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 
 const packageJson: PackageJson = require('./package.json');
-
 
 
 const DOWNLOAD_SUFFIX = process.env.DOWNLOAD_SUFFIX || `/raw/master/dist/`;
@@ -60,6 +60,11 @@ function buildUserScriptMeta(data: BannerDataType) {
   if (!fs.existsSync(src_path)) {
     src_path = path.resolve(__dirname, `src/${data.chunk.name}.js`);
   }
+  if (!fs.existsSync(src_path)) {
+    console.warn('buildUserScriptMeta: not found', src_path)
+    return ''
+  }
+
   let text = fs.readFileSync(src_path, 'utf-8')
     .replace(/(==\/UserScript==)[\s\S]+$/, '$1')
     .replace(/^.*==\/UserScript==.*$/gm, '');
@@ -96,7 +101,10 @@ function buildUserScriptMeta(data: BannerDataType) {
 }
 
 const config: webpack.Configuration = {
-  entry: collectUserScripts(),
+  entry: {
+    ...collectUserScripts(),
+    index: require.resolve('./src/index.entry.ts')
+  },
   target: 'browserslist',
   devtool: false,
   module: {
@@ -134,7 +142,7 @@ const config: webpack.Configuration = {
     },
     plugins: [
       new TsconfigPathsPlugin(),
-    ]
+    ],
   },
   optimization: {
     // We no not want to minimize our code.
@@ -165,7 +173,15 @@ const config: webpack.Configuration = {
     new webpack.ProvidePlugin({
       process: 'process/browser',
     }),
+    new HtmlWebpackPlugin({  // Also generate a test.html
+      filename: 'index.html',
+      template: 'src/assets/index.html',
+      minify: false,
+      chunks: ['index']
+    }),
   ],
 };
+
+console.log("ENTRY:", config.entry)
 
 export default config;
