@@ -79,4 +79,54 @@ describe('parseTextRecipe', () => {
     });
   });
 
+  it("eda.ru example", () => {
+    const t = `
+    Горох
+1 стакан
+Свежие шампиньоны
+250 г
+Морковь
+1 штука
+Чеснок
+2 зубчика
+Соль
+по вкусу
+`;
+    expect(parseTextRecipe(t)).toStrictEqual({
+      "ingredient_groups": [
+        {
+          "ingredients": [
+            {
+              "name": "Горох",
+              "unit": "cup",
+              "value": 1
+            },
+            {
+              "name": "Свежие шампиньоны",
+              "unit": "g",
+              "value": 250
+            },
+            {
+              "name": "Морковь",
+              "unit": "pcs",
+              "value": 1
+            },
+            {
+              "name": "Чеснок",
+              "unit": "pcs",
+              "value": 2
+            },
+            {
+              "name": "Соль",
+              "unit": "taste"
+            }
+          ],
+          "name": ""
+        }
+      ],
+      "name": ""
+    })
+
+  })
+
 });

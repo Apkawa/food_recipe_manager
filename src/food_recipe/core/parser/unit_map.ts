@@ -5,7 +5,7 @@ type Unit_map = {
 };
 
 export const UNIT_MAP: Unit_map = {
-  pcs: ['шт', 'pcs', 'ps'],
+  pcs: ['шт', 'pcs', 'ps', 'зубчик(?:а|ов)?', 'штук(?:а|и)?'],
   // Volume
   l: ['л', 'литр', 'litre', 'l'],
   ml: ['мл', 'миллилитр', 'ml', 'millilitre'],
@@ -15,7 +15,7 @@ export const UNIT_MAP: Unit_map = {
   // Measures
   tsp: ['(?:ч\\.|чайн(?:ая|ые))\\s*?(?:л\\.|ложк[аи])', 'tea\\s*spoons?', 'tsp'],
   tbsp: ['(?:ст?\\.|столов(?:ая|ые))\\s*?(?:л\\.|ложк[аи])', 'table\\s*spoons?', 'tbsp'],
-  cup: ['стакан(?:а|ов)', 'ст', 'cup'],
+  cup: ['стакан(?:а|ов)?', 'ст', 'cup'],
   pinch: ['щепотка', 'pinch'],
   // no value unit
   taste: ['по вкусу', 'to taste'],

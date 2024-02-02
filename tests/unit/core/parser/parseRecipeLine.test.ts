@@ -72,9 +72,38 @@ describe('parseRecipeLine', () => {
     },
     {
       arg: 'Вино – 1/4 - ½ стакана', expected: {
-        name: 'Вино', unit: 'cup', value: [1/4, 1/2],
+        name: 'Вино', unit: 'cup', value: [1 / 4, 1 / 2],
       },
     },
+    // Ситуация когда название компонента и количество на разных строках.
+    // Это будет решаться на верхнем уровне, а тут отдавать как есть
+    {
+      arg: '250г', expected: {
+        name: '', unit: 'g', value: 250,
+      },
+    },
+    {
+      arg: '2 зубчика', expected: {
+        name: '', unit: 'pcs', value: 2,
+      },
+    },
+    {
+      arg: '1/4 - ½ стакана', expected: {
+        name: '', unit: 'cup', value: [1 / 4, 1 / 2],
+      },
+    },
+    {
+      arg: '1 стакан', expected: {
+        name: '', unit: 'cup', value: 1,
+      },
+    },
+
+    // {
+    //   arg: '3-4 веточки', expected: {
+    //     name: '', unit: 'pcs', value: [3, 4],
+    //   },
+    // },
+
   ];
 
   it.each(cases)('[$#] parse $arg', (c) => {

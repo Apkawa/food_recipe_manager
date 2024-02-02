@@ -14,6 +14,13 @@ function compileDefinedTypes(): CompiledIngredientType[] {
   return types;
 }
 
+/**
+ * Пытаемся парсить название ингредиента и возвращаем метаинформацию
+ * вроде плотности которая нужна будет для пересчета в другие системы измерения.
+ *
+ * @param str
+ * @return IngredientType | null
+ */
 export function parseIngredientType(str: string): IngredientType | null {
   for (const t of compileDefinedTypes()) {
     if (t.regexp.test(str)) {

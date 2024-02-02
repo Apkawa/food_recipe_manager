@@ -73,7 +73,11 @@ export function parseRecipeLine(raw_line: string): Ingredient | null {
       break;
     }
   }
-  if (!name) {
+  if (!groups) {
+    return null;
+  }
+  if (!(groups.value || groups.value_range) && !groups.no_value_unit) {
+    // Если это не по вкусу и нет значения - тогда это ошибка парсинга
     return null;
   }
 
