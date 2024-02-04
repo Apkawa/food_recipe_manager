@@ -49,6 +49,27 @@ function setupSyncLocalStorageValue(el: HTMLInputElement | HTMLTextAreaElement, 
 const RAW_RECIPE_KEY = 'raw_recipe';
 const SCALE_KEY = 'scale';
 const NEW_SCALE_KEY = 'new_scale';
+const EXAMPLE_RECIPE = `
+Традиционный кимчи  
+Кимчи выход 3,6 кг
+Капуста пекинская 2,7 кг
+Загуститель  
+Вода 2 cup
+Рисовая мука 2 ст.л.
+Сахар 2 ст.л.
+Соус  
+Чеснок 0,5 cup
+Имбирь 2 ч.л.
+Лук репчатый 1 шт
+Рыбный соус 0,5 cup
+Перец кочукари 2 cup
+Креветки ферментированые (saeujeot) 0,25 cup
+Яблоки (опционально) 1 шт
+Овощи  
+Морковь 1 cup
+Редис  2 cup
+Зеленый лук 8 шт
+`
 
 ready(() => {
   const rawRecipeTextArea = document.getElementById('raw_recipe') as HTMLTextAreaElement;
@@ -83,7 +104,11 @@ ready(() => {
   if (localStorage.getItem(RAW_RECIPE_KEY)) {
     rawRecipeTextArea.value = localStorage.getItem(RAW_RECIPE_KEY);
     rawRecipeUpdateCb();
+  } else {
+    rawRecipeTextArea.value = EXAMPLE_RECIPE;
+    rawRecipeUpdateCb();
   }
 
   rawRecipeTextArea.addEventListener('change', rawRecipeUpdateCb);
 });
+
