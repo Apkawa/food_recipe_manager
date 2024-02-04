@@ -46,6 +46,8 @@ jobs:
         run: npm run lint
 
   publish:
+    permissions:
+      contents: write
     needs:
       - test
     runs-on: ubuntu-latest
