@@ -8,6 +8,8 @@ import fromEntries from 'fromentries';
 import {TsconfigPathsPlugin} from 'tsconfig-paths-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
+import type { Configuration as DevServerConfiguration } from "webpack-dev-server";
+
 
 const packageJson: PackageJson = require('./package.json');
 
@@ -100,6 +102,13 @@ function buildUserScriptMeta(data: BannerDataType) {
 
 }
 
+const devServer: DevServerConfiguration = {
+  static: {
+    directory: path.join(__dirname, 'dist'),
+  },
+  compress: true,
+  port: 9000,
+}
 const config: webpack.Configuration = {
   entry: {
     ...collectUserScripts(),
@@ -107,6 +116,7 @@ const config: webpack.Configuration = {
   },
   target: 'browserslist',
   devtool: false,
+  devServer,
   module: {
     rules: [{
       test: /\.ts$/,
@@ -143,6 +153,9 @@ const config: webpack.Configuration = {
     plugins: [
       new TsconfigPathsPlugin(),
     ],
+    alias: {
+      '@app': path.resolve(__dirname, 'src/food_recipe')
+    }
   },
   optimization: {
     // We no not want to minimize our code.

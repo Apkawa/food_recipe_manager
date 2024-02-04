@@ -18,7 +18,7 @@ describe('parseRecipeLine', () => {
     {
       arg: 'Тушёнка мясная (у меня говяжья) — 500 г',
       expected: {
-        'name': 'Тушёнка мясная (у меня говяжья',
+        'name': 'Тушёнка мясная (у меня говяжья)',
         'unit': 'g',
         'value': 500,
       },
@@ -95,6 +95,11 @@ describe('parseRecipeLine', () => {
     {
       arg: '1 стакан', expected: {
         name: '', unit: 'cup', value: 1,
+      },
+    },
+    {
+      arg: 'Соль - 1 ч. ложка (по вкусу)', expected: {
+        name: 'Соль - (по вкусу)', unit: 'tsp', value: 1,
       },
     },
 

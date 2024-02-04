@@ -1,5 +1,5 @@
 import {parseVulgars, toDecimal} from '@app/utils/vulgar-fractions';
-import {stripLine} from '@app/utils/index';
+import {round, stripLine} from '@app/utils/index';
 
 export const VULGAR_LETTER_REGEXP = /(?:\p{No}|\d+\s*\/\s*\d+)/u;
 
@@ -11,7 +11,7 @@ export function parseNumber(s: string): number | null {
   }
   const n = parseFloat(s.replace(',', '.'));
   if (!isNaN(n)) {
-    return n;
+    return round(n, 2);
   }
   return null;
 }

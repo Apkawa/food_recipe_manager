@@ -1,5 +1,6 @@
 import {Ingredient, Recipe} from '@app/core/types/recipe';
 import {isRangeIngredient} from '@app/core/checks';
+import {round} from '@app/utils';
 
 export function calculateScale(ingredient: Ingredient): number | null {
   if (ingredient.value && ingredient.calculated_value) {
@@ -14,10 +15,13 @@ export function calculateScale(ingredient: Ingredient): number | null {
 export function recipeScale(recipe: Recipe, scale: number): Recipe {
   for (const group of recipe.ingredient_groups) {
     for (const ingredient of group.ingredients) {
+      if (!ingredient.value) {
+        continue;
+      }
       if (isRangeIngredient(ingredient)) {
-        ingredient.calculated_value = ingredient.value.map((v) => v * scale);
+        ingredient.calculated_value = [...ingredient.value].map((v) => round(v * scale));
       } else {
-        ingredient.calculated_value = ingredient.value * scale;
+        ingredient.calculated_value = round(ingredient.value * scale);
       }
     }
   }

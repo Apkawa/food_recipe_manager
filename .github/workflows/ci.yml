@@ -112,7 +112,6 @@ jobs:
         if: success()
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: release # The branch the action should deploy to.
           folder: dist # The folder the action should deploy.
           clean: true # Automatically remove deleted files from the deploy branch
           target-folder: ${{ steps.target_folder.outputs.value }}
