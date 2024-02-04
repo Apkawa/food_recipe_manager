@@ -240,6 +240,7 @@
     const RAW_RECIPE_KEY = "raw_recipe";
     const SCALE_KEY = "scale";
     const NEW_SCALE_KEY = "new_scale";
+    const EXAMPLE_RECIPE = `\nТрадиционный кимчи  \nКимчи выход 3,6 кг\nКапуста пекинская 2,7 кг\nЗагуститель  \nВода 2 cup\nРисовая мука 2 ст.л.\nСахар 2 ст.л.\nСоус  \nЧеснок 0,5 cup\nИмбирь 2 ч.л.\nЛук репчатый 1 шт\nРыбный соус 0,5 cup\nПерец кочукари 2 cup\nКреветки ферментированые (saeujeot) 0,25 cup\nЯблоки (опционально) 1 шт\nОвощи  \nМорковь 1 cup\nРедис  2 cup\nЗеленый лук 8 шт\n`;
     ready((() => {
         const rawRecipeTextArea = document.getElementById("raw_recipe");
         const parsedRecipe = document.getElementById("parsed_recipe");
@@ -267,6 +268,9 @@
         let recipe;
         if (localStorage.getItem(RAW_RECIPE_KEY)) {
             rawRecipeTextArea.value = localStorage.getItem(RAW_RECIPE_KEY);
+            rawRecipeUpdateCb();
+        } else {
+            rawRecipeTextArea.value = EXAMPLE_RECIPE;
             rawRecipeUpdateCb();
         }
         rawRecipeTextArea.addEventListener("change", rawRecipeUpdateCb);
