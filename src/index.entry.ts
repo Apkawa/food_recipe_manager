@@ -111,23 +111,21 @@ ready(() => {
   setupSyncLocalStorageValue(scale, SCALE_KEY);
   setupSyncLocalStorageValue(newScale, NEW_SCALE_KEY);
 
-
   const params = Object.fromEntries(new URL(window.location.toString()).searchParams.entries());
   if (params[SCALE_KEY]) {
-    scale.value = params[SCALE_KEY]
+    scale.value = params[SCALE_KEY];
   }
   if (params[NEW_SCALE_KEY]) {
-    newScale.value = params[NEW_SCALE_KEY]
+    newScale.value = params[NEW_SCALE_KEY];
   }
-
 
   const storeStateCb = () => {
     const url = new URL(window.location.toString());
-    url.searchParams.set(SCALE_KEY, scale.value)
-    url.searchParams.set(NEW_SCALE_KEY, newScale.value)
+    url.searchParams.set(SCALE_KEY, scale.value);
+    url.searchParams.set(NEW_SCALE_KEY, newScale.value);
     url.searchParams.set(RAW_RECIPE_KEY, bytesToBase64(rawRecipeTextArea.value));
-    window.history.replaceState("", "", url.toString())
-  }
+    window.history.replaceState('', '', url.toString());
+  };
 
   scale.addEventListener('change', storeStateCb);
   newScale.addEventListener('change', storeStateCb);
@@ -144,7 +142,7 @@ ready(() => {
   const rawRecipeUpdateCb = () => {
     const value = rawRecipeTextArea.value;
     if (!value) {
-      return
+      return;
     }
     localStorage.setItem(RAW_RECIPE_KEY, value);
     recipe = parseTextRecipe(value);
@@ -159,7 +157,6 @@ ready(() => {
 
   if (params[RAW_RECIPE_KEY]) {
     rawRecipeTextArea.value = base64ToBytes(params[RAW_RECIPE_KEY]);
-
   } else {
     if (localStorage.getItem(RAW_RECIPE_KEY)) {
       rawRecipeTextArea.value = localStorage.getItem(RAW_RECIPE_KEY);

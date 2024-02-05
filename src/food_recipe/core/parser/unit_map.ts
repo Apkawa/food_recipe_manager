@@ -14,7 +14,7 @@ export const UNIT_MAP: Unit_map = {
   g: ['г', 'гр', 'грамм', 'g', 'gram'],
   // Measures
   tsp: ['(?:ч\\.|чайн(?:ая|ые))\\s*?(?:л\\.|ложк[аи])', 'tea\\s*spoons?', 'tsp'],
-  tbsp: ['(?:ст?\\.|столов(?:ая|ые))\\s*?(?:л\\.|ложк[аи])', 'table\\s*spoons?', 'tbsp'],
+  tbsp: ['(?:ст?\\.|столов(?:ая|ые))\\s*?(?:л\\.?|ложк[аи])', 'table\\s*spoons?', 'tbsp'],
   cup: ['стакан(?:а|ов)?', 'ст', 'cup'],
   pinch: ['щепотка', 'pinch'],
   // no value unit

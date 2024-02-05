@@ -102,6 +102,11 @@ describe('parseRecipeLine', () => {
         name: 'Соль - (по вкусу)', unit: 'tsp', value: 1,
       },
     },
+    {
+      arg: 'уксус 9%   3 ст.л', expected: {
+        name: 'уксус 9%', unit: 'tbsp', value: 3,
+      },
+    },
 
     // {
     //   arg: '3-4 веточки', expected: {
