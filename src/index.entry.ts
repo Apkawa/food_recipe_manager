@@ -89,14 +89,49 @@ const EXAMPLE_RECIPE = `
 Зеленый лук 8 шт
 `;
 
+// From https://developer.mozilla.org/en-US/docs/Glossary/Base64#the_unicode_problem.
+function base64ToBytes(base64: string): string {
+  const binString = atob(base64);
+  return new TextDecoder().decode(Uint8Array.from(binString, (m) => m.codePointAt(0)));
+}
+
+// From https://developer.mozilla.org/en-US/docs/Glossary/Base64#the_unicode_problem.
+function bytesToBase64(bytes: string): string {
+  const binString = String.fromCodePoint(...new TextEncoder().encode(bytes));
+  return btoa(binString);
+}
+
 ready(() => {
   const rawRecipeTextArea = document.getElementById('raw_recipe') as HTMLTextAreaElement;
   const parsedRecipe = document.getElementById('parsed_recipe') as HTMLDivElement;
   const scaleWrap = document.getElementById('scale_wrap') as HTMLDivElement;
   const scale = document.getElementById('scale') as HTMLInputElement;
-  setupSyncLocalStorageValue(scale, SCALE_KEY);
   const newScale = document.getElementById('new_scale') as HTMLInputElement;
+
+  setupSyncLocalStorageValue(scale, SCALE_KEY);
   setupSyncLocalStorageValue(newScale, NEW_SCALE_KEY);
+
+
+  const params = Object.fromEntries(new URL(window.location.toString()).searchParams.entries());
+  if (params[SCALE_KEY]) {
+    scale.value = params[SCALE_KEY]
+  }
+  if (params[NEW_SCALE_KEY]) {
+    newScale.value = params[NEW_SCALE_KEY]
+  }
+
+
+  const storeStateCb = () => {
+    const url = new URL(window.location.toString());
+    url.searchParams.set(SCALE_KEY, scale.value)
+    url.searchParams.set(NEW_SCALE_KEY, newScale.value)
+    url.searchParams.set(RAW_RECIPE_KEY, bytesToBase64(rawRecipeTextArea.value));
+    window.history.replaceState("", "", url.toString())
+  }
+
+  scale.addEventListener('change', storeStateCb);
+  newScale.addEventListener('change', storeStateCb);
+  rawRecipeTextArea.addEventListener('change', storeStateCb);
 
   const updateScaleCb = () => {
     const calculatedScale = Number.parseInt(newScale.value) / Number.parseInt(scale.value);
@@ -108,6 +143,9 @@ ready(() => {
   };
   const rawRecipeUpdateCb = () => {
     const value = rawRecipeTextArea.value;
+    if (!value) {
+      return
+    }
     localStorage.setItem(RAW_RECIPE_KEY, value);
     recipe = parseTextRecipe(value);
     console.log(recipe);
@@ -119,13 +157,17 @@ ready(() => {
   newScale.addEventListener('change', updateScaleCb);
   let recipe: Recipe;
 
-  if (localStorage.getItem(RAW_RECIPE_KEY)) {
-    rawRecipeTextArea.value = localStorage.getItem(RAW_RECIPE_KEY);
-    rawRecipeUpdateCb();
+  if (params[RAW_RECIPE_KEY]) {
+    rawRecipeTextArea.value = base64ToBytes(params[RAW_RECIPE_KEY]);
+
   } else {
-    rawRecipeTextArea.value = EXAMPLE_RECIPE;
-    rawRecipeUpdateCb();
+    if (localStorage.getItem(RAW_RECIPE_KEY)) {
+      rawRecipeTextArea.value = localStorage.getItem(RAW_RECIPE_KEY);
+    } else {
+      rawRecipeTextArea.value = EXAMPLE_RECIPE;
+    }
   }
+  rawRecipeUpdateCb();
 
   rawRecipeTextArea.addEventListener('change', rawRecipeUpdateCb);
 });
