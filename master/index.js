@@ -10,7 +10,7 @@
     Object.values;
     function stripLine(t) {
         t = t.trim();
-        t = t.replace(/^(?:[^\p{L}\p{N}()]+)?(.+?)(?:[^\p{L}\p{N}()]+)?$/gmu, "$1");
+        t = t.replace(/^(?:[^\p{L}\p{N}()%]+)?(.+?)(?:[^\p{L}\p{N}()%]+)?$/gmu, "$1");
         t = t.replace(/\p{Zs}+/gmu, " ");
         return t;
     }
@@ -27,7 +27,7 @@
         kg: [ "кг", "килограмм", "kg", "kilogram" ],
         g: [ "г", "гр", "грамм", "g", "gram" ],
         tsp: [ "(?:ч\\.|чайн(?:ая|ые))\\s*?(?:л\\.|ложк[аи])", "tea\\s*spoons?", "tsp" ],
-        tbsp: [ "(?:ст?\\.|столов(?:ая|ые))\\s*?(?:л\\.|ложк[аи])", "table\\s*spoons?", "tbsp" ],
+        tbsp: [ "(?:ст?\\.|столов(?:ая|ые))\\s*?(?:л\\.?|ложк[аи])", "table\\s*spoons?", "tbsp" ],
         cup: [ "стакан(?:а|ов)?", "ст", "cup" ],
         pinch: [ "щепотка", "pinch" ],
         taste: [ "по вкусу", "to taste" ]
@@ -96,11 +96,70 @@
     function mRegExp(regExps, flags) {
         return RegExp(joinRegExp(regExps), flags);
     }
+    function groupRegExp(regexps, options = {
+        flags: "gum"
+    }) {
+        const {flags, name} = options;
+        return mRegExp([ name ? `(?<${name}` : "(?:", joinRegExp(regexps, "|"), ")" ], flags);
+    }
     function joinRegExp(regexps, separator = "") {
         return regexps.map((function(r) {
             if (isRegexp(r)) return r.source;
             return r;
         })).join(separator || "");
+    }
+    const DEFINED_INGREDIENT_TYPES = [ {
+        name: "sugar",
+        density: 900,
+        regexp: [ /сахар/gm, /sugar/ ]
+    }, {
+        name: "kosher salt",
+        density: 1030,
+        regexp: [ /сол[ьи]/gm, /поварен(?:ой|ая) сол[ьи]/gm, /kosher salt/gm ]
+    }, {
+        name: "table salt",
+        density: 1300,
+        regexp: [ /мелк(?:ой|ая) сол[ьи]/gm, /table salt/gm ]
+    }, {
+        name: "vinegar acid",
+        concentration: 70,
+        regexp: [ /уксусная (?:кислота|эссенция)/gm, /vinegar (?:acid|essence)/gm ]
+    }, {
+        name: "vinegar",
+        concentration: 9,
+        regexp: [ /уксусa?/m, /vinegar/m ]
+    } ];
+    var __rest = void 0 && (void 0).__rest || function(s, e) {
+        var t = {};
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+        if (s != null && typeof Object.getOwnPropertySymbols === "function") {
+            var i = 0;
+            for (p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+        }
+        return t;
+    };
+    function compileDefinedTypes() {
+        const types = [];
+        for (const t of DEFINED_INGREDIENT_TYPES) types.push(Object.assign(Object.assign({}, t), {
+            regexp: groupRegExp(t.regexp, {
+                flags: "mu"
+            })
+        }));
+        return types;
+    }
+    function extractVinegarConcentration(str) {
+        const concentrationRegExp = /(\d+)\s*%/;
+        const m = concentrationRegExp.exec(str);
+        if (m) return Number.parseInt(m[1]);
+        return null;
+    }
+    function parseIngredientType(str) {
+        for (const t of compileDefinedTypes()) if (t.regexp.test(str)) {
+            const {regexp: _} = t, r_t = __rest(t, [ "regexp" ]);
+            if (t.name.startsWith("vinegar")) r_t.concentration = extractVinegarConcentration(str) || r_t.concentration;
+            return r_t;
+        }
+        return null;
     }
     const WORD_BOUNDARY_END = /(?=\s+|[.,);/]|$)/;
     function buildUnitRegexp(unit_type, units) {
@@ -140,8 +199,11 @@
         }
         for (const t of UNITS) if (groups[t]) ingredient.unit = t;
         if (!ingredient.unit) ingredient.unit = "pcs";
+        const ingredientType = parseIngredientType(ingredient.name);
+        if (ingredientType) ingredient.type = ingredientType;
         return ingredient;
     }
+    const END_LINE = "o(. _ .)o";
     function parseTextRecipe(raw_text) {
         const recipe = {
             name: "",
@@ -153,7 +215,7 @@
         };
         let i = 0;
         const lines = raw_text.trim().split("\n");
-        lines.push("###");
+        lines.push(END_LINE);
         for (const line of lines) {
             if (!line.trim()) continue;
             const result = parseRecipeLine(line);
@@ -172,14 +234,17 @@
                                 name: "",
                                 ingredients: []
                             };
-                            newGroup.ingredients.push(Object.assign(Object.assign({}, group.ingredients[0]), {
+                            const ingredient = Object.assign(Object.assign({}, group.ingredients[0]), {
                                 name: group.name
-                            }));
+                            });
+                            const ingredientType = parseIngredientType(group.name);
+                            if (ingredientType) ingredient.type = ingredientType;
+                            newGroup.ingredients.push(ingredient);
                             group = newGroup;
                         }
                         recipe.ingredient_groups.push(group);
                     }
-                    if (name === "###") break;
+                    if (name === END_LINE) break;
                     group = {
                         name,
                         ingredients: []
@@ -238,9 +303,10 @@
     }
     const LANG = "ru";
     function renderRecipeTable(recipe) {
+        var _a;
         let html = "";
         if (recipe.name) html += `<h2>${recipe.name}</h2>`;
-        html += `<table>\n  <colgroup>\n  <col span="3" style="width: auto">\n  <col span="3" style="width: 100px">\n  <col span="3" style="width: 100px">\n  </colgroup>\n  <thead>\n  <tr>\n  <th></th>\n  <th>Оригинал</th>\n  <th>Пересчет</th>\n  </tr>\n</thead>\n`;
+        html += `<table>\n  <colgroup>\n  <col span="3" style="width: auto">\n  <col span="3" style="width: 100px">\n  <col span="3" style="width: 100px">\n  </colgroup>\n  <thead>\n  <tr>\n  <th></th>\n  <th>Оригинал</th>\n  <th>Пересчет</th>\n  <th>Единица измерения</th>\n  </tr>\n</thead>\n`;
         for (const g of recipe.ingredient_groups) {
             if (g.name) html += `<tr><th colspan='2'>${g.name}</th></tr>`;
             for (const i of g.ingredients) {
@@ -253,9 +319,10 @@
                 if (i.calculated_value) {
                     calcValue = i.calculated_value.toString();
                     if (Array.isArray(i.calculated_value)) calcValue = i.calculated_value.join(" - ");
-                    calcValue += ` ${getUnitDisplay(i.unit, LANG, i.calculated_value)}`;
                 }
-                html += `<tr><td>${i.name}</td> \n      <td>${value} ${getUnitDisplay(i.unit, LANG, i.value)}</td>\n      <td>${calcValue}</td></tr>`;
+                let concentration = "";
+                if ((_a = i.type) === null || _a === void 0 ? void 0 : _a.concentration) concentration = `[${i.type.concentration}%]`;
+                html += `<tr><td>${i.name} ${concentration}</td> \n      <td>${value}</td>\n      <td>${calcValue}</td>\n      <td> ${getUnitDisplay(i.unit, LANG, i.value)}</td>\n      </tr>`;
             }
         }
         html += "</table>";
