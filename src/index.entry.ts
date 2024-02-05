@@ -2,6 +2,9 @@ import {parseTextRecipe} from '@app/core/parser/text';
 import {ready} from './ui/core/events';
 import {Recipe} from '@app/core/types/recipe';
 import {recipeScale} from '@app/core/calculator';
+import {getUnitDisplay} from '@app/core/i18n';
+
+const LANG = 'ru';
 
 function renderRecipeTable(recipe: Recipe): string {
   let html = '';
@@ -9,7 +12,20 @@ function renderRecipeTable(recipe: Recipe): string {
     html += `<h2>${recipe.name}</h2>`;
   }
 
-  html += '<table>';
+  html += `<table>
+  <colgroup>
+  <col span="3" style="width: auto">
+  <col span="3" style="width: 100px">
+  <col span="3" style="width: 100px">
+  </colgroup>
+  <thead>
+  <tr>
+  <th></th>
+  <th>Оригинал</th>
+  <th>Пересчет</th>
+  </tr>
+</thead>
+`;
   for (const g of recipe.ingredient_groups) {
     if (g.name) {
       html += `<tr><th colspan='2'>${g.name}</th></tr>`;
@@ -28,9 +44,11 @@ function renderRecipeTable(recipe: Recipe): string {
         if (Array.isArray(i.calculated_value)) {
           calcValue = i.calculated_value.join(' - ');
         }
-        calcValue += ` ${i.unit}`;
+        calcValue += ` ${getUnitDisplay(i.unit, LANG, i.calculated_value)}`;
       }
-      html += `<tr><td>${i.name}</td> <td>${value} ${i.unit}</td><td>${calcValue}</td></tr>`;
+      html += `<tr><td>${i.name}</td> 
+      <td>${value} ${getUnitDisplay(i.unit, LANG, i.value)}</td>
+      <td>${calcValue}</td></tr>`;
     }
   }
   html += '</table>';
@@ -69,7 +87,7 @@ const EXAMPLE_RECIPE = `
 Морковь 1 cup
 Редис  2 cup
 Зеленый лук 8 шт
-`
+`;
 
 ready(() => {
   const rawRecipeTextArea = document.getElementById('raw_recipe') as HTMLTextAreaElement;
@@ -111,4 +129,3 @@ ready(() => {
 
   rawRecipeTextArea.addEventListener('change', rawRecipeUpdateCb);
 });
-
