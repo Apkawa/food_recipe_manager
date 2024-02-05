@@ -207,10 +207,40 @@
         }
         return recipe;
     }
+    const UNIT_TRANSLATIONS = {
+        en: {
+            l: "l",
+            ml: "ml",
+            kg: "kg",
+            g: "g",
+            tsp: "tsp",
+            tbsp: "tbsp",
+            cup: "cup",
+            pinch: "pinch",
+            pcs: "pcs",
+            taste: "taste"
+        },
+        ru: {
+            l: "л",
+            ml: "мл",
+            kg: "кг",
+            g: "г",
+            tsp: "ч.л.",
+            tbsp: "ст.л.",
+            cup: "стакан",
+            pinch: "щепотка",
+            pcs: "штук",
+            taste: "по вкусу"
+        }
+    };
+    function getUnitDisplay(unit, lang, value = void 0) {
+        return UNIT_TRANSLATIONS[lang][unit];
+    }
+    const LANG = "ru";
     function renderRecipeTable(recipe) {
         let html = "";
         if (recipe.name) html += `<h2>${recipe.name}</h2>`;
-        html += "<table>";
+        html += `<table>\n  <colgroup>\n  <col span="3" style="width: auto">\n  <col span="3" style="width: 100px">\n  <col span="3" style="width: 100px">\n  </colgroup>\n  <thead>\n  <tr>\n  <th></th>\n  <th>Оригинал</th>\n  <th>Пересчет</th>\n  </tr>\n</thead>\n`;
         for (const g of recipe.ingredient_groups) {
             if (g.name) html += `<tr><th colspan='2'>${g.name}</th></tr>`;
             for (const i of g.ingredients) {
@@ -223,9 +253,9 @@
                 if (i.calculated_value) {
                     calcValue = i.calculated_value.toString();
                     if (Array.isArray(i.calculated_value)) calcValue = i.calculated_value.join(" - ");
-                    calcValue += ` ${i.unit}`;
+                    calcValue += ` ${getUnitDisplay(i.unit, LANG, i.calculated_value)}`;
                 }
-                html += `<tr><td>${i.name}</td> <td>${value} ${i.unit}</td><td>${calcValue}</td></tr>`;
+                html += `<tr><td>${i.name}</td> \n      <td>${value} ${getUnitDisplay(i.unit, LANG, i.value)}</td>\n      <td>${calcValue}</td></tr>`;
             }
         }
         html += "</table>";
@@ -241,14 +271,35 @@
     const SCALE_KEY = "scale";
     const NEW_SCALE_KEY = "new_scale";
     const EXAMPLE_RECIPE = `\nТрадиционный кимчи  \nКимчи выход 3,6 кг\nКапуста пекинская 2,7 кг\nЗагуститель  \nВода 2 cup\nРисовая мука 2 ст.л.\nСахар 2 ст.л.\nСоус  \nЧеснок 0,5 cup\nИмбирь 2 ч.л.\nЛук репчатый 1 шт\nРыбный соус 0,5 cup\nПерец кочукари 2 cup\nКреветки ферментированые (saeujeot) 0,25 cup\nЯблоки (опционально) 1 шт\nОвощи  \nМорковь 1 cup\nРедис  2 cup\nЗеленый лук 8 шт\n`;
+    function base64ToBytes(base64) {
+        const binString = atob(base64);
+        return (new TextDecoder).decode(Uint8Array.from(binString, (m => m.codePointAt(0))));
+    }
+    function bytesToBase64(bytes) {
+        const binString = String.fromCodePoint(...(new TextEncoder).encode(bytes));
+        return btoa(binString);
+    }
     ready((() => {
         const rawRecipeTextArea = document.getElementById("raw_recipe");
         const parsedRecipe = document.getElementById("parsed_recipe");
         const scaleWrap = document.getElementById("scale_wrap");
         const scale = document.getElementById("scale");
-        setupSyncLocalStorageValue(scale, SCALE_KEY);
         const newScale = document.getElementById("new_scale");
+        setupSyncLocalStorageValue(scale, SCALE_KEY);
         setupSyncLocalStorageValue(newScale, NEW_SCALE_KEY);
+        const params = Object.fromEntries(new URL(window.location.toString()).searchParams.entries());
+        if (params[SCALE_KEY]) scale.value = params[SCALE_KEY];
+        if (params[NEW_SCALE_KEY]) newScale.value = params[NEW_SCALE_KEY];
+        const storeStateCb = () => {
+            const url = new URL(window.location.toString());
+            url.searchParams.set(SCALE_KEY, scale.value);
+            url.searchParams.set(NEW_SCALE_KEY, newScale.value);
+            url.searchParams.set(RAW_RECIPE_KEY, bytesToBase64(rawRecipeTextArea.value));
+            window.history.replaceState("", "", url.toString());
+        };
+        scale.addEventListener("change", storeStateCb);
+        newScale.addEventListener("change", storeStateCb);
+        rawRecipeTextArea.addEventListener("change", storeStateCb);
         const updateScaleCb = () => {
             const calculatedScale = Number.parseInt(newScale.value) / Number.parseInt(scale.value);
             if (!recipe) return;
@@ -257,6 +308,7 @@
         };
         const rawRecipeUpdateCb = () => {
             const value = rawRecipeTextArea.value;
+            if (!value) return;
             localStorage.setItem(RAW_RECIPE_KEY, value);
             recipe = parseTextRecipe(value);
             console.log(recipe);
@@ -266,13 +318,8 @@
         scale.addEventListener("change", updateScaleCb);
         newScale.addEventListener("change", updateScaleCb);
         let recipe;
-        if (localStorage.getItem(RAW_RECIPE_KEY)) {
-            rawRecipeTextArea.value = localStorage.getItem(RAW_RECIPE_KEY);
-            rawRecipeUpdateCb();
-        } else {
-            rawRecipeTextArea.value = EXAMPLE_RECIPE;
-            rawRecipeUpdateCb();
-        }
+        if (params[RAW_RECIPE_KEY]) rawRecipeTextArea.value = base64ToBytes(params[RAW_RECIPE_KEY]); else if (localStorage.getItem(RAW_RECIPE_KEY)) rawRecipeTextArea.value = localStorage.getItem(RAW_RECIPE_KEY); else rawRecipeTextArea.value = EXAMPLE_RECIPE;
+        rawRecipeUpdateCb();
         rawRecipeTextArea.addEventListener("change", rawRecipeUpdateCb);
     }));
 })();
