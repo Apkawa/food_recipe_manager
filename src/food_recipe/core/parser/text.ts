@@ -1,6 +1,9 @@
 import {IngredientGroup, Recipe} from '@app/core/types/recipe';
 import {parseRecipeLine} from '@app/core/parser/recipe_line';
 import {stripLine} from '@app/utils';
+import {parseIngredientType} from '@app/core/ingredient_type/parse';
+
+const END_LINE = 'o(. _ .)o';
 
 export function parseTextRecipe(raw_text: string): Recipe {
   const recipe: Recipe = {
@@ -14,7 +17,7 @@ export function parseTextRecipe(raw_text: string): Recipe {
 
   let i = 0;
   const lines = raw_text.trim().split('\n');
-  lines.push('###');
+  lines.push(END_LINE);
   for (const line of lines) {
     if (!line.trim()) {
       // Пустая строка
@@ -47,12 +50,21 @@ export function parseTextRecipe(raw_text: string): Recipe {
                     name: '',
                     ingredients: [],
                   };
-            newGroup.ingredients.push({...group.ingredients[0], name: group.name});
+            const ingredient = {
+              ...group.ingredients[0],
+              name: group.name,
+            };
+            const ingredientType = parseIngredientType(group.name);
+            if (ingredientType) {
+              ingredient.type = ingredientType;
+            }
+
+            newGroup.ingredients.push(ingredient);
             group = newGroup;
           }
           recipe.ingredient_groups.push(group);
         }
-        if (name === '###') {
+        if (name === END_LINE) {
           // last iteration
           break;
         }

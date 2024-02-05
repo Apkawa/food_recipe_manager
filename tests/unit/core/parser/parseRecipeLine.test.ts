@@ -105,6 +105,7 @@ describe('parseRecipeLine', () => {
     {
       arg: 'уксус 9%   3 ст.л', expected: {
         name: 'уксус 9%', unit: 'tbsp', value: 3,
+        type: {concentration: 9, name: "vinegar"}
       },
     },
 

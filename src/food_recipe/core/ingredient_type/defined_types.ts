@@ -20,4 +20,14 @@ export const DEFINED_INGREDIENT_TYPES: DefinedIngredientType[] = [
     density: 1300,
     regexp: [/мелк(?:ой|ая) сол[ьи]/gm, /table salt/gm],
   },
+  {
+    name: 'vinegar acid',
+    concentration: 70,
+    regexp: [/уксусная (?:кислота|эссенция)/gm, /vinegar (?:acid|essence)/gm],
+  },
+  {
+    name: 'vinegar',
+    concentration: 9,
+    regexp: [/уксусa?/m, /vinegar/m],
+  },
 ];

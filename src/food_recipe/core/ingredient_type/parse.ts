@@ -9,9 +9,18 @@ interface CompiledIngredientType extends IngredientType {
 function compileDefinedTypes(): CompiledIngredientType[] {
   const types: CompiledIngredientType[] = [];
   for (const t of DEFINED_INGREDIENT_TYPES) {
-    types.push({...t, regexp: groupRegExp(t.regexp)});
+    types.push({...t, regexp: groupRegExp(t.regexp, {flags: 'mu'})});
   }
   return types;
+}
+
+export function extractVinegarConcentration(str: string): number | null {
+  const concentrationRegExp = /(\d+)\s*%/;
+  const m = concentrationRegExp.exec(str);
+  if (m) {
+    return Number.parseInt(m[1]);
+  }
+  return null;
 }
 
 /**
@@ -26,6 +35,9 @@ export function parseIngredientType(str: string): IngredientType | null {
     if (t.regexp.test(str)) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const {regexp: _, ...r_t} = t;
+      if (t.name.startsWith('vinegar')) {
+        r_t.concentration = extractVinegarConcentration(str) || r_t.concentration;
+      }
       return r_t;
     }
   }

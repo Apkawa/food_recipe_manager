@@ -4,6 +4,7 @@ import {NO_VALUE_UNITS, UNITS, VALUE_UNITS} from '@app/core/constants';
 import {UNIT_MAP} from '@app/core/parser/unit_map';
 import {parseNumber, VULGAR_LETTER_REGEXP} from '@app/utils/number';
 import {mRegExp} from '@app/utils/regexp';
+import {parseIngredientType} from '@app/core/ingredient_type/parse';
 
 const WORD_BOUNDARY_END = /(?=\s+|[.,);/]|$)/;
 
@@ -108,6 +109,10 @@ export function parseRecipeLine(raw_line: string): Ingredient | null {
   if (!ingredient.unit) {
     // Скорее всего была строка с одним числом без единиц измерения. Будем считать что это шт
     ingredient.unit = 'pcs';
+  }
+  const ingredientType = parseIngredientType(ingredient.name);
+  if (ingredientType) {
+    ingredient.type = ingredientType;
   }
   return ingredient;
 }

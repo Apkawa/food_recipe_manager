@@ -50,6 +50,11 @@ export interface IngredientType {
    *  Пример: Сахар, 900г/л. Литр сахара весит: (1.0л / 900г/л) * 1000 = 1.11 кг
    */
   density?: number;
+
+  /**
+   * Концентрация водного раствора, в процентах.
+   */
+  concentration?: number;
 }
 
 export type VolumeUnit = (typeof VOLUME_UNITS)[number];

@@ -23,6 +23,7 @@ function renderRecipeTable(recipe: Recipe): string {
   <th></th>
   <th>Оригинал</th>
   <th>Пересчет</th>
+  <th>Единица измерения</th>
   </tr>
 </thead>
 `;
@@ -44,11 +45,16 @@ function renderRecipeTable(recipe: Recipe): string {
         if (Array.isArray(i.calculated_value)) {
           calcValue = i.calculated_value.join(' - ');
         }
-        calcValue += ` ${getUnitDisplay(i.unit, LANG, i.calculated_value)}`;
       }
-      html += `<tr><td>${i.name}</td> 
-      <td>${value} ${getUnitDisplay(i.unit, LANG, i.value)}</td>
-      <td>${calcValue}</td></tr>`;
+      let concentration = '';
+      if (i.type?.concentration) {
+        concentration = `[${i.type.concentration}%]`;
+      }
+      html += `<tr><td>${i.name} ${concentration}</td> 
+      <td>${value}</td>
+      <td>${calcValue}</td>
+      <td> ${getUnitDisplay(i.unit, LANG, i.value)}</td>
+      </tr>`;
     }
   }
   html += '</table>';
