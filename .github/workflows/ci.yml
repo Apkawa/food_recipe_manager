@@ -30,7 +30,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm set-script prepare ""
           npm ci
 
       - name: Build
@@ -99,7 +98,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm set-script prepare ""
           npm ci
 
       - name: Build
