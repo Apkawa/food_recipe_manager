@@ -1,70 +1,63 @@
-Сборка базируется на [userscript-typescript-webpack](https://github.com/vannhi/userscript-typescript-webpack) плюс доработки
+### Apps and Packages
 
-## Стек технологий
+- `mvp`: примитивный интерфейс на чистом js
+- `userscript`: Заготовка для интерфейса юзерскрипта
+- `@repo/food-recipe-core`: Логика рецептов
+- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
+- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
 
-### Core
+### Utilities
 
-* typescript
-* webpack
-* eslint
-* jest
-* puppeteer
+This Turborepo has some additional tools already setup for you:
 
-### UI
+- [TypeScript](https://www.typescriptlang.org/) for static type checking
+- [ESLint](https://eslint.org/) for code linting
+- [Prettier](https://prettier.io) for code formatting
 
-Будет реализована небольшая самописная библиотека по UI
+### Build
 
-Цель - изучить основные паттерны проектирования ui библиотек (state manager, router, dom, binding, etc), 
-реализовать самый минимум необходимый для работы.
+To build all apps and packages, run the following command:
 
-* https://dev.to/ryansolid/a-hands-on-introduction-to-fine-grained-reactivity-3ndf 
-* https://dev.to/ryansolid/building-a-reactive-library-from-scratch-1i0p
-* https://habr.com/ru/companies/ruvds/articles/416021/
-* https://www.youtube.com/watch?v=Ii4VJbC0fgc
+```
+cd my-turborepo
+pnpm build
+```
 
-## Установка
+### Develop
 
-1. git clone
-2. `npm i`
-3. `npm run build:watch`
-4. Включить для Tampermonkey доступ к локальным урлам
-5. Добавить в Tampermonkey содержимое `./debug.js` отредактиров @require на актуальный путь скрипта из `./dist`
+To develop all apps and packages, run the following command:
 
-## Именование коммитов
+```
+cd my-turborepo
+pnpm dev
+```
 
-Подключен [commitlint](https://github.com/conventional-changelog/commitlint/#what-is-commitlint)
+### Remote Caching
 
-[Немного справки из хабра](https://habr.com/ru/company/yandex/blog/431432/)
+Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
 
-- `build` 	Сборка проекта или изменения внешних зависимостей
-- `ci` 	Настройка CI и работа со скриптами
-- `docs` 	Обновление документации
-- `feat` 	Добавление нового функционала
-- `fix` 	Исправление ошибок
-- `perf` 	Изменения направленные на улучшение производительности
-- `refactor` 	Правки кода без исправления ошибок или добавления новых функций
-- `revert` 	Откат на предыдущие коммиты
-- `style` 	Правки по кодстайлу (табы, отступы, точки, запятые и т.д.)
-- `test` 	Добавление тестов
+By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
 
-Для корректного написания текста коммита, вызовите команду `git cz` или `npm run commit` и ответьте на вопросы
+```
+cd my-turborepo
+npx turbo login
+```
 
+This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
 
-## Версии и changelog
+Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
 
-Достаточно вызвать `npm run release`, и по содержанию коммитов поймет какую версию нужно проапдейтить
+```
+npx turbo link
+```
 
-Или вручную `npm run release:[patch|minor|pre]`
+## Useful Links
 
-https://docs.npmjs.com/about-semantic-versioning
+Learn more about the power of Turborepo:
 
-- `patch` - багфиксы
-- `minor` - добавляем новый сайт или фичу
-- `major` - когда ломаем все или релиз.
-- `pre` - пререлизная версия, тэги в гите не создаем 
-
-Перед релизом желательно посмотреть что она обновит
-
-```npm run release -- --dry-run```
-
-В changelog попадают только `feat:` и `fix:`
+- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
+- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
+- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
+- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
+- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
+- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)

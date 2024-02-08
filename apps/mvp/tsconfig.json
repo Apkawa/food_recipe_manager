@@ -1,0 +1,17 @@
+{
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs",
+      "target": "es2017",
+      "esModuleInterop": true,
+      "moduleResolution": "nodenext",
+    }
+  },
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+  }
+}

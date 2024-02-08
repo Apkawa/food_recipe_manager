@@ -1,4 +1,4 @@
-// https://github.com/conventional-changelog/conventional-changelog-config-spec/blob/master/versions/2.2.0/README.md
+// https://github.com/conventional-changelog/conventional-changelog-config-spec/blob/master/versions/1.2.0/README.md
 
 module.exports = {
   'types': [

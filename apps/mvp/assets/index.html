@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Парсер кулинарного рецепта</title>
+  </head>
+  <body>
+    <div>
+      <textarea style="width: 500px; height: 500px" id="raw_recipe"></textarea>
+
+      <div id="scale_wrap" style="display: none">
+        Рецепт на <input id="scale" style="width: 30px" value="1" type="number" min="1" /> порций
+        <br />
+
+        Пересчитать на
+        <input id="new_scale" style="width: 30px" value="1" type="number" min="1" /> порций
+      </div>
+
+      <div id="parsed_recipe"></div>
+    </div>
+  </body>
+</html>

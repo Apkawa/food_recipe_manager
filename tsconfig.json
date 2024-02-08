@@ -1,24 +1,3 @@
 {
-  "ts-node": {
-    "compilerOptions": {
-      "module": "commonjs",
-      "target": "es2017",
-      "esModuleInterop": true
-    }
-  },
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2017",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "baseUrl": ".",
-    "paths": {
-      "@app/*": [
-        "./src/food_recipe/*"
-      ],
-      "@tests/*": [
-        "./tests/*"
-      ]
-    }
-  }
+  "extends": "@repo/typescript-config/base.json"
 }
