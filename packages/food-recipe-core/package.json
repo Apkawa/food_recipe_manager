@@ -51,7 +51,6 @@
     "jest-localstorage-mock": "^2.4.25",
     "jest-puppeteer": "^6.2.0",
     "node-fetch": "^3.3.0",
-    "patch-package": "^6.5.0",
     "path-browserify": "^1.0.1",
     "prettier": "^2.8.1",
     "process": "^0.11.10",
