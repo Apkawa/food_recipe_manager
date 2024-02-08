@@ -36,7 +36,7 @@ jobs:
         run: npm run build
 
       - name: Run unit tests
-        run: npm run test:unit
+        run: npm run test
         # TODO надо подумать над обходом cloudflare
 #      - name: Run e2e tests
 #        run: npm run test:e2e
