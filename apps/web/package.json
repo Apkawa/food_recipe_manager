@@ -19,6 +19,7 @@
     "test:storybook": "test-storybook"
   },
   "dependencies": {
+    "@repo/food-recipe-core": "*",
     "pinia": "^2.1.7",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"
@@ -59,6 +60,8 @@
     "ts-node": "^10.9.2",
     "typescript": "~5.3.0",
     "vite": "^5.0.11",
+    "vite-plugin-checker": "^0.6.4",
+    "vite-plugin-favicon2": "^1.1.5",
     "vite-plugin-nightwatch": "^0.4.6",
     "vitest": "^1.2.2",
     "vue-tsc": "^1.8.27"

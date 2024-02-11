@@ -1,12 +1,12 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "extends": "@tsconfig/recommended/tsconfig.json",
   "include": [
     "env.d.ts",
     "src/**/*",
     "src/**/*.vue"
   ],
   "exclude": [
-    "src/**/__tests__/*"
+    "tests/**"
   ],
   "compilerOptions": {
     "composite": true,
@@ -16,8 +16,14 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@app/*": [
+        "./src/food_recipe/*"
+      ],
+      "@tests/*": [
+        "./tests/*"
       ]
     },
-    "verbatimModuleSyntax": false,
+    "verbatimModuleSyntax": false
   }
 }

@@ -27,7 +27,7 @@ export interface BaseIngredient {
   name: string;
   // Какое то уточнение
   note?: string;
-  unit?: Unit;
+  unit: Unit;
   type?: IngredientType;
 }
 

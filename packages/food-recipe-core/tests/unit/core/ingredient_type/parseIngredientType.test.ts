@@ -16,6 +16,10 @@ describe('parseIngredientType', () => {
       arg: 'уксус 5%',
       expected: {name: 'vinegar', concentration: 5},
     },
+    {
+      arg: 'УкСуС 5%',
+      expected: {name: 'vinegar', concentration: 5},
+    },
   ];
   it.each(cases)('[$#] $arg -> $expected', (c) => {
     expect(parseIngredientType(c.arg)).toStrictEqual(c.expected);

@@ -9,7 +9,7 @@ interface CompiledIngredientType extends IngredientType {
 function compileDefinedTypes(): CompiledIngredientType[] {
   const types: CompiledIngredientType[] = [];
   for (const t of DEFINED_INGREDIENT_TYPES) {
-    types.push({...t, regexp: groupRegExp(t.regexp, {flags: 'mu'})});
+    types.push({...t, regexp: groupRegExp(t.regexp, {flags: 'imu'})});
   }
   return types;
 }

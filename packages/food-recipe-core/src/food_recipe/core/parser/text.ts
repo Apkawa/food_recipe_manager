@@ -43,13 +43,16 @@ export function parseTextRecipe(raw_text: string): Recipe {
           if (group.ingredients.length == 1 && group.name && !group.ingredients[0].name) {
             // Ситуация когда название компонента и развесовка на разных строках.
 
-            const newGroup =
-              recipe.ingredient_groups.length > 0
-                ? recipe.ingredient_groups.pop()
-                : {
+            let newGroup: IngredientGroup;
+            if (recipe.ingredient_groups.length > 0) {
+              newGroup = recipe.ingredient_groups.pop() as IngredientGroup
+            } else {
+              newGroup = {
                     name: '',
                     ingredients: [],
-                  };
+                  }
+            }
+
             const ingredient = {
               ...group.ingredients[0],
               name: group.name,

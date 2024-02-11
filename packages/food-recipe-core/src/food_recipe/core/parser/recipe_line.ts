@@ -65,8 +65,8 @@ interface MatchGroupsResult extends UnitGroupsResult {
 }
 
 export function parseRecipeLine(raw_line: string): Ingredient | null {
-  let groups: MatchGroupsResult;
-  let name: string;
+  let groups: MatchGroupsResult = {};
+  let name: string = '';
   for (const regexp of [UNIT_REGEXP, VALUE_REGEXP]) {
     groups = (regexp.exec(raw_line)?.groups || {}) as MatchGroupsResult;
     if (groups?.value || groups?.no_value_unit) {
@@ -82,11 +82,11 @@ export function parseRecipeLine(raw_line: string): Ingredient | null {
     return null;
   }
 
-  const ingredient: Ingredient = {
+  const ingredient: Partial<Ingredient> = {
     name,
   };
   if (groups.value) {
-    let value: number | number[];
+    let value: number | number[] | undefined;
     if (groups.value_range) {
       value = [];
       for (const v of groups.value.split(VALUE_RANGE_DELIMITER_REGEXP)) {
@@ -96,7 +96,7 @@ export function parseRecipeLine(raw_line: string): Ingredient | null {
         }
       }
     } else {
-      value = parseNumber(groups.value);
+      value = parseNumber(groups.value) || undefined;
     }
     ingredient.value = value;
   }
@@ -110,9 +110,9 @@ export function parseRecipeLine(raw_line: string): Ingredient | null {
     // Скорее всего была строка с одним числом без единиц измерения. Будем считать что это шт
     ingredient.unit = 'pcs';
   }
-  const ingredientType = parseIngredientType(ingredient.name);
+  const ingredientType = parseIngredientType(ingredient.name || '');
   if (ingredientType) {
     ingredient.type = ingredientType;
   }
-  return ingredient;
+  return ingredient as Ingredient;
 }

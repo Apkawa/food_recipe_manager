@@ -18,7 +18,7 @@
 //   return aliases;
 // }
 
-import path from 'path';
+const path  = require('path');
 
 module.exports = {
   testEnvironment: 'node',
@@ -36,5 +36,6 @@ module.exports = {
   },
   moduleNameMapper: {
     '^@app/(.*)$': path.resolve(__dirname, './src/food_recipe/$1'),
+    '^@tests/(.*)$': path.resolve(__dirname, './tests/$1'),
   },
 };

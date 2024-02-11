@@ -7,7 +7,10 @@
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "mvp#build": {
-      "dependsOn": ["@repo/food-recipe-core#build", "@repo/food-recipe-core#test"]
+      "dependsOn": ["@repo/food-recipe-core#build"]
+    },
+    "web#build": {
+      "dependsOn": ["@repo/food-recipe-core#build"]
     },
     "lint": {
       "dependsOn": ["^lint"]
