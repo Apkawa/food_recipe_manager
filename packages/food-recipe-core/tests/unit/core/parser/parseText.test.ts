@@ -21,6 +21,10 @@ describe('parseTextRecipe', () => {
             },
             {
               name: 'Соль',
+              type: {
+                density: 1030,
+                name: 'kosher salt',
+              },
               unit: 'tsp',
               value: 0.5,
             },
@@ -113,6 +117,10 @@ describe('parseTextRecipe', () => {
             {
               name: 'Соль',
               unit: 'taste',
+              type: {
+                density: 1030,
+                name: 'kosher salt',
+              },
             },
           ],
           name: '',

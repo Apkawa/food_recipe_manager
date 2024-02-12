@@ -62,4 +62,3 @@
       ключи которых предоставляет пользователь на свой страх и риск)
 - [ ] Без публикации в [google store](https://chrome.google.com/webstore/category/extensions?hl=ru)
 - [ ] При сборке не будут использоваться внешние зависимости помимо @require для vue
-

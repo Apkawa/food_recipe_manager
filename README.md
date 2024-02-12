@@ -41,8 +41,7 @@
 - [ ] i18n, начальный язык - русский
 - [ ] Браузерные расширения
 - [ ] Телеграм бот \
-  https://github.com/revenkroz/telegram-web-app-bot-example
-
+       https://github.com/revenkroz/telegram-web-app-bot-example
 
 ## Обратная связь
 

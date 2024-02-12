@@ -27,7 +27,8 @@ export interface BaseIngredient {
   name: string;
   // Какое то уточнение
   note?: string;
-  unit: Unit;
+  // если единица измерения не указана - по вкусу (taste)
+  unit?: Unit;
   type?: IngredientType;
 }
 

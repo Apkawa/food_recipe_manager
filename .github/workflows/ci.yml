@@ -115,6 +115,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           # Потом когда сделаю версию на vue то поменяю на apps/web/dist/
-          folder: apps/mvp/dist # The folder the action should deploy.
+          folder: apps/web/dist # The folder the action should deploy.
           clean: true # Automatically remove deleted files from the deploy branch
           target-folder: ${{ steps.target_folder.outputs.value }}

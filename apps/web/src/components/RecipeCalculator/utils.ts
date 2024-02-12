@@ -1,10 +1,10 @@
 export function valueDisplay(value?: number | number[]): string {
-  let v = '';
+  let v = ''
   if (value) {
-    v = value.toString();
+    v = value.toString()
     if (Array.isArray(value)) {
-      v = value.join(' - ');
+      v = value.join(' - ')
     }
   }
-  return v;
+  return v
 }

@@ -18,9 +18,10 @@
 //   return aliases;
 // }
 
-const path  = require('path');
+const path = require('path');
 
 module.exports = {
+  roots: [path.resolve(__dirname)],
   testEnvironment: 'node',
   testMatch: ['**/?(*.)+(spec|test).[t]s'],
   testPathIgnorePatterns: ['/node_modules/', 'dist', 'tests/e2e/'],
@@ -31,8 +32,14 @@ module.exports = {
     require.resolve('./.jest/OutputConsoleOnFailureOnlyReporter.js'),
     require.resolve('../../node_modules/@jest/reporters/build/SummaryReporter.js'),
   ],
+  preset: 'ts-jest',
   transform: {
-    '^.+\\.ts?$': 'ts-jest',
+    '^.+\\.ts?$': [
+      'ts-jest',
+      {
+        tsconfig: path.resolve(__dirname, 'tsconfig.json'),
+      },
+    ],
   },
   moduleNameMapper: {
     '^@app/(.*)$': path.resolve(__dirname, './src/food_recipe/$1'),

@@ -1,15 +1,33 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.node.json"
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs",
+      "target": "es2017",
+      "esModuleInterop": true,
+      "moduleResolution": "nodenext",
     }
+  },
+  "exclude": [
+    "tests/**"
   ],
   "compilerOptions": {
-    "module": "NodeNext",
-    "outDir": "dist/src/"
+    "module": "Node16",
+    "target": "es2017",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": [
+        "./src/food_recipe/*"
+      ],
+      "@tests/*": [
+        "./tests/*"
+      ]
+    },
+    "types": ["node", "jest"],
+    "verbatimModuleSyntax": false
   }
 }

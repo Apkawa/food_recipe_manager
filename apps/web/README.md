@@ -44,5 +44,5 @@
   - [ ] e2e
     - [ ] Пишем интерфейс и его элементы в [storybook](https://storybook.js.org/docs/vue/get-started/introduction)
     - [ ] e2e в [storybook](https://storybook.js.org/docs/vue/writing-tests/introduction) + nightwatch \
-          https://nightwatchjs.org/blog/component-driven-development-with-storybook-and-nightwatch/
+           https://nightwatchjs.org/blog/component-driven-development-with-storybook-and-nightwatch/
 - [ ] Браузерные расширения

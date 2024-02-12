@@ -18,4 +18,4 @@ export const EXAMPLE_RECIPE = `
 Морковь 1 cup
 Редис  2 cup
 Зеленый лук 8 шт
-`;
+`

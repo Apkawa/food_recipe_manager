@@ -37,10 +37,10 @@ export const UNIT_TRANSLATIONS: UNIT_TRANSLATIONS = {
 };
 
 export function getUnitDisplay(
-  unit: Unit,
+  unit: Unit | null | undefined,
   lang: LANG_TYPE,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   value: number | number[] | undefined = undefined,
 ): string {
-  return UNIT_TRANSLATIONS[lang][unit];
+  return UNIT_TRANSLATIONS[lang][unit || 'taste'];
 }

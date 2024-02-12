@@ -2,8 +2,9 @@
   "root": true,
   "extends": "@repo/eslint-config/base.js",
   "parserOptions": {
+    "tsconfigRootDir": ".",
     "project": [
-      "./tsconfig.app.json"
+      "./tsconfig.json"
     ]
   }
 }

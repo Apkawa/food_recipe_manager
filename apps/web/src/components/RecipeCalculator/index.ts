@@ -1,5 +1,3 @@
 import RecipeCalculator from './RecipeCalculator.vue'
 
-export {
-  RecipeCalculator
-}
+export { RecipeCalculator }

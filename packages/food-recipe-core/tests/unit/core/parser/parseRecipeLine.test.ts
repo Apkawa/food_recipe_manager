@@ -14,7 +14,7 @@ describe('stripLine', () => {
 });
 
 describe('parseRecipeLine', () => {
-  const cases: Cases<string, Ingredient> = [
+  const cases: Cases<string, Ingredient | null> = [
     {
       arg: 'Тушёнка мясная (у меня говяжья) — 500 г',
       expected: {
@@ -43,6 +43,10 @@ describe('parseRecipeLine', () => {
       arg: 'Соль - 0,5 ч.л.',
       expected: {
         name: 'Соль',
+        type: {
+          density: 1030,
+          name: 'kosher salt',
+        },
         unit: 'tsp',
         value: 0.5,
       },
@@ -57,7 +61,14 @@ describe('parseRecipeLine', () => {
     },
     {
       arg: 'Соль по вкусу',
-      expected: {name: 'Соль', unit: 'taste'},
+      expected: {
+        name: 'Соль',
+        type: {
+          density: 1030,
+          name: 'kosher salt',
+        },
+        unit: 'taste',
+      },
     },
     {
       arg: 'bla bla foo bar',
@@ -129,6 +140,10 @@ describe('parseRecipeLine', () => {
       arg: 'Соль - 1 ч. ложка (по вкусу)',
       expected: {
         name: 'Соль - (по вкусу)',
+        type: {
+          density: 1030,
+          name: 'kosher salt',
+        },
         unit: 'tsp',
         value: 1,
       },

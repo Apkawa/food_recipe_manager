@@ -3,7 +3,8 @@
   "include": [
     "env.d.ts",
     "src/**/*",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "../../node_modules/@vue/runtime-core/dist/runtime-core.d.ts"
   ],
   "exclude": [
     "src/**/__tests__/*"
@@ -18,6 +19,6 @@
         "./src/*"
       ]
     },
-    "verbatimModuleSyntax": false,
+    "verbatimModuleSyntax": false
   }
 }

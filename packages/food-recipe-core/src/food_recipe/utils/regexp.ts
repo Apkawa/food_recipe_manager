@@ -1,5 +1,5 @@
 export default function isRegexp(value: unknown): value is RegExp {
-  return toString.call(value) === '[object RegExp]';
+  return {}.toString.call(value) === '[object RegExp]';
 }
 
 /**

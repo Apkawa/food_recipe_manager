@@ -45,12 +45,12 @@ export function parseTextRecipe(raw_text: string): Recipe {
 
             let newGroup: IngredientGroup;
             if (recipe.ingredient_groups.length > 0) {
-              newGroup = recipe.ingredient_groups.pop() as IngredientGroup
+              newGroup = recipe.ingredient_groups.pop() as IngredientGroup;
             } else {
               newGroup = {
-                    name: '',
-                    ingredients: [],
-                  }
+                name: '',
+                ingredients: [],
+              };
             }
 
             const ingredient = {

@@ -4,12 +4,16 @@
   "author": "Apkawa",
   "homepage": "https://github.com/Apkawa/food_recipe_manager",
   "repository": "https://github.com/Apkawa/food_recipe_manager",
+  "source": "src/index.ts",
+  "main": "dist/food-recipe-core.js",
+  "types": "dist/food-recipe-core.d.ts",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Apkawa/food_recipe_manager/issues"
   },
   "scripts": {
-    "build": "npm run lint && npm run test && cross-env TS_NODE_PROJECT='tsconfig.json' webpack --mode=production",
+    "build": "npm run lint && npm run test && npm run build-only",
+    "build-only": "cross-env TS_NODE_PROJECT='tsconfig.json' webpack --mode=production",
     "build:watch": "npm run build -- --watch",
     "dev": "cross-env TS_NODE_PROJECT='tsconfig.json' webpack serve --mode=development --watch",
     "synctypes": "typesync && npm i",
