@@ -10,7 +10,7 @@
   },
   "private": true,
   "scripts": {
-    "postinstall": "patch-package",
+    "_postinstall": "patch-package",
     "build": "webpack --mode=production",
     "build:watch": "npm run build -- --watch",
     "dev": "webpack serve --mode=development --watch",
