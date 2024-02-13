@@ -15,3 +15,8 @@ export function stripLine(t: string): string {
   t = t.replace(/\p{Zs}+/gmu, ' ');
   return t;
 }
+
+export type KeysOfUnion<T> = T extends T ? keyof T : never;
+export interface ReadonlyArray<T> {
+  includes<U>(x: U & (T & U extends never ? never : unknown)): boolean;
+}

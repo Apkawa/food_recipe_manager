@@ -1,4 +1,4 @@
-import {Unit} from '../types/recipe';
+import {Unit} from '../unit/constants';
 
 type Unit_map = {
   [k in Unit]: string[];

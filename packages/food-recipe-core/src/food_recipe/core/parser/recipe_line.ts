@@ -1,5 +1,5 @@
-import {Ingredient, Unit} from '../types/recipe';
-import {NO_VALUE_UNITS, UNITS, VALUE_UNITS} from '../constants';
+import {Ingredient} from '../types/recipe';
+import {NO_VALUE_UNITS, Unit, UNITS, VALUE_UNITS} from '../unit/constants';
 import {UNIT_MAP} from '../parser/unit_map';
 import {parseNumber, VULGAR_LETTER_REGEXP} from '../../utils/number';
 import {stripLine} from '../../utils';

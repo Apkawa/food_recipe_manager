@@ -1,4 +1,4 @@
-import {Unit} from './types/recipe';
+import {Unit} from './unit/constants';
 
 export const LANG_LIST = ['ru', 'en'] as const;
 export type LANG_TYPE = (typeof LANG_LIST)[number];

@@ -4,6 +4,12 @@ interface DefinedIngredientType extends IngredientType {
   regexp: RegExp[];
 }
 
+/**
+ *  плотность, г/л или кг/м^3
+ *
+ *  Пример: Сахар, 900г/л. Литр сахара весит: (900г/л / (1л * 1000)) * 1000 = 900 г
+ *  Пример2: Сахар, 900г/л. Килограмм сахара займет: ((1кг*1000) / 900г/л) * 1000 = 1111 мл
+ */
 export const DEFINED_INGREDIENT_TYPES: DefinedIngredientType[] = [
   {
     name: 'sugar',

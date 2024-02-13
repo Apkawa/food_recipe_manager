@@ -1,4 +1,4 @@
-import {MEASURE_UNITS, UNITS, VOLUME_UNITS, WEIGHT_UNITS} from '../constants';
+import {Unit} from '@app/core/unit/constants';
 
 export interface Recipe {
   name: string;
@@ -45,10 +45,11 @@ export type Ingredient = SimpleIngredient | RangeIngredient;
 export interface IngredientType {
   name: string;
   /**
-   *  насыпная плотность, г/л или кг/м^3
+   *  плотность, г/л или кг/м^3
    *  Чтобы расчитать сколько будет весить литр, например сахара,
    *  нужно объем разделить на плотность
-   *  Пример: Сахар, 900г/л. Литр сахара весит: (1.0л / 900г/л) * 1000 = 1.11 кг
+   *  Пример: Сахар, 900г/л. Литр сахара весит: (900г/л / (1л * 1000)) * 1000 = 900 г
+   *  Пример2: Сахар, 900г/л. Килограмм сахара займет: ((1кг*1000) / 900г/л) * 1000 = 1111 мл
    */
   density?: number;
 
@@ -57,8 +58,3 @@ export interface IngredientType {
    */
   concentration?: number;
 }
-
-export type VolumeUnit = (typeof VOLUME_UNITS)[number];
-export type WeightUnit = (typeof WEIGHT_UNITS)[number];
-export type MeasureUnit = (typeof MEASURE_UNITS)[number];
-export type Unit = (typeof UNITS)[number];
