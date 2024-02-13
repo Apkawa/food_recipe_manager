@@ -48,12 +48,13 @@ function renderRecipeTable(recipe: Recipe): string {
       }
       let concentration = '';
       if (i.type?.concentration) {
-        concentration = `[${i.type.concentration}%]`;
+        concentration = `<input type="number" 
+            value="${i.type.concentration}" style='width: 30px'/>%`;
       }
       html += `<tr><td>${i.name} ${concentration}</td> 
       <td>${value}</td>
       <td>${calcValue}</td>
-      <td> ${getUnitDisplay(i.unit, LANG, i.value)}</td>
+      <td>${getUnitDisplay(i.unit, LANG, i.value)}</td>
       </tr>`;
     }
   }

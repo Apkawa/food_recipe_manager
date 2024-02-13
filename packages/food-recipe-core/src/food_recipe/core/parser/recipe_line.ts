@@ -4,7 +4,7 @@ import {UNIT_MAP} from '../parser/unit_map';
 import {parseNumber, VULGAR_LETTER_REGEXP} from '../../utils/number';
 import {stripLine} from '../../utils';
 import {mRegExp} from '../../utils/regexp';
-import {parseIngredientType} from '../ingredient_type/parse';
+import {prepareIngredient} from '../ingredient_type/parse';
 
 const WORD_BOUNDARY_END = /(?=\s+|[.,);/]|$)/;
 
@@ -82,7 +82,7 @@ export function parseRecipeLine(raw_line: string): Ingredient | null {
     return null;
   }
 
-  const ingredient: Partial<Ingredient> = {
+  let ingredient: Partial<Ingredient> = {
     name,
   };
   if (groups.value) {
@@ -110,9 +110,6 @@ export function parseRecipeLine(raw_line: string): Ingredient | null {
     // Скорее всего была строка с одним числом без единиц измерения. Будем считать что это шт
     ingredient.unit = 'pcs';
   }
-  const ingredientType = parseIngredientType(ingredient.name || '');
-  if (ingredientType) {
-    ingredient.type = ingredientType;
-  }
+  ingredient = prepareIngredient(ingredient as Ingredient);
   return ingredient as Ingredient;
 }

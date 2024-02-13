@@ -1,4 +1,4 @@
-import {IngredientType} from '../types/recipe';
+import {Ingredient, IngredientType} from '../types/recipe';
 import {DEFINED_INGREDIENT_TYPES} from './defined_types';
 import {groupRegExp} from '../../utils/regexp';
 
@@ -14,9 +14,10 @@ function compileDefinedTypes(): CompiledIngredientType[] {
   return types;
 }
 
+const CONCENTRATION_RE = /(\d+)\s*%/;
+
 export function extractVinegarConcentration(str: string): number | null {
-  const concentrationRegExp = /(\d+)\s*%/;
-  const m = concentrationRegExp.exec(str);
+  const m = CONCENTRATION_RE.exec(str);
   if (m) {
     return Number.parseInt(m[1]);
   }
@@ -42,4 +43,23 @@ export function parseIngredientType(str: string): IngredientType | null {
     }
   }
   return null;
+}
+
+/**
+ *
+ * @param ingredient
+ */
+export function prepareIngredient(ingredient: Ingredient): Ingredient {
+  if (!ingredient.type) {
+    // Пробуем угадать тип ингредиента по его имени
+    const ingredientType = parseIngredientType(ingredient.name);
+    if (ingredientType) {
+      ingredient.type = ingredientType;
+      if (ingredientType.concentration) {
+        // Удаляем процент если это возможно
+        ingredient.name = ingredient.name.replace(CONCENTRATION_RE, '').trim();
+      }
+    }
+  }
+  return ingredient;
 }

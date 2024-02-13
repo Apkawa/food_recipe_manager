@@ -2,13 +2,14 @@
 import {reactive, ref, watch} from 'vue';
 
 
-import {type Recipe} from '@repo/food-recipe-core/src/food_recipe/core/types/recipe';
+import {Ingredient, type Recipe} from '@repo/food-recipe-core/src/food_recipe/core/types/recipe';
 
 import {parseTextRecipe} from '@repo/food-recipe-core/src/food_recipe/core/parser/text';
 import {recipeScale} from '@repo/food-recipe-core/src/food_recipe/core/calculator';
 import IngredientLine from './IngredientLine.vue';
 import {loadState, saveState} from './state';
 import {type RecipeState} from './state';
+import {recipeToText} from "@repo/food-recipe-core/src/food_recipe/core/export";
 
 
 const LANG = 'ru';
@@ -37,53 +38,93 @@ watch(state, updateRecipeCb);
 
 watch(state, updateScaleCb);
 
+watch(parsedRecipe, () => {
+  console.debug(parsedRecipe.value)
+}, {deep: true})
 
+const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): void => {
+  if (parsedRecipe.value) {
+    parsedRecipe.value.ingredient_groups[g_i].ingredients[i] = ingredient
+  }
+  state.rawRecipe = recipeToText(parsedRecipe.value as Recipe)
+}
 </script>
 
 <template>
   <div>
+    <div v-if='parsedRecipe?.ingredient_groups?.length'>
 
-    <textarea v-model.lazy='state.rawRecipe' style='width: 500px; height: 500px' id='raw_recipe'></textarea>
 
-    <div id='scale_wrap' v-if='parsedRecipe'>
-      Рецепт на <input id='scale' style='width: 30px' v-model.number='state.scale' type='number' min='1' /> порций
-      <br />
+      <div id='parsed_recipe'>
+        <h2>{{ parsedRecipe.name }}</h2>
 
-      Пересчитать на
-      <input id='new_scale' style='width: 30px' v-model.number='state.newScale' type='number' min='1' /> порций
-    </div>
-
-    <div id='parsed_recipe' v-if='parsedRecipe'>
-      <h2>{{ parsedRecipe.name }}</h2>
-
-      <table>
-        <colgroup>
-          <col span='3' style='width: auto'>
-          <col span='3' style='width: 100px'>
-          <col span='3' style='width: 100px'>
-        </colgroup>
-        <thead>
-        <tr>
-          <th></th>
-          <th>Оригинал</th>
-          <th>Пересчет</th>
-          <th>Единица измерения</th>
-        </tr>
-        </thead>
-        <template v-for='(group, group_i) in parsedRecipe.ingredient_groups' :key='group_i'>
-          <tr v-if='group.name'>
-            <th colspan='4'>{{ group.name }}</th>
+        <table>
+          <colgroup>
+            <col span='3' style='width: auto'>
+            <col span='3' style='width: 100px'>
+            <col span='3' style='width: 100px'>
+          </colgroup>
+          <thead>
+          <tr>
+            <th></th>
+            <th>Оригинал</th>
+            <th>Пересчет</th>
+            <th>Единица измерения</th>
+            <th></th>
           </tr>
-          <template v-for='(ingredient, i) in group.ingredients' :key='group_i + ":" + i'>
-            <IngredientLine :ingredient='ingredient' :lang='LANG' />
+          </thead>
+          <template v-for='(group, group_i) in parsedRecipe.ingredient_groups' :key='group_i'>
+            <tr v-if='group.name'>
+              <th colspan='4'>{{ group.name }}</th>
+            </tr>
+            <template v-for='(ingredient, i) in group.ingredients' :key='group_i + ":" + i'>
+              <IngredientLine
+                  :ingredient='ingredient'
+                  :lang='LANG'
+                  @update:ingredient="ingredientUpdateCb($event, group_i, i)"
+              />
+            </template>
           </template>
-        </template>
 
-      </table>
+        </table>
+
+        <div class='scale_wrap'>
+          <div>
+
+            Рецепт на <input id='scale' v-model.number='state.scale' type='number' min='1'/> порций
+          </div>
+          <div>
+            Пересчитать на
+            <input id='new_scale' v-model.number='state.newScale' type='number' min='1'/> порций
+          </div>
+        </div>
+
+      </div>
     </div>
+    <textarea v-model.lazy='state.rawRecipe'  id='raw_recipe'></textarea>
+    <pre>
+    </pre>
   </div>
 </template>
 
 <style scoped>
+.scale_wrap {
+  font-size: large;
+  padding: 2em;
+}
 
+.scale_wrap > div {
+  padding-top: 1em;
+}
+
+.scale_wrap input {
+  font-size: larger;
+  width: 2em;
+}
+
+#raw_recipe {
+  width: 100%;
+  height: 420px
+
+}
 </style>

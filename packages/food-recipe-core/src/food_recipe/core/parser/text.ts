@@ -1,7 +1,7 @@
-import {IngredientGroup, Recipe} from '../types/recipe';
+import {Ingredient, IngredientGroup, Recipe} from '../types/recipe';
 import {parseRecipeLine} from '../parser/recipe_line';
 import {stripLine} from '../../utils';
-import {parseIngredientType} from '../ingredient_type/parse';
+import {prepareIngredient} from '../ingredient_type/parse';
 
 const END_LINE = 'o(. _ .)o';
 
@@ -53,14 +53,12 @@ export function parseTextRecipe(raw_text: string): Recipe {
               };
             }
 
-            const ingredient = {
+            let ingredient = {
               ...group.ingredients[0],
               name: group.name,
-            };
-            const ingredientType = parseIngredientType(group.name);
-            if (ingredientType) {
-              ingredient.type = ingredientType;
-            }
+            } as Ingredient;
+
+            ingredient = prepareIngredient(ingredient);
 
             newGroup.ingredients.push(ingredient);
             group = newGroup;

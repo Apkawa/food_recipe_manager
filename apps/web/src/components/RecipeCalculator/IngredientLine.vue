@@ -1,32 +1,50 @@
 <script setup lang='ts'>
+import {defineModel, ref, toRef, watch} from "vue";
+
 import {Ingredient} from '@repo/food-recipe-core/src/food_recipe/core/types/recipe';
 import {getUnitDisplay, LANG_TYPE} from '@repo/food-recipe-core/src/food_recipe/core/i18n';
 
 import {valueDisplay} from './utils';
+import IngredientLineEdit from "./IngredientLineEdit.vue";
 
 interface Props {
   lang: LANG_TYPE,
   ingredient: Ingredient
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
+const ingredient = toRef(props, 'ingredient')
+const emit = defineEmits(['update:ingredient'])
 
 
+const editMode = ref(false)
+
+
+const lineEditSaveCb = ($event: Ingredient) => {
+  emit('update:ingredient', $event)
+  editMode.value = false;
+}
 </script>
 
 <template>
   <tr>
-    <th>
-      {{ props.ingredient.name }}
+    <td>
+      {{ ingredient.name }}
 
-      <template v-if='props.ingredient?.type?.concentration'>
-        [{{ props.ingredient.type.concentration }}%]
+      <template v-if='ingredient?.type?.concentration'>
+        [{{ ingredient.type.concentration }}%]
       </template>
-    </th>
-    <th>{{ valueDisplay(props.ingredient.value) }}</th>
-    <th>{{ valueDisplay(props.ingredient.calculated_value) }}</th>
-    <th>{{ getUnitDisplay(props.ingredient.unit, props.lang, props.ingredient.value) }}</th>
+    </td>
+    <td>{{ valueDisplay(ingredient.value) }}</td>
+    <td>{{ valueDisplay(ingredient.calculated_value) }}</td>
+    <td>{{ getUnitDisplay(ingredient.unit, props.lang, ingredient.value) }}</td>
+    <td><button v-if="!editMode" @click="editMode = !editMode" >Edit</button></td>
   </tr>
+  <IngredientLineEdit
+      v-if="editMode"
+      :ingredient="ingredient"
+      @save="lineEditSaveCb"
+  />
 </template>
 
 <style scoped>
