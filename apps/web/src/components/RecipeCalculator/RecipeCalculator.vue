@@ -6,7 +6,7 @@ import {Ingredient, type Recipe} from '@repo/food-recipe-core/src/food_recipe/co
 
 import {parseTextRecipe} from '@repo/food-recipe-core/src/food_recipe/core/parser/text';
 import {recipeScale} from '@repo/food-recipe-core/src/food_recipe/core/calculator';
-import IngredientLine from './IngredientLine.vue';
+import IngredientLine from './IngredientLine/index.vue';
 import {loadState, saveState} from './state';
 import {type RecipeState} from './state';
 import {recipeToText} from "@repo/food-recipe-core/src/food_recipe/core/export";

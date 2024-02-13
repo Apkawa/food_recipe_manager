@@ -1,4 +1,4 @@
-import {Unit} from '@app/core/unit/constants';
+import {Unit} from '../unit/constants';
 
 export interface Recipe {
   name: string;

@@ -17,6 +17,25 @@ describe('convertIngredientUnit', () => {
       arg: [{name: 'water', value: 3, unit: 'cup'}, 'ml'],
       expected: {name: 'water', value: 250 * 3, unit: 'ml'},
     },
+    {
+      arg: [
+        {
+          name: 'sugar',
+          value: 2,
+          calculated_value: 8,
+          unit: 'tbsp',
+          type: {name: 'sugar', density: 900},
+        },
+        'g',
+      ],
+      expected: {
+        name: 'sugar',
+        type: {name: 'sugar', density: 900},
+        value: 27,
+        calculated_value: 108,
+        unit: 'g',
+      },
+    },
   ];
   it.each(cases)('[$#] $arg -> $expected', (c) => {
     expect(convertIngredientUnit(...c.arg)).toStrictEqual(c.expected);

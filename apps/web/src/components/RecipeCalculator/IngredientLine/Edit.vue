@@ -1,10 +1,21 @@
+<script lang="ts">
+// declare additional options
+export default {
+  name: "IngredientLineEdit",
+  inheritAttrs: false,
+  customOptions: {}
+}
+</script>
 <script setup lang="ts">
-import {ref, toRaw, toRef, toRefs, unref, watch,} from "vue";
+import {ref, watch,} from "vue";
 
 import {Ingredient} from "@repo/food-recipe-core/src/food_recipe/core/types/recipe";
 import {calculateConcentration} from "@repo/food-recipe-core/src/food_recipe/core/ingredient_type/calculate";
 import {round} from "@repo/food-recipe-core/src/food_recipe/utils";
 import {cloneDeep, isNumber} from "@/utils";
+import EditUnitSelect from "@/components/RecipeCalculator/IngredientLine/EditUnitSelect.vue";
+import {Unit} from "@repo/food-recipe-core/src/food_recipe/core/unit/constants";
+import {convertIngredientUnit} from "@repo/food-recipe-core/src/food_recipe/core/unit/convert";
 
 interface Props {
   ingredient: Ingredient
@@ -43,6 +54,11 @@ const saveCb = () => {
   emit('save', ingredient)
 }
 
+const unitSelectCb = (unit: Unit) => {
+  console.log(unit)
+  editIngredient.value = convertIngredientUnit(editIngredient.value, unit)
+}
+
 watch(props, () => {
   editIngredient.value = cloneDeep(props.ingredient)
   updateConcentration()
@@ -66,7 +82,12 @@ watch(props, () => {
     </td>
     <td>{{ editIngredient.value }}</td>
     <td>{{ editIngredient.calculated_value }}</td>
-    <td>{{ editIngredient.unit }}</td>
+    <td>
+      <EditUnitSelect
+          :ingredient="editIngredient"
+          @change="unitSelectCb"
+      />
+    </td>
     <td><button @click="saveCb">Save</button></td>
   </tr>
 

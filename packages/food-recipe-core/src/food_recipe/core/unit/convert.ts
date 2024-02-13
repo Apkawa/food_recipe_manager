@@ -1,11 +1,5 @@
-import {Ingredient} from '@app/core/types/recipe';
-import {
-  WEIGHT_UNITS,
-  VOLUME_UNITS,
-  MEASURE_UNITS,
-  Unit,
-  UnitConversions,
-} from '@app/core/unit/constants';
+import {Ingredient} from '../types/recipe';
+import {WEIGHT_UNITS, VOLUME_UNITS, MEASURE_UNITS, Unit, UnitConversions} from '../unit/constants';
 import {isMeasureUnit, isVolumeUnit, isWeightUnit} from './utils';
 
 export function getAvailableConvertUnits(ingredient: Ingredient): Unit[] {
@@ -41,6 +35,42 @@ export function getAvailableConvertUnits(ingredient: Ingredient): Unit[] {
   return units;
 }
 
+export interface ConvertValueUnitOption {
+  fromUnit: Unit;
+  toUnit: Unit;
+  density?: number;
+}
+
+export function convertValueUnit(value: number, options: ConvertValueUnitOption) {
+  const fromUnit = options.fromUnit;
+  const toUnit = options.toUnit;
+  // Нормализация до г и мл
+  let valueSi = value * UnitConversions[fromUnit];
+  // Конвертация по плотности если возможно
+  if (options.density) {
+    const unitCompare = [isWeightUnit(fromUnit), isWeightUnit(toUnit)];
+    /**
+     *  Пример: Сахар, 900г/л. 250мл сахара весит:
+     *  900г -> 1000мл
+     *  х    -> 250мл   => (900г * 250мл) / 1000мл
+     *  Пример2: Сахар, 900г/л. 250г сахара займет:
+     *  900г -> 1000мл
+     *  250г -> x       => (250мл * 1000мл) / 900г
+     */
+    if (unitCompare[0] != unitCompare[1]) {
+      if (unitCompare[0] && !unitCompare[1]) {
+        // Из веса в объем
+        valueSi = (valueSi * 1000) / options.density;
+      }
+      if (!unitCompare[0] && unitCompare[1]) {
+        // Из объема в вес
+        valueSi = (options.density * valueSi) / 1000;
+      }
+    }
+  }
+  return valueSi / UnitConversions[toUnit];
+}
+
 export function convertIngredientUnit(ingredient: Ingredient, toUnit: Unit): Ingredient {
   const fromUnit = ingredient.unit;
   const value = ingredient.value;
@@ -52,27 +82,14 @@ export function convertIngredientUnit(ingredient: Ingredient, toUnit: Unit): Ing
   if (!availableUnits.includes(toUnit)) {
     return ingredient;
   }
-  // Нормализация до г и мл
-  let valueSi = value * UnitConversions[fromUnit];
-  // Конвертация по плотности если возможно
-  if (ingredient.type?.density) {
-    const unitCompare = [isWeightUnit(fromUnit), isWeightUnit(toUnit)];
-    /**
-     *  Пример: Сахар, 900г/л. Литр сахара весит: (900г/л / (1л * 1000)) * 1000 = 900 г
-     *  Пример2: Сахар, 900г/л. Килограмм сахара займет: ((1кг*1000) / 900г/л) * 1000 = 1111 мл
-     */
-    if (unitCompare[0] != unitCompare[1]) {
-      if (unitCompare[0] && !unitCompare[1]) {
-        // Из веса в объем
-        valueSi = (valueSi / ingredient.type.density) * 1000;
-      }
-      if (!unitCompare[0] && unitCompare[1]) {
-        // Из объема в вес
-        valueSi = (ingredient.type.density / valueSi) * 1000;
-      }
-    }
+  ingredient.value = convertValueUnit(value, {fromUnit, toUnit, density: ingredient.type?.density});
+  if (ingredient.calculated_value && typeof ingredient.calculated_value == 'number') {
+    ingredient.calculated_value = convertValueUnit(ingredient.calculated_value, {
+      fromUnit,
+      toUnit,
+      density: ingredient.type?.density,
+    });
   }
-  ingredient.value = valueSi / UnitConversions[toUnit];
   ingredient.unit = toUnit;
   return ingredient;
 }

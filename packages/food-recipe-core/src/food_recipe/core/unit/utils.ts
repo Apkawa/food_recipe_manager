@@ -1,4 +1,4 @@
-import {MEASURE_UNITS, Unit, VOLUME_UNITS, WEIGHT_UNITS} from '@app/core/unit/constants';
+import {MEASURE_UNITS, Unit, VOLUME_UNITS, WEIGHT_UNITS} from '../unit/constants';
 
 export function isVolumeUnit(unit: Unit): unit is (typeof VOLUME_UNITS)[number] {
   return (VOLUME_UNITS as ReadonlyArray<string>).includes(unit);
