@@ -16,6 +16,7 @@ export default defineConfig({
     checker({ typescript: true }),
     ViteFaviconsPlugin('./public/food_recipe_calculator_icon.png')
   ],
+  base: './',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
