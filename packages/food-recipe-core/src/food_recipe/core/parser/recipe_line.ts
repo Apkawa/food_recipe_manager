@@ -1,6 +1,6 @@
 import {Ingredient} from '../types/recipe';
 import {NO_VALUE_UNITS, Unit, UNITS, VALUE_UNITS} from '../unit/constants';
-import {UNIT_MAP} from '../parser/unit_map';
+import {UNIT_PARSE_MAP} from '../unit/unit_map';
 import {parseNumber, VULGAR_LETTER_REGEXP} from '../../utils/number';
 import {stripLine} from '../../utils';
 import {mRegExp} from '../../utils/regexp';
@@ -41,11 +41,11 @@ const UNIT_REGEXP = mRegExp(
     /\s?/, // Space
     '(?<unit>',
     // build all regexps
-    ...VALUE_UNITS.map((k) => buildUnitRegexp(k, UNIT_MAP[k]).source).join('|'),
+    ...VALUE_UNITS.map((k) => buildUnitRegexp(k, UNIT_PARSE_MAP[k]).source).join('|'),
     ')', // unit
     '|',
     '(?<no_value_unit>',
-    ...NO_VALUE_UNITS.map((k) => buildUnitRegexp(k, UNIT_MAP[k]).source).join('|'),
+    ...NO_VALUE_UNITS.map((k) => buildUnitRegexp(k, UNIT_PARSE_MAP[k]).source).join('|'),
     ')', // no_value_units
     ')\\.?',
     WORD_BOUNDARY_END,

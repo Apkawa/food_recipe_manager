@@ -10,7 +10,23 @@ describe('getAvailableConvertUnits', () => {
   const cases: Cases<Ingredient, Unit[]> = [
     {
       arg: {name: 'sugar', value: 1, unit: 'l', type: {name: 'sugar', density: 900}},
-      expected: ['l', 'ml', 'tsp', 'tbsp', 'cup', 'pinch', 'kg', 'g'],
+      expected: [
+        'l',
+        'ml',
+        'US_fl_oz',
+        'US_gill',
+        'US_pint',
+        'US_quart',
+        'tsp',
+        'tbsp',
+        'cup',
+        'shot',
+        'pinch',
+        'kg',
+        'g',
+        'US_ounce',
+        'US_pound',
+      ],
     },
   ];
   it.each(cases)('[$#] $arg -> $expected', (c) => {

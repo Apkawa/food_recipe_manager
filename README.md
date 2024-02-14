@@ -1,4 +1,4 @@
-[![CI](https://github.com/Apkawa/vue-food-recipe/actions/workflows/ci.yml/badge.svg)](https://github.com/Apkawa/vue-food-recipe/actions/workflows/ci.yml)
+[![CI](https://github.com/Apkawa/food_recipe_manager/actions/workflows/ci.yml/badge.svg)](https://github.com/Apkawa/food_recipe_manager/actions/workflows/ci.yml)
 
 # Food Recipe
 
@@ -23,11 +23,11 @@
 ## Дорожная карта
 
 - [ ] Интерфейс
-  - [ ] Парсинг рецепта
-  - [ ] Пересчет порции
-  - [ ] Пересчет единиц измерения (щепотка в чайные ложки, чайные ложки в столовые и тд)
+  - [x] Парсинг рецепта
+  - [x] Пересчет порции
+  - [x] Пересчет единиц измерения (щепотка в чайные ложки, чайные ложки в столовые и тд)
   - [ ] Опциональное округление в дроби. 0,33 -> 1/3, 1.25 -> 1 1/4
-  - [ ] Локализация единиц измерения
+  - [x] Локализация единиц измерения
   - [ ] Экспорт
   - [ ] Поделиться (синхронизация состояния в урле)
 - [ ] Юзерскрипт

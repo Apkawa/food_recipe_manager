@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+
 </script>
 
 <template>
   <header>
     <div class="wrapper">
       <nav>
+        <img class="logo" src="@/../public/food_recipe_calculator_icon.png" width="64"/>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
@@ -56,6 +58,9 @@ nav a:first-of-type {
     display: flex;
     place-items: flex-start;
     flex-wrap: wrap;
+  }
+  nav .logo {
+    margin-left: auto;
   }
 
   nav {

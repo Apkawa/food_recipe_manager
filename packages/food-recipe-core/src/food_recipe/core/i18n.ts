@@ -1,5 +1,4 @@
 import {Unit} from './unit/constants';
-
 export const LANG_LIST = ['ru', 'en'] as const;
 export type LANG_TYPE = (typeof LANG_LIST)[number];
 
@@ -18,9 +17,17 @@ export const UNIT_TRANSLATIONS: UNIT_TRANSLATIONS = {
     tsp: 'tsp',
     tbsp: 'tbsp',
     cup: 'cup',
+    shot: 'shot',
     pinch: 'pinch',
     pcs: 'pcs',
     taste: 'taste',
+    US_ounce: 'ounce',
+    US_pound: 'pound',
+    // US
+    US_fl_oz: 'oz',
+    US_gill: 'gi',
+    US_pint: 'pint',
+    US_quart: 'quart',
   },
   ru: {
     l: 'л',
@@ -30,9 +37,18 @@ export const UNIT_TRANSLATIONS: UNIT_TRANSLATIONS = {
     tsp: 'ч.л.',
     tbsp: 'ст.л.',
     cup: 'стакан',
+    shot: 'рюмка',
     pinch: 'щепотка', // TODO plural forms
     pcs: 'штук',
     taste: 'по вкусу',
+
+    US_ounce: 'унция',
+    US_pound: 'фунт',
+    // US
+    US_fl_oz: 'oz',
+    US_gill: 'gi',
+    US_pint: 'пинта',
+    US_quart: 'кварта',
   },
 };
 
