@@ -11,7 +11,6 @@ import {ref, watch,} from "vue";
 
 import {Ingredient} from "@repo/food-recipe-core/src/food_recipe/core/types/recipe";
 import {calculateConcentration} from "@repo/food-recipe-core/src/food_recipe/core/ingredient_type/calculate";
-import {round} from "@repo/food-recipe-core/src/food_recipe/utils";
 import {cloneDeep, isNumber} from "@/utils";
 import EditUnitSelect from "@/components/RecipeCalculator/IngredientLine/EditUnitSelect.vue";
 import {Unit} from "@repo/food-recipe-core/src/food_recipe/core/unit/constants";
@@ -29,20 +28,31 @@ const editIngredient = ref<Ingredient>(cloneDeep(props.ingredient))
 
 const editConcentration = ref<number|undefined>(ingredient.type?.concentration)
 const isEditConcentration = ingredient.type?.concentration;
+const editUnit = ref<Unit|undefined>(ingredient.unit)
 
 const updateConcentration  = () => {
   const fromConcentration = ingredient.type?.concentration;
   const toConcentration = editConcentration.value;
-  const value = props.ingredient.value as number;
-  const calc_value = props.ingredient.calculated_value as number;
+  let value = props.ingredient.value as number;
+  let calc_value = props.ingredient.calculated_value as number;
+  if (editUnit.value && props.ingredient.unit !== editUnit.value) {
+    const i =
+        convertIngredientUnit(cloneDeep(props.ingredient), editUnit.value)
+    if (isNumber(i.value)) {
+      value = i.value;
+    }
+    if (isNumber(i.calculated_value)) {
+      calc_value = i.calculated_value
+    }
+  }
   if (isNumber(fromConcentration) && isNumber(toConcentration)) {
     if (isNumber(value)) {
-      editIngredient.value.value = round(calculateConcentration(value, fromConcentration, toConcentration), 2)
+      editIngredient.value.value = calculateConcentration(value, fromConcentration, toConcentration)
     }
 
     if (isNumber(calc_value)) {
-      editIngredient.value.calculated_value = round(calculateConcentration(calc_value,
-          fromConcentration, toConcentration), 2)
+      editIngredient.value.calculated_value = calculateConcentration(calc_value,
+          fromConcentration, toConcentration)
     }
   }
 }
@@ -56,12 +66,13 @@ const saveCb = () => {
 }
 
 const unitSelectCb = (unit: Unit) => {
-  console.log(unit)
+  editUnit.value = unit
   editIngredient.value = convertIngredientUnit(editIngredient.value, unit)
 }
 
 watch(props, () => {
   editIngredient.value = cloneDeep(props.ingredient)
+  editIngredient.value.unit = editUnit.value
   updateConcentration()
 }, {deep: true})
 

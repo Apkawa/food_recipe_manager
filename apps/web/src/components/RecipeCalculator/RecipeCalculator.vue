@@ -39,7 +39,7 @@ watch(state, updateRecipeCb);
 watch(state, updateScaleCb);
 
 watch(parsedRecipe, () => {
-  console.debug(parsedRecipe.value)
+  // console.debug(parsedRecipe.value)
 }, {deep: true})
 
 const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): void => {
