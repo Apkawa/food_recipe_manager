@@ -119,7 +119,7 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
 
 .scale_wrap input {
   font-size: larger;
-  width: 2em;
+  width: 2.5em;
 }
 
 #raw_recipe {

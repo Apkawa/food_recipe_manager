@@ -16,6 +16,7 @@ import {cloneDeep, isNumber} from "@/utils";
 import EditUnitSelect from "@/components/RecipeCalculator/IngredientLine/EditUnitSelect.vue";
 import {Unit} from "@repo/food-recipe-core/src/food_recipe/core/unit/constants";
 import {convertIngredientUnit} from "@repo/food-recipe-core/src/food_recipe/core/unit/convert";
+import {valueDisplay} from "../utils";
 
 interface Props {
   ingredient: Ingredient
@@ -63,6 +64,7 @@ watch(props, () => {
   editIngredient.value = cloneDeep(props.ingredient)
   updateConcentration()
 }, {deep: true})
+
 </script>
 
 <template>
@@ -80,8 +82,8 @@ watch(props, () => {
                            v-model="editConcentration"/>
       </template>
     </td>
-    <td>{{ editIngredient.value }}</td>
-    <td>{{ editIngredient.calculated_value }}</td>
+    <td>{{ valueDisplay(editIngredient.value) }}</td>
+    <td>{{ valueDisplay(editIngredient.calculated_value) }}</td>
     <td>
       <EditUnitSelect
           :ingredient="editIngredient"

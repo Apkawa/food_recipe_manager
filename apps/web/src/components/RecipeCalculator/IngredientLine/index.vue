@@ -27,6 +27,7 @@ const emit = defineEmits(['update:ingredient'])
 
 
 const editMode = ref(false)
+const allowEdit = ingredient.value.unit && ! ['taste', 'pcs'].includes(ingredient.value.unit)
 
 
 const lineEditSaveCb = ($event: Ingredient) => {
@@ -48,7 +49,7 @@ const lineEditSaveCb = ($event: Ingredient) => {
     <td>{{ valueDisplay(ingredient.calculated_value) }}</td>
     <td>{{ getUnitDisplay(ingredient.unit, props.lang, ingredient.value) }}</td>
     <td>
-      <button v-if="!editMode" @click="editMode = !editMode">Edit</button>
+      <button v-if="!editMode && allowEdit" @click="editMode = !editMode">Edit</button>
     </td>
   </tr>
   <IngredientLineEdit
