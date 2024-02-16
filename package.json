@@ -8,7 +8,7 @@
     "test": "turbo test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check": "npm run test && npm run lint",
-    "pre-commit": "npm run format && git add . && npm run check && npm run build",
+    "pre-commit": "npm run format && npm run check && npm run build",
     "commitlint": "commitlint --config '.config/.commitlintrc.json'",
     "commit": "npm run pre-commit && ts-node node_modules/.bin/cz",
     "release": "standard-version",

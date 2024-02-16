@@ -27,7 +27,7 @@ const emit = defineEmits(['update:ingredient'])
 
 
 const editMode = ref(false)
-const allowEdit = ingredient.value.unit && ! ['taste', 'pcs'].includes(ingredient.value.unit)
+const allowEdit = ingredient.value.unit && ! ['taste',].includes(ingredient.value.unit)
 
 
 const lineEditSaveCb = ($event: Ingredient) => {

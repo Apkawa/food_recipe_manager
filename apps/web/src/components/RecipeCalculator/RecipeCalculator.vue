@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import {reactive, ref, watch} from 'vue';
+import {reactive, ref, unref, watch} from 'vue';
 
 
 import {Ingredient, type Recipe} from '@repo/food-recipe-core/src/food_recipe/core/types/recipe';
@@ -10,12 +10,17 @@ import IngredientLine from './IngredientLine/index.vue';
 import {loadState, saveState} from './state';
 import {type RecipeState} from './state';
 import {recipeToText} from "@repo/food-recipe-core/src/food_recipe/core/export";
+import {round} from "@repo/food-recipe-core/src/food_recipe/utils";
+import {isNumber} from "@/utils";
 
 
 const LANG = 'ru';
 
 const updateRecipeCb = () => {
   parsedRecipe.value = parseTextRecipe(state.rawRecipe);
+  if (parsedRecipe.value.portion) {
+    state.scale = Number(parsedRecipe.value.portion)
+  }
   updateScaleCb();
 };
 const updateScaleCb = () => {
@@ -29,12 +34,11 @@ const updateScaleCb = () => {
 const state = reactive<RecipeState>(loadState());
 watch(state, () => saveState(state));
 
-
 const parsedRecipe = ref<Recipe | null>(null);
 updateRecipeCb();
 
 
-watch(state, updateRecipeCb);
+watch(() => state.rawRecipe, updateRecipeCb);
 
 watch(state, updateScaleCb);
 
@@ -43,6 +47,17 @@ watch(parsedRecipe, () => {
 }, {deep: true})
 
 const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): void => {
+  if (
+      isNumber(ingredient.calculated_value) && isNumber(ingredient.value)
+
+  ) {
+    const customScale = round(ingredient.calculated_value / ingredient.value, 3)
+    if (round(state.newScale / state.scale, 3) != customScale) {
+      // x / scale = customScale -> x = scale * customScale
+      state.newScale = state.scale * customScale
+      updateScaleCb()
+    }
+  }
   if (parsedRecipe.value) {
     parsedRecipe.value.ingredient_groups[g_i].ingredients[i] = ingredient
   }
@@ -90,12 +105,11 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
 
         <div class='scale_wrap'>
           <div>
-
             Рецепт на <input id='scale' v-model.number='state.scale' type='number' min='1'/> порций
           </div>
           <div>
             Пересчитать на
-            <input id='new_scale' v-model.number='state.newScale' type='number' min='1'/> порций
+            <input id='new_scale' v-model.number='state.newScale' type='number' step="1" min='1'/> порций
           </div>
         </div>
 

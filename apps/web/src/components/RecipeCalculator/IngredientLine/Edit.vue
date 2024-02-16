@@ -65,6 +65,11 @@ const saveCb = () => {
   emit('save', ingredient)
 }
 
+const editCalculatedValueCb = ($event: Event) => {
+  editIngredient.value.calculated_value = Number.parseFloat(
+      ($event.target as HTMLInputElement)?.value || "0")
+}
+
 const unitSelectCb = (unit: Unit) => {
   editUnit.value = unit
   editIngredient.value = convertIngredientUnit(editIngredient.value, unit)
@@ -94,7 +99,12 @@ watch(props, () => {
       </template>
     </td>
     <td>{{ valueDisplay(editIngredient.value) }}</td>
-    <td>{{ valueDisplay(editIngredient.calculated_value) }}</td>
+    <td><input
+        class="edit-value"
+        type="number"
+        :value="valueDisplay(editIngredient.calculated_value)"
+        @change="editCalculatedValueCb"
+    /></td>
     <td>
       <EditUnitSelect
           :ingredient="editIngredient"
@@ -109,5 +119,8 @@ watch(props, () => {
 <style scoped>
   .concentration {
     width: 4em;
+  }
+  .edit-value {
+    width: 5em;
   }
 </style>
