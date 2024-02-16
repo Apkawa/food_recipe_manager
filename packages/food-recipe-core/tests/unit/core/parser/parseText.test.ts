@@ -1,6 +1,43 @@
 import {parseTextRecipe} from '@app/core/parser/text';
 
 describe('parseTextRecipe', () => {
+  it('Empty recipe', () => {
+    const t = ``;
+    expect(parseTextRecipe(t)).toStrictEqual({
+      ingredient_groups: [],
+      name: '',
+    });
+  });
+  it('Only text', () => {
+    const t = `Foo
+    Bar
+    Baz`;
+    expect(parseTextRecipe(t)).toStrictEqual({
+      ingredient_groups: [],
+      name: 'Foo',
+    });
+  });
+  it('Parse portions', () => {
+    const t = `Foo
+    2 portions 
+    4 onions`;
+    expect(parseTextRecipe(t)).toStrictEqual({
+      ingredient_groups: [
+        {
+          ingredients: [
+            {
+              name: 'onions',
+              unit: 'pcs',
+              value: 4,
+            },
+          ],
+          name: '',
+        },
+      ],
+      portion: 2,
+      name: 'Foo',
+    });
+  });
   it('generic', () => {
     const t = `Яйцо перепелиное – 6 шт.
 Масло растительное – 150 мл

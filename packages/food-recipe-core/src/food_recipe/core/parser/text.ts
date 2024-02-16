@@ -25,6 +25,15 @@ export function parseTextRecipe(raw_text: string): Recipe {
     }
     const result = parseRecipeLine(line);
     if (result) {
+      if (result.unit == 'portion') {
+        const v = result.value || 1;
+        if (typeof v == 'number') {
+          recipe.portion = v;
+        } else {
+          recipe.portion = v[0];
+        }
+        continue;
+      }
       if (i == 1 && !result.name && recipe.name) {
         // Скорее всего рецепт оказался без названия, а формат вида "название\n вес \n"
         group.name = recipe.name;
@@ -35,6 +44,10 @@ export function parseTextRecipe(raw_text: string): Recipe {
       // Наверное это какое то имя
       const name = stripLine(line);
       if (i == 0) {
+        if (name == END_LINE) {
+          // Пустой рецепт
+          break;
+        }
         // maybe name
         recipe.name = name;
       } else {

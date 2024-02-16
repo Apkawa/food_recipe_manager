@@ -43,4 +43,12 @@ export const UNIT_PARSE_MAP: UnitMap = {
   US_gill: ['gi', 'gill'],
   US_pint: ['pi', 'pints?', buildPluralRe('пинт', ['а', 'ы'])],
   US_quart: ['qt', 'quarts?', buildPluralRe('кварт', ['а', 'ы'])],
+  // Special
+  portion: [
+    'serves?',
+    'dish(?:es)',
+    'portions?',
+    buildPluralRe('порци', ['я', 'и', 'й']),
+    buildPluralRe('блюд', ['о', 'а']),
+  ],
 };

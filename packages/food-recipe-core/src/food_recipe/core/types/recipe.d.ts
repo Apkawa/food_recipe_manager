@@ -2,6 +2,8 @@ import {Unit} from '../unit/constants';
 
 export interface Recipe {
   name: string;
+  portion?: number;
+  calculated_portion?: number;
   description?: string;
   ingredient_groups: IngredientGroup[];
 }

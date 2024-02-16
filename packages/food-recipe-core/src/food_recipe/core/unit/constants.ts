@@ -12,6 +12,7 @@ export const MEASURE_UNITS = [
 
 export const COUNT_UNITS = [
   'pcs', // шт, штуки, piece
+  'portion', // Special unit for parse portions
 ];
 
 export const VALUE_UNITS = [

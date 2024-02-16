@@ -26,5 +26,8 @@ export function recipeToText(recipe: Recipe, lang: LANG_TYPE = 'ru'): string {
       s += `${name} - ${value} ${getUnitDisplay(i.unit, lang, i.value)}\n`;
     }
   }
+  if (recipe.portion) {
+    s += `\nРецепт на ${recipe.portion} порций \n`;
+  }
   return s;
 }
