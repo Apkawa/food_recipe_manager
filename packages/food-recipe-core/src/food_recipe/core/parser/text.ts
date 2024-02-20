@@ -3,7 +3,7 @@ import {parseRecipeLine} from '../parser/recipe_line';
 import {stripLine} from '../../utils';
 import {prepareIngredient} from '../ingredient_type/parse';
 
-const DESC_DELIM_RE = /\n\s*[-#=*~+]{3,}\s*\n/
+const DESC_DELIM_RE = /\n\s*[-#=*~+]{3,}\s*\n/;
 const END_LINE = 'o(. _ .)o';
 
 export function parseTextRecipe(raw_text: string): Recipe {
@@ -16,11 +16,13 @@ export function parseTextRecipe(raw_text: string): Recipe {
     ingredients: [],
   };
 
-  const description_match = raw_text.split(DESC_DELIM_RE)
+  const description_match = raw_text.split(DESC_DELIM_RE);
   if (description_match && description_match.length >= 2) {
-    recipe.description = raw_text.slice(description_match[0].length, raw_text.length)
-      .replace(DESC_DELIM_RE, '').trim()
-    raw_text = description_match[0]
+    recipe.description = raw_text
+      .slice(description_match[0].length, raw_text.length)
+      .replace(DESC_DELIM_RE, '')
+      .trim();
+    raw_text = description_match[0];
   }
 
   let i = 0;

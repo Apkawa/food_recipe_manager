@@ -1,17 +1,18 @@
 <script setup lang='ts'>
-import {computed, reactive, ref, unref, watch} from 'vue';
+import {reactive, ref, watch} from 'vue';
 
 
 import {Ingredient, type Recipe} from '@repo/food-recipe-core/src/food_recipe/core/types/recipe';
 
 import {parseTextRecipe} from '@repo/food-recipe-core/src/food_recipe/core/parser/text';
 import {recipeScale} from '@repo/food-recipe-core/src/food_recipe/core/calculator';
-import IngredientLine from './IngredientLine/index.vue';
-import {loadState, saveState} from './state';
-import {type RecipeState} from './state';
 import {recipeToText} from "@repo/food-recipe-core/src/food_recipe/core/export";
 import {round} from "@repo/food-recipe-core/src/food_recipe/utils";
 import {isNumber} from "@/utils";
+import Modal from "@/components/ui/UiModal.vue";
+import IngredientLine from './IngredientLine/index.vue';
+import {loadState, type RecipeState, saveState} from './state';
+import Share from "./RecipeShare.vue";
 
 
 const LANG = 'ru';
@@ -25,6 +26,7 @@ const updateRecipeCb = () => {
 };
 const updateScaleCb = () => {
   if (parsedRecipe.value) {
+    parsedRecipe.value.calculated_portion = state.newScale
     parsedRecipe.value = recipeScale(parsedRecipe.value, state.newScale / state.scale);
   }
 };
@@ -82,20 +84,17 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
 </script>
 
 <template>
-  <div class="modal" v-if="modalShow" @click="modalShow = false">
-    <div class="modal-content">
-      <div style="max-width: 500px;">
-        <img src="@/../public/img/grandpa.jpg" style="width: 100%"/>
-        <span style="font-size: 2em; font-weight: bold; top: -100px; position: relative; color: gainsboro">
+  <Modal v-model="modalShow">
+    <div style="max-width: 500px;" @click="modalShow = false">
+      <img src="@/../public/img/grandpa.jpg" style="width: 100%"/>
+      <span style="font-size: 2em; font-weight: bold; top: -100px; position: relative; color: gainsboro">
             Не балуйся
           </span>
-      </div>
     </div>
-  </div>
+
+  </Modal>
   <div>
     <div v-if='parsedRecipe?.ingredient_groups?.length'>
-
-
       <div id='parsed_recipe'>
         <h2>{{ parsedRecipe.name }}</h2>
 
@@ -145,10 +144,13 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
       </div>
       <div v-if="parsedRecipe.description">
 
-      <br>
-      <h2>Описание:</h2>
-      <pre>{{ parsedRecipe.description }}</pre>
+        <br>
+        <h2>Описание:</h2>
+        <pre>{{ parsedRecipe.description }}</pre>
       </div>
+      <br>
+
+      <Share :recipe="parsedRecipe"/>
     </div>
 
     <hr>

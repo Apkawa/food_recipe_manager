@@ -177,27 +177,27 @@ describe('parseTextRecipe', () => {
     #### 
     Остальные разделители игнорируются
 `;
-    expect(parseTextRecipe(t)).toStrictEqual(
-      {
-        "description": "Сварить горох в воде. Вы великолепны\n    #### \n    Остальные разделители игнорируются",
-        "ingredient_groups": [
-          {
-            "ingredients": [
-              {
-                "name": "Горох",
-                "unit": "cup",
-                "value": 1
-              },
-              {
-                "name": "Вода литра",
-                "unit": "pcs",
-                "value": 2
-              }
-            ],
-            "name": ""
-          }
-        ],
-        "name": "Гороховый суп"
-      });
+    expect(parseTextRecipe(t)).toStrictEqual({
+      description:
+        'Сварить горох в воде. Вы великолепны\n    #### \n    Остальные разделители игнорируются',
+      ingredient_groups: [
+        {
+          ingredients: [
+            {
+              name: 'Горох',
+              unit: 'cup',
+              value: 1,
+            },
+            {
+              name: 'Вода литра',
+              unit: 'pcs',
+              value: 2,
+            },
+          ],
+          name: '',
+        },
+      ],
+      name: 'Гороховый суп',
+    });
   });
 });
