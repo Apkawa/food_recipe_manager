@@ -143,7 +143,14 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
         </div>
 
       </div>
+      <div v-if="parsedRecipe.description">
+
+      <br>
+      <h2>Описание:</h2>
+      <pre>{{ parsedRecipe.description }}</pre>
+      </div>
     </div>
+
     <hr>
     <br>
     <div class="rawRecipe-wrap">

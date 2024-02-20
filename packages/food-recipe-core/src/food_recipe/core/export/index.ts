@@ -29,5 +29,9 @@ export function recipeToText(recipe: Recipe, lang: LANG_TYPE = 'ru'): string {
   if (recipe.portion) {
     s += `\nРецепт на ${recipe.portion} порций \n`;
   }
+  if (recipe.description) {
+    s += `\n---\n\n${recipe.description}\n`;
+
+  }
   return s;
 }

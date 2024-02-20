@@ -166,4 +166,38 @@ describe('parseTextRecipe', () => {
       name: '',
     });
   });
+
+  it('description parse example', () => {
+    const t = `
+    Гороховый суп
+    Горох 1 стакан
+    Вода 2 литра
+    ---
+    Сварить горох в воде. Вы великолепны
+    #### 
+    Остальные разделители игнорируются
+`;
+    expect(parseTextRecipe(t)).toStrictEqual(
+      {
+        "description": "Сварить горох в воде. Вы великолепны\n    #### \n    Остальные разделители игнорируются",
+        "ingredient_groups": [
+          {
+            "ingredients": [
+              {
+                "name": "Горох",
+                "unit": "cup",
+                "value": 1
+              },
+              {
+                "name": "Вода литра",
+                "unit": "pcs",
+                "value": 2
+              }
+            ],
+            "name": ""
+          }
+        ],
+        "name": "Гороховый суп"
+      });
+  });
 });
