@@ -37,12 +37,12 @@ watch(state, () => saveState(state));
 const modalShow = ref(false)
 watch(() => [state.scale, state.newScale],
     () => {
-      if (state.scale <= 0) {
+      if (state.scale < 0.1) {
         state.scale = Number(parsedRecipe.value?.portion || 1);
         console.log("Не балуй")
         modalShow.value = true
       }
-      if (state.newScale <= 0) {
+      if (state.newScale < 0.1) {
         state.newScale = 1;
         console.log("Не балуй")
         modalShow.value = true
@@ -84,11 +84,12 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
 <template>
   <div class="modal" v-if="modalShow" @click="modalShow = false">
     <div class="modal-content">
-      <img src="./assets/grandpa.jpg" width="100%"/>
-      <span style="font-size: 2em; font-weight: bold; top: -100px; position: relative; color: gainsboro">
-          Не балуйся
-        </span>
-
+      <div style="max-width: 500px;">
+        <img src="@/../public/img/grandpa.jpg" style="width: 100%"/>
+        <span style="font-size: 2em; font-weight: bold; top: -100px; position: relative; color: gainsboro">
+            Не балуйся
+          </span>
+      </div>
     </div>
   </div>
   <div>
@@ -182,7 +183,9 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
 }
 
 .modal {
-  position: absolute;
+  position: fixed;
+  /*todo запрет скроллинга body.modal-open {overflow-y: hidden }*/
+  overflow-y: hidden;
   top: 0;
   left: 0;
 

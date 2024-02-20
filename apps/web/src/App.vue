@@ -8,8 +8,9 @@ import { RouterLink, RouterView } from 'vue-router'
     <div class="wrapper">
       <nav>
         <img class="logo" src="@/../public/food_recipe_calculator_icon.png" width="64"/>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/">Калькулятор</RouterLink>
+<!--        <RouterLink to="/helpers">Справочник</RouterLink>-->
+        <RouterLink to="/about">О проекте</RouterLink>
       </nav>
     </div>
   </header>
@@ -18,6 +19,9 @@ import { RouterLink, RouterView } from 'vue-router'
 </template>
 
 <style scoped>
+.wrapper {
+  width: 100%;
+}
 header {
   line-height: 1.5;
 }
@@ -25,7 +29,7 @@ header {
 
 nav {
   display: flex;
-  width: 100%;
+  /*width: 100%;*/
   font-size: 12px;
 }
 
@@ -51,7 +55,7 @@ nav a:first-of-type {
   header {
     display: flex;
     place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    /*padding-right: calc(var(--section-gap) / 2);*/
   }
 
   header .wrapper {
