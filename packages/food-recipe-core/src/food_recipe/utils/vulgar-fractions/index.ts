@@ -70,3 +70,30 @@ export const parseVulgars = (str: string) => {
     })
     .join(' ');
 };
+
+/**
+ * 4.33 -> ['4', '1/3']
+ * 0.33 -> ['', '1/3']
+ * 3.7 -> null
+ * @param n
+ */
+
+export const extractVulgarFromNumber = (n: number): string[] | null => {
+  // Extract decimal = 4.33 % 1 => 0.33
+  const decimalPart = n % 1;
+  const displayNumber = n.toString();
+  for (const [d, f] of Object.entries(VULGAR_MAP)) {
+    if (Math.abs((decimalPart - f) % 1) < 0.01) {
+      return [`${Number.parseInt(displayNumber) || ''}`, d];
+    }
+  }
+  return null;
+};
+
+export const numberToVulgar = (n: number): string => {
+  const vulgarNumber = extractVulgarFromNumber(n);
+  if (vulgarNumber) {
+    return vulgarNumber.join('');
+  }
+  return n.toString();
+};

@@ -41,7 +41,7 @@ const lineEditSaveCb = ($event: Ingredient) => {
   <tr>
     <td :class="checked?'checked':''">
       <label class="name">
-      <input class="checkbox" type="checkbox" v-model="checked"/>
+        <input class="checkbox" type="checkbox" v-model="checked"/>
         {{ ingredient.name }}
 
         <template v-if='ingredient?.type?.concentration'>
@@ -49,7 +49,7 @@ const lineEditSaveCb = ($event: Ingredient) => {
         </template>
       </label>
     </td>
-    <td>{{ valueDisplay(ingredient.calculated_value) }}</td>
+    <td><span class="fraction">{{ valueDisplay(ingredient.calculated_value, ingredient.unit) }}</span></td>
     <td>{{ getUnitDisplay(ingredient.unit, props.lang, ingredient.value) }}</td>
     <td>
       <button v-if="!editMode && allowEdit" @click="editMode = !editMode">Edit</button>
@@ -63,7 +63,22 @@ const lineEditSaveCb = ($event: Ingredient) => {
 </template>
 
 <style scoped>
-  .checked .name {
-    text-decoration-line: line-through;
+.checked .name {
+  text-decoration-line: line-through;
+}
+.value-display {
+  font-size: larger;
+}
+
+.fraction {
+  font-feature-settings: afrc;
+  font-size: 1.5em;
+}
+
+@supports (font-variant-numeric: stacked-fractions) {
+  .fraction {
+    font-feature-settings: afrc;
+    font-variant-numeric: stacked-fractions;
   }
+}
 </style>

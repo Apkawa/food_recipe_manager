@@ -1,6 +1,6 @@
 import {Ingredient, Recipe} from '../types/recipe';
 import {isRangeIngredient} from '../checks';
-import {round} from '../../utils';
+import {round} from '../../utils/number';
 
 export function calculateScale(ingredient: Ingredient): number | null {
   if (ingredient.value && ingredient.calculated_value) {

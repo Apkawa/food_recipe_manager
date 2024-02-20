@@ -1,8 +1,4 @@
-export function round(n: number, parts = 2): number {
-  const i = Math.pow(10, parts);
-  return Math.round(n * i) / i;
-}
-
+export {round} from './number';
 export const keys = Object.keys as <T>(o: T) => Extract<keyof T, string>[];
 export const entries = Object.entries as <T>(
   o: T,
