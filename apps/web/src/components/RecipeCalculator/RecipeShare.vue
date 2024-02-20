@@ -32,8 +32,7 @@ watch(showModal,
         }
         console.log(recipe)
         textRecipe.value = recipeToText(recipe)
-        const shareData = {
-          title: recipe.name,
+        const shareData: ShareData = {
           text: textRecipe.value,
           url: window.location.toString()
         }
