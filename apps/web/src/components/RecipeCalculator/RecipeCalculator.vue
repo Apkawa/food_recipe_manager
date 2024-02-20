@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import {reactive, ref, unref, watch} from 'vue';
+import {computed, reactive, ref, unref, watch} from 'vue';
 
 
 import {Ingredient, type Recipe} from '@repo/food-recipe-core/src/food_recipe/core/types/recipe';
@@ -37,7 +37,6 @@ watch(state, () => saveState(state));
 const parsedRecipe = ref<Recipe | null>(null);
 updateRecipeCb();
 
-
 watch(() => state.rawRecipe, updateRecipeCb);
 
 watch(state, updateScaleCb);
@@ -54,7 +53,7 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
     const customScale = round(ingredient.calculated_value / ingredient.value, 3)
     if (round(state.newScale / state.scale, 3) != customScale) {
       // x / scale = customScale -> x = scale * customScale
-      state.newScale = state.scale * customScale
+      state.newScale = round(state.scale * customScale, 2)
       updateScaleCb()
     }
   }
@@ -73,18 +72,17 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
       <div id='parsed_recipe'>
         <h2>{{ parsedRecipe.name }}</h2>
 
-        <table>
+        <table class="recipeTable">
           <colgroup>
+            <col span='3' style='width: 100%'>
             <col span='3' style='width: auto'>
-            <col span='3' style='width: 100px'>
-            <col span='3' style='width: 100px'>
+            <col span='3' style='width: auto'>
           </colgroup>
           <thead>
           <tr>
             <th></th>
-            <th>Оригинал</th>
-            <th>Пересчет</th>
-            <th>Единица измерения</th>
+            <th></th>
+            <th></th>
             <th></th>
           </tr>
           </thead>
@@ -115,16 +113,24 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
 
       </div>
     </div>
-    <textarea v-model.lazy='state.rawRecipe'  id='raw_recipe'></textarea>
-    <pre>
-    </pre>
+    <hr>
+    <br>
+    <div class="rawRecipe-wrap">
+      <h3>Текстовый рецепт</h3>
+      <div>
+        * Вставьте сюда текст скопированного рецепта
+      </div>
+      <textarea
+          v-model.lazy='state.rawRecipe'  id='raw_recipe'></textarea>
+
+    </div>
   </div>
 </template>
 
 <style scoped>
 .scale_wrap {
   font-size: large;
-  padding: 2em;
+  padding: 0.5em;
 }
 
 .scale_wrap > div {
@@ -134,6 +140,10 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
 .scale_wrap input {
   font-size: larger;
   width: 2.5em;
+}
+
+#parsed_recipe table {
+  width: 100%;
 }
 
 #raw_recipe {

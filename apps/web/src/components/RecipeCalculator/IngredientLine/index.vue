@@ -27,8 +27,9 @@ const emit = defineEmits(['update:ingredient'])
 
 
 const editMode = ref(false)
-const allowEdit = ingredient.value.unit && ! ['taste',].includes(ingredient.value.unit)
+const allowEdit = ingredient.value.unit && !['taste',].includes(ingredient.value.unit)
 
+const checked = ref(false)
 
 const lineEditSaveCb = ($event: Ingredient) => {
   emit('update:ingredient', $event)
@@ -38,14 +39,16 @@ const lineEditSaveCb = ($event: Ingredient) => {
 
 <template>
   <tr>
-    <td>
-      {{ ingredient.name }}
+    <td :class="checked?'checked':''">
+      <label class="name">
+      <input class="checkbox" type="checkbox" v-model="checked"/>
+        {{ ingredient.name }}
 
-      <template v-if='ingredient?.type?.concentration'>
-        [{{ ingredient.type.concentration }}%]
-      </template>
+        <template v-if='ingredient?.type?.concentration'>
+          [{{ ingredient.type.concentration }}%]
+        </template>
+      </label>
     </td>
-    <td>{{ valueDisplay(ingredient.value) }}</td>
     <td>{{ valueDisplay(ingredient.calculated_value) }}</td>
     <td>{{ getUnitDisplay(ingredient.unit, props.lang, ingredient.value) }}</td>
     <td>
@@ -60,5 +63,7 @@ const lineEditSaveCb = ($event: Ingredient) => {
 </template>
 
 <style scoped>
-
+  .checked .name {
+    text-decoration-line: line-through;
+  }
 </style>

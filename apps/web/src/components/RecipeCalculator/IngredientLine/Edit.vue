@@ -26,11 +26,11 @@ const ingredient = props.ingredient;
 const emit = defineEmits(['save'])
 const editIngredient = ref<Ingredient>(cloneDeep(props.ingredient))
 
-const editConcentration = ref<number|undefined>(ingredient.type?.concentration)
+const editConcentration = ref<number | undefined>(ingredient.type?.concentration)
 const isEditConcentration = ingredient.type?.concentration;
-const editUnit = ref<Unit|undefined>(ingredient.unit)
+const editUnit = ref<Unit | undefined>(ingredient.unit)
 
-const updateConcentration  = () => {
+const updateConcentration = () => {
   const fromConcentration = ingredient.type?.concentration;
   const toConcentration = editConcentration.value;
   let value = props.ingredient.value as number;
@@ -75,6 +75,10 @@ const unitSelectCb = (unit: Unit) => {
   editIngredient.value = convertIngredientUnit(editIngredient.value, unit)
 }
 
+const onFocusAllSelectCb = (e: Event) => {
+  (e.target as HTMLInputElement).select()
+}
+
 watch(props, () => {
   editIngredient.value = cloneDeep(props.ingredient)
   editIngredient.value.unit = editUnit.value
@@ -88,39 +92,44 @@ watch(props, () => {
     <td>
       <template v-if="isEditConcentration">
 
-
-      Концентрация: <input class="concentration"
-                           type="number"
-                           min="1"
-                           max="100"
-                           required
-                           @change="updateConcentration"
-                           v-model="editConcentration"/>
+        Концентрация: <input class="concentration"
+                             type="number"
+                             min="1"
+                             max="100"
+                             required
+                             v-model="editConcentration"
+                             @change="updateConcentration"
+                             @focus="onFocusAllSelectCb"
+      />
       </template>
     </td>
-    <td>{{ valueDisplay(editIngredient.value) }}</td>
-    <td><input
-        class="edit-value"
-        type="number"
-        :value="valueDisplay(editIngredient.calculated_value)"
-        @change="editCalculatedValueCb"
-    /></td>
+    <td>
+      <input
+          class="edit-value"
+          type="number"
+          :value="valueDisplay(editIngredient.calculated_value)"
+          @change="editCalculatedValueCb"
+          @focus="onFocusAllSelectCb"
+      /></td>
     <td>
       <EditUnitSelect
           :ingredient="editIngredient"
           @change="unitSelectCb"
       />
     </td>
-    <td><button @click="saveCb">Save</button></td>
+    <td>
+      <button @click="saveCb">Save</button>
+    </td>
   </tr>
 
 </template>
 
 <style scoped>
-  .concentration {
-    width: 4em;
-  }
-  .edit-value {
-    width: 5em;
-  }
+.concentration {
+  width: 4em;
+}
+
+.edit-value {
+  width: 4em;
+}
 </style>
