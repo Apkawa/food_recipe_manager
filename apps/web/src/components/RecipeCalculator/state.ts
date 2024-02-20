@@ -1,4 +1,5 @@
 import { EXAMPLE_RECIPE } from './constants'
+import { round } from '@repo/food-recipe-core/src/food_recipe/utils'
 
 export interface RecipeState {
   rawRecipe: string
@@ -62,8 +63,11 @@ export function loadState(): RecipeState {
 
   return {
     rawRecipe: state.rawRecipe || RecipeStateDefaults.rawRecipe,
-    scale: Number.parseInt((state.scale || RecipeStateDefaults.scale).toString()),
-    newScale: Number.parseInt((state.newScale || RecipeStateDefaults.newScale).toString())
+    scale: round(Number.parseFloat((state.scale || RecipeStateDefaults.scale).toString()), 2),
+    newScale: round(
+      Number.parseFloat((state.newScale || RecipeStateDefaults.newScale).toString()),
+      2
+    )
   }
 }
 
