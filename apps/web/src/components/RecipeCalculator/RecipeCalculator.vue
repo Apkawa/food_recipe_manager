@@ -26,6 +26,7 @@ const updateRecipeCb = () => {
 };
 const updateScaleCb = () => {
   if (parsedRecipe.value) {
+    parsedRecipe.value.portion = state.scale
     parsedRecipe.value.calculated_portion = state.newScale
     parsedRecipe.value = recipeScale(parsedRecipe.value, state.newScale / state.scale);
   }
