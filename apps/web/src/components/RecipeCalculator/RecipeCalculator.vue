@@ -34,6 +34,23 @@ const updateScaleCb = () => {
 const state = reactive<RecipeState>(loadState());
 watch(state, () => saveState(state));
 
+const modalShow = ref(false)
+watch(() => [state.scale, state.newScale],
+    () => {
+      if (state.scale <= 0) {
+        state.scale = Number(parsedRecipe.value?.portion || 1);
+        console.log("Не балуй")
+        modalShow.value = true
+      }
+      if (state.newScale <= 0) {
+        state.newScale = 1;
+        console.log("Не балуй")
+        modalShow.value = true
+      }
+    }
+)
+
+
 const parsedRecipe = ref<Recipe | null>(null);
 updateRecipeCb();
 
@@ -65,6 +82,15 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
 </script>
 
 <template>
+  <div class="modal" v-if="modalShow" @click="modalShow = false">
+    <div class="modal-content">
+      <img src="./assets/grandpa.jpg" width="100%"/>
+      <span style="font-size: 2em; font-weight: bold; top: -100px; position: relative; color: gainsboro">
+          Не балуйся
+        </span>
+
+    </div>
+  </div>
   <div>
     <div v-if='parsedRecipe?.ingredient_groups?.length'>
 
@@ -103,11 +129,15 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
 
         <div class='scale_wrap'>
           <div>
-            Рецепт на <input id='scale' v-model.number='state.scale' type='number' min='1'/> порций
+            Рецепт на <input id='scale'
+                             v-model.number.lazy='state.scale'
+                             type='number'
+                             min='1'
+          /> порций
           </div>
           <div>
             Пересчитать на
-            <input id='new_scale' v-model.number='state.newScale' type='number' step="1" min='1'/> порций
+            <input id='new_scale' v-model.number.lazy='state.newScale' type='number' step="1" min='1'/> порций
           </div>
         </div>
 
@@ -121,7 +151,7 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
         * Вставьте сюда текст скопированного рецепта
       </div>
       <textarea
-          v-model.lazy='state.rawRecipe'  id='raw_recipe'></textarea>
+          v-model.lazy='state.rawRecipe' id='raw_recipe'></textarea>
 
     </div>
   </div>
@@ -139,7 +169,7 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
 
 .scale_wrap input {
   font-size: larger;
-  width: 2.5em;
+  width: 3em;
 }
 
 #parsed_recipe table {
@@ -149,6 +179,24 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
 #raw_recipe {
   width: 100%;
   height: 420px
+}
 
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+
+  width: 100vw;
+  height: 100vh;
+  background: rgb(127, 127, 127, 0.4);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal .modal-content {
+  text-align: center;
 }
 </style>
