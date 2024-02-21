@@ -26,12 +26,12 @@
         <li>Пересчет концентрации уксуса</li>
         <li>Конвертация единиц измерения</li>
         <li>При наличии возможности пересчет из объема в массу и обратно</li>
-        <li>Отметка списка зачеркнутым (для того чтобы не запутаться в том положили ли какой то ингредиент или нет) </li>
+        <li>Отметка списка зачеркнутым (для того чтобы не запутаться в том положили ли какой то ингредиент или нет)</li>
       </ul>
 
       <h2>Формат текстового рецепта</h2>
       <b>
-      Структура рецепта
+        Структура рецепта
       </b>
       <pre>
 Название рецепта (опционально)
@@ -81,16 +81,8 @@ https://ovkuse.ru/recipes/13004041
 
 
       <div>
+      <GrandMother/>
 
-        <div style="max-width: 500px; text-align: center">
-          <img src="@/../public/img/grandpa.jpg" style="width: 100%"
-               title="Нейробабушка добавлена чисто ради шутки, но в итоге она и останется"
-          />
-          <span style="font-size: 2em; font-weight: bold; top: -100px; position: relative; color: gainsboro">
-            Не балуйся
-      </span>
-
-        </div>
       </div>
     </div>
   </main>
@@ -110,3 +102,6 @@ https://ovkuse.ru/recipes/13004041
   }
 }
 </style>
+<script setup lang="ts">
+import GrandMother from "../components/GrandMother.vue";
+</script>

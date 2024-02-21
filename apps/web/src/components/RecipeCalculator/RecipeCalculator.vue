@@ -13,6 +13,7 @@ import Modal from "@/components/ui/UiModal.vue";
 import IngredientLine from './IngredientLine/index.vue';
 import {loadState, type RecipeState, saveState} from './state';
 import Share from "./RecipeShare.vue";
+import GrandMother from "@/components/GrandMother.vue";
 
 
 const LANG = 'ru';
@@ -87,10 +88,8 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
 <template>
   <Modal v-model="modalShow">
     <div style="max-width: 500px;" @click="modalShow = false">
-      <img src="@/../public/img/grandpa.jpg" style="width: 100%"/>
-      <span style="font-size: 2em; font-weight: bold; top: -100px; position: relative; color: gainsboro">
-            Не балуйся
-          </span>
+      <GrandMother />
+
     </div>
 
   </Modal>
