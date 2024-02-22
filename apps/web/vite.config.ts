@@ -1,12 +1,15 @@
 import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig } from 'vite'
+import { ConfigEnv, defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import nightwatchPlugin from 'vite-plugin-nightwatch'
 // import { ViteFaviconsPlugin } from 'vite-plugin-favicon2'
 import checker from 'vite-plugin-checker'
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
+import { execSync } from 'child_process'
+
+import packageJson from './package.json'
 
 const PWAOptions: Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
@@ -65,20 +68,56 @@ const PWAOptions: Partial<VitePWAOptions> = {
   }
 }
 
+interface BuildInfo {
+  commitHash: string
+  isoDate: string
+  version: string
+  refName: string
+}
+function getBuildInfo(): BuildInfo | null {
+  const parts: string[] = execSync("git show --no-patch --no-notes --pretty='%h;%cI;%D' HEAD")
+    .toString()
+    .trim()
+    .split(';')
+
+  if (parts.length == 3) {
+    const [commitHash, isoDate, ref_name] = parts
+    return {
+      commitHash,
+      isoDate,
+      version: packageJson.version,
+      refName: ref_name.match('HEAD ->.+origin/(.+)')?.[1] || ref_name
+    }
+  }
+  return null
+}
+
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    vue(),
-    vueJsx(),
-    nightwatchPlugin(),
-    checker({ typescript: true }),
-    // ViteFaviconsPlugin('./public/food_recipe_calculator_icon.png'),
-    VitePWA(PWAOptions)
-  ],
-  base: './',
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+export default defineConfig(({ mode }: ConfigEnv) => {
+  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
+
+  const buildInfo = getBuildInfo()
+  if (buildInfo) {
+    process.env.VITE_GIT_COMMIT_DATE = buildInfo.isoDate
+    process.env.VITE_GIT_BRANCH_NAME = buildInfo.refName
+    process.env.VITE_GIT_COMMIT_HASH = buildInfo.commitHash
+    process.env.VITE_PACKAGE_VERSION = buildInfo.version
+  }
+
+  return {
+    plugins: [
+      vue(),
+      vueJsx(),
+      nightwatchPlugin(),
+      checker({ typescript: true }),
+      // ViteFaviconsPlugin('./public/food_recipe_calculator_icon.png'),
+      VitePWA(PWAOptions)
+    ],
+    base: './',
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url))
+      }
     }
   }
 })

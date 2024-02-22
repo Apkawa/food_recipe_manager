@@ -1,28 +1,37 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import {RouterLink, RouterView} from 'vue-router'
+import BuildInfo from "@/components/BuildInfo.vue";
 
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav>
-        <img class="logo" src="@/../public/food_recipe_calculator_icon.png" width="64"/>
-        <RouterLink to="/">Калькулятор</RouterLink>
-        <RouterLink to="/favorite">Избранное</RouterLink>
-<!--        <RouterLink to="/helpers">Утилиты</RouterLink>-->
-        <RouterLink to="/about">О проекте</RouterLink>
-      </nav>
-    </div>
-  </header>
+  <div class="content">
+    <header>
+      <div class="wrapper">
+        <nav>
+          <img class="logo" src="@/../public/food_recipe_calculator_icon.png" width="64"/>
+          <RouterLink to="/">Калькулятор</RouterLink>
+          <RouterLink to="/favorite">Избранное</RouterLink>
+          <!--        <RouterLink to="/helpers">Утилиты</RouterLink>-->
+          <RouterLink to="/about">О проекте</RouterLink>
+        </nav>
+      </div>
+    </header>
 
-  <RouterView />
+    <RouterView/>
+    <footer>
+      <BuildInfo/>
+
+    </footer>
+
+  </div>
 </template>
 
 <style scoped>
 .wrapper {
   width: 100%;
 }
+
 header {
   line-height: 1.5;
 }
@@ -52,6 +61,16 @@ nav a:first-of-type {
   border: 0;
 }
 
+.content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content footer {
+  margin-top: auto;
+}
+
 @media (min-width: 1024px) {
   header {
     display: flex;
@@ -64,6 +83,7 @@ nav a:first-of-type {
     place-items: flex-start;
     flex-wrap: wrap;
   }
+
   nav .logo {
     margin-left: auto;
   }
@@ -77,4 +97,6 @@ nav a:first-of-type {
     margin-top: 1rem;
   }
 }
+
+
 </style>
