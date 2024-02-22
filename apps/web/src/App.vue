@@ -9,6 +9,7 @@ import { RouterLink, RouterView } from 'vue-router'
       <nav>
         <img class="logo" src="@/../public/food_recipe_calculator_icon.png" width="64"/>
         <RouterLink to="/">Калькулятор</RouterLink>
+        <RouterLink to="/favorite">Избранное</RouterLink>
 <!--        <RouterLink to="/helpers">Утилиты</RouterLink>-->
         <RouterLink to="/about">О проекте</RouterLink>
       </nav>

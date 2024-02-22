@@ -30,8 +30,8 @@
   top: -125px;
   position: relative;
   color: white;
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: black;
+  /*-webkit-text-stroke-width: 1px;*/
+  /*-webkit-text-stroke-color: black;*/
   text-shadow:
       1px 1px 0 #000,
       -1px 1px 0 #000,

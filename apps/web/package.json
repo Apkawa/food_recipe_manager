@@ -18,10 +18,10 @@
     "build:storybook": "storybook build",
     "test:storybook": "test-storybook",
     "generate-pwa-assets": "pwa-assets-generator --preset minimal-2023 public/food_recipe_calculator_icon.png"
-
   },
   "dependencies": {
     "@repo/food-recipe-core": "*",
+    "@vueuse/core": "^10.8.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"

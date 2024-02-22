@@ -32,10 +32,11 @@ watch(showModal,
         }
         console.log(recipe)
         textRecipe.value = recipeToText(recipe)
+        let url = window.location.toString();
         const shareData: ShareData = {
           title: textRecipe.value,
           text: textRecipe.value,
-          url: window.location.toString()
+          url,
         }
         if (navigator.canShare && navigator.canShare(shareData)) {
           navigator.share(shareData)

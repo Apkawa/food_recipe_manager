@@ -1,5 +1,7 @@
 import { EXAMPLE_RECIPE } from './constants'
 import { round } from '@repo/food-recipe-core/src/food_recipe/utils'
+import router from '@/router'
+import { useRoute } from 'vue-router'
 
 export interface RecipeState {
   rawRecipe: string
@@ -37,10 +39,8 @@ const removeUndefinedValuesFromObject = <T extends object>(obj: T): T => {
 
 type PartialRecipeState = Record<keyof RecipeState, string | undefined>
 
-export function loadStateFromUrl(url: URL): PartialRecipeState {
-  const obj = Object.fromEntries(
-    RECIPE_STATE_KEYS.map((key) => [key, url.searchParams.get(key) || undefined])
-  )
+export function loadStateFromQuery(query: Record<string, string>): PartialRecipeState {
+  const obj = Object.fromEntries(RECIPE_STATE_KEYS.map((key) => [key, query[key] || undefined]))
   if (obj['rawRecipe']) {
     obj.rawRecipe = base64ToBytes(obj.rawRecipe)
   }
@@ -54,14 +54,23 @@ export function loadStateFromLocalStorage(): PartialRecipeState {
 }
 
 export function loadState(): RecipeState {
-  const urlState = removeUndefinedValuesFromObject(
-    loadStateFromUrl(new URL(window.location.toString()))
-  )
+  let urlState = {}
+  if (window.location.search) {
+    // Backward compatibly
+    const query = Object.fromEntries(new URL(window.location.toString()).searchParams)
+    urlState = removeUndefinedValuesFromObject(loadStateFromQuery(query))
+  }
+  if (!urlState || !Object.entries(urlState).length) {
+    const route = useRoute()
+    const query = Object.fromEntries(Object.entries(route.query))
+    urlState = removeUndefinedValuesFromObject(loadStateFromQuery(query as Record<string, string>))
+  }
+  console.log(urlState)
   const storageState = removeUndefinedValuesFromObject(loadStateFromLocalStorage())
 
   const state = { ...RecipeStateDefaults, ...storageState, ...urlState }
 
-  return {
+  const recipeState: RecipeState = {
     rawRecipe: state.rawRecipe || RecipeStateDefaults.rawRecipe,
     scale: round(Number.parseFloat((state.scale || RecipeStateDefaults.scale).toString()), 2),
     newScale: round(
@@ -69,6 +78,7 @@ export function loadState(): RecipeState {
       2
     )
   }
+  return recipeState
 }
 
 export function saveStateToUrl(url: URL, state: RecipeState): URL {
@@ -98,6 +108,11 @@ export function saveStateLocalStorage(state: RecipeState): void {
 
 export function saveState(state: RecipeState): void {
   const url = saveStateToUrl(new URL(window.location.toString()), state)
+  const query = Object.fromEntries(url.searchParams)
+  // backward compatibly
+  url.search = ''
   window.history.replaceState('', '', url.toString())
+  router.replace({ path: '/', query })
+  console.log(query)
   saveStateLocalStorage(state)
 }

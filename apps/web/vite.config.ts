@@ -22,25 +22,25 @@ const PWAOptions: Partial<VitePWAOptions> = {
     screenshots: [
       {
         src: 'pwa/screenshot_1_wide.png',
-        sizes: "1422x1363",
-        type: "image/png",
-        form_factor:"wide",
-        label: "Основной интерфейс"
+        sizes: '1422x1363',
+        type: 'image/png',
+        form_factor: 'wide',
+        label: 'Основной интерфейс'
       },
       {
         src: 'pwa/screenshot_1_narrow.png',
-        sizes: "430x932",
-        type: "image/png",
-        form_factor:"narrow",
-        label: "Основной интерфейс"
+        sizes: '430x932',
+        type: 'image/png',
+        form_factor: 'narrow',
+        label: 'Основной интерфейс'
       },
       {
         src: 'pwa/screenshot_2_narrow.png',
-        sizes: "430x932",
-        type: "image/png",
-        form_factor:"narrow",
-        label: "Окно валидации ошибки =3"
-      },
+        sizes: '430x932',
+        type: 'image/png',
+        form_factor: 'narrow',
+        label: 'Окно валидации ошибки =3'
+      }
     ],
     icons: [
       {
@@ -53,10 +53,17 @@ const PWAOptions: Partial<VitePWAOptions> = {
         sizes: '512x512',
         type: 'image/png'
       }
+    ],
+    file_handlers: [
+      {
+        action: './',
+        accept: {
+          'text/plain': ['.txt']
+        }
+      }
     ]
   }
 }
-
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -67,7 +74,6 @@ export default defineConfig({
     checker({ typescript: true }),
     // ViteFaviconsPlugin('./public/food_recipe_calculator_icon.png'),
     VitePWA(PWAOptions)
-
   ],
   base: './',
   resolve: {

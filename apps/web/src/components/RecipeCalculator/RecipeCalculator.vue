@@ -14,6 +14,7 @@ import IngredientLine from './IngredientLine/index.vue';
 import {loadState, type RecipeState, saveState} from './state';
 import Share from "./RecipeShare.vue";
 import GrandMother from "@/components/GrandMother.vue";
+import RecipeFavoriteButton from "@/components/RecipeCalculator/RecipeFavoriteButton.vue";
 
 
 const LANG = 'ru';
@@ -36,6 +37,8 @@ const updateScaleCb = () => {
 // todo move to pinia
 
 const state = reactive<RecipeState>(loadState());
+// Если перешли на / без параметров, то сохраняем состояние если вытащили из localStorage
+saveState(state)
 watch(state, () => saveState(state));
 
 const modalShow = ref(false)
@@ -88,7 +91,7 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
 <template>
   <Modal v-model="modalShow">
     <div style="max-width: 500px;" @click="modalShow = false">
-      <GrandMother />
+      <GrandMother/>
 
     </div>
 
@@ -149,8 +152,12 @@ const ingredientUpdateCb = (ingredient: Ingredient, g_i: number, i: number): voi
         <pre>{{ parsedRecipe.description }}</pre>
       </div>
       <br>
+      <div>
 
-      <Share :recipe="parsedRecipe"/>
+        <Share :recipe="parsedRecipe"/>
+        <RecipeFavoriteButton :recipe="parsedRecipe"/>
+      </div>
+
     </div>
 
     <hr>
