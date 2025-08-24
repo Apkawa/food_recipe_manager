@@ -4,7 +4,7 @@ import {stripLine} from '@app/utils';
 describe('stripLine', () => {
   const cases: Cases<string, string> = [
     {
-      arg: ' --- foo    bar   123 ---',
+      arg: ' --- foo    bar  \t  123 ---',
       expected: 'foo bar 123',
     },
   ];

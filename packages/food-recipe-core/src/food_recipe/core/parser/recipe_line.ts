@@ -38,7 +38,7 @@ const UNIT_REGEXP = mRegExp(
     '(?:',
     // Value units
     VALUE_REGEXP,
-    /\s?/, // Space
+    /[\s\t]*/, // Space
     '(?<unit>',
     // build all regexps
     ...VALUE_UNITS.map((k) => buildUnitRegexp(k, UNIT_PARSE_MAP[k]).source).join('|'),

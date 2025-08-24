@@ -7,6 +7,7 @@ describe('stripLine', () => {
   const cases: Cases<string, string> = [
     {arg: '-- -- foo bar- --  ', expected: 'foo bar'},
     {arg: 'Тушёнка мясная — ', expected: 'Тушёнка мясная'},
+    {arg: 'Кимчи выход \t 3,8  \t  кг', expected: 'Кимчи выход 3,8 кг'},
   ];
   it.each(cases)('[$#] $arg', (c) => {
     expect(stripLine(c.arg)).toStrictEqual(c.expected);
@@ -155,6 +156,14 @@ describe('parseRecipeLine', () => {
         unit: 'tbsp',
         value: 3,
         type: {concentration: 9, name: 'vinegar'},
+      },
+    },
+    {
+      arg: 'Тушёнка мясная (у меня говяжья) \t — \t 500  \t  г',
+      expected: {
+        name: 'Тушёнка мясная (у меня говяжья)',
+        unit: 'g',
+        value: 500,
       },
     },
 
