@@ -18,14 +18,16 @@ function buildPluralRe(base: string, plurals: string[]): string {
   return re;
 }
 
+const unitPluralRu = (base: string) => buildPluralRe(base, ['a', 'ов'])
+
 export const UNIT_PARSE_MAP: UnitMap = {
   pcs: ['шт', 'pcs', 'ps', 'зубчик(?:а|ов)?', 'штук(?:а|и)?'],
   // Volume
-  l: ['л', 'литр', 'litre', 'l'],
-  ml: ['мл', 'миллилитр', 'ml', 'millilitre'],
+  l: ['л', unitPluralRu('литр'), 'litre', 'liters?', 'l'],
+  ml: ['мл', unitPluralRu('миллилитр'), 'ml', 'millilitre'],
   // Weight
-  kg: ['кг', 'килограмм', 'kg', 'kilogram'],
-  g: ['г', 'гр', 'грамм', 'g', 'gram'],
+  kg: ['кг', unitPluralRu('килограмм'), 'kg', 'kilogram'],
+  g: ['г', 'гр', unitPluralRu('грамм'), 'g', 'grams?'],
   // Measures
   tsp: ['(?:ч\\.|чайн(?:ая|ые))\\s*?(?:л\\.|ложк[аи])', 'tea\\s*spoons?', 'tsp'],
   tbsp: ['(?:ст?\\.|столов(?:ая|ые))\\s*?(?:л\\.?|ложк[аи])', 'table\\s*spoons?', 'tbsp'],
