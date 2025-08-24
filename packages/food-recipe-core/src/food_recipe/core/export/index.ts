@@ -1,5 +1,22 @@
-import {Recipe} from '../types/recipe';
+import {RangeValue, Recipe, Value} from '../types/recipe';
 import {getUnitDisplay, LANG_TYPE} from '../i18n';
+
+export function valueToString(value: Value | RangeValue, lang: LANG_TYPE='ru'): string {
+  let str_value = '';
+  if (value.value) {
+    if (Array.isArray(value.value)) {
+      str_value = value.value.join('-');
+    } else {
+      str_value = value.value.toString();
+    }
+  }
+  if (lang == 'ru') {
+    // Исправляем точки на запятые в соответствии с локалью
+    str_value = str_value.replace('.', ',')
+  }
+  return str_value
+
+}
 
 export function recipeToText(recipe: Recipe, lang: LANG_TYPE = 'ru'): string {
   let s = '';
@@ -15,15 +32,12 @@ export function recipeToText(recipe: Recipe, lang: LANG_TYPE = 'ru'): string {
       let name = i.name;
       let value = '';
       if (i.value) {
-        value = i.value.toString();
-        if (Array.isArray(i.value)) {
-          value = i.value.join('-');
-        }
+        value = valueToString(i)
       }
       if (i.type?.concentration) {
         name += ` ${i.type.concentration}%`;
       }
-      s += `${name} - ${value} ${getUnitDisplay(i.unit, lang, i.value)}\n`;
+      s += `${name} \t ${value} \t ${getUnitDisplay(i.unit, lang, i.value)}\n`;
     }
   }
   if (recipe.portion) {
