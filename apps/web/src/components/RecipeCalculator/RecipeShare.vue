@@ -14,9 +14,16 @@ const props = defineProps<Props>()
 const textRecipe = ref<string>("")
 const showModal = ref(false)
 
+const writeToClipboard = () => {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(textRecipe.value);
+  }
+
+}
 
 const onFocusAllSelectCb = (e: Event) => {
   (e.target as HTMLInputElement).select()
+  writeToClipboard()
 }
 
 watch(showModal,
@@ -42,13 +49,14 @@ watch(showModal,
           navigator.share(shareData)
         }
 
+        writeToClipboard()
       }
     }
 )
 </script>
 
 <template>
-  <button @click="showModal = true">Share</button>
+  <button @click="showModal = true">Copy/Share</button>
   <Modal v-model="showModal">
     <div class="modal-content">
 
@@ -56,6 +64,7 @@ watch(showModal,
           :value="textRecipe"
           readonly
           @focus="onFocusAllSelectCb"
+
       />
 
     </div>
