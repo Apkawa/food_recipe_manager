@@ -1,7 +1,7 @@
 ### Apps and Packages
 
 - `mvp`: примитивный интерфейс на чистом js
-- `userscript`: Заготовка для интерфейса юзерскрипта
+- `web`: интерфейс на vue
 - `@repo/food-recipe-core`: Логика рецептов
 - `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
