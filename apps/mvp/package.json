@@ -12,7 +12,7 @@
   "scripts": {
     "build": "webpack --mode=production",
     "build:watch": "npm run build -- --watch",
-    "dev": "webpack serve --mode=development --watch",
+    "_dev": "webpack serve --mode=development --watch",
     "test": "echo 'Add test script here'",
     "lint": "echo 'Add lint script here'"
   },

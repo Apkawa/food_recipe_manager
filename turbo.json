@@ -9,6 +9,9 @@
     "mvp#build": {
       "dependsOn": ["@repo/food-recipe-core#build"]
     },
+    "web#dev": {
+      "dependsOn": ["@repo/food-recipe-core#build"]
+    },
     "web#build": {
       "dependsOn": ["@repo/food-recipe-core#build"]
     },
