@@ -39,12 +39,15 @@ const hasMapping = (value: string | number) => {
   return false;
 };
 
+/** Convert a decimal to its vulgar fraction glyph when one is known. */
 export const toVulgar = (decimal: number) =>
   hasMapping(decimal) ? DECIMAL_MAP[decimal] : decimal.toString();
 
+/** Convert a vulgar fraction glyph or "a/b" text back to a decimal string. */
 export const toDecimal = (value: string) =>
   hasMapping(value) ? VULGAR_MAP[value].toString() : value;
 
+/** Replace recognizable fractions in a string with vulgar fraction glyphs. */
 export const parseVulgars = (str: string) => {
   const splitStr = str.split(' ');
 
@@ -72,12 +75,14 @@ export const parseVulgars = (str: string) => {
 };
 
 /**
- * 4.33 -> ['4', '1/3']
- * 0.33 -> ['', '1/3']
- * 3.7 -> null
- * @param n
+ * Split a number into its integer part and a vulgar fraction glyph.
+ *
+ * Matches common fractions (½, ⅓, ...) within a 0.01 tolerance of the decimal
+ * part, e.g. 4.33 -> ['4', '⅓'].
+ *
+ * @param n - Number to decompose.
+ * @returns [integerPart, vulgarGlyph], or null when no fraction matches.
  */
-
 export const extractVulgarFromNumber = (n: number): string[] | null => {
   // Extract decimal = 4.33 % 1 => 0.33
   const decimalPart = n % 1;
@@ -90,6 +95,12 @@ export const extractVulgarFromNumber = (n: number): string[] | null => {
   return null;
 };
 
+/**
+ * Format a number with a vulgar fraction when one is known (4.5 -> "4½").
+ *
+ * @param n - Number to format.
+ * @returns Display string; the plain decimal string when no fraction matches.
+ */
 export const numberToVulgar = (n: number): string => {
   const vulgarNumber = extractVulgarFromNumber(n);
   if (vulgarNumber) {

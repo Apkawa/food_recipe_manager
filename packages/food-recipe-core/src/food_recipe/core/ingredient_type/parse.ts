@@ -16,6 +16,12 @@ function compileDefinedTypes(): CompiledIngredientType[] {
 
 const CONCENTRATION_RE = /(\d+)\s*%/;
 
+/**
+ * Extract a concentration percentage from an ingredient name.
+ *
+ * @param str - Ingredient name to inspect, e.g. "уксус 9%".
+ * @returns The percent value, or null when no explicit percentage is present.
+ */
 export function extractVinegarConcentration(str: string): number | null {
   const m = CONCENTRATION_RE.exec(str);
   if (m) {
@@ -25,11 +31,13 @@ export function extractVinegarConcentration(str: string): number | null {
 }
 
 /**
- * Пытаемся парсить название ингредиента и возвращаем метаинформацию
- * вроде плотности которая нужна будет для пересчета в другие системы измерения.
+ * Detect a known ingredient type from its name and return its metadata.
  *
- * @param str
- * @return IngredientType | null
+ * For vinegar names the explicit percentage (e.g. "уксус 9%") overrides the
+ * default concentration of the matched type.
+ *
+ * @param str - Ingredient name to match against defined types.
+ * @returns The matched IngredientType, or null for unknown ingredients.
  */
 export function parseIngredientType(str: string): IngredientType | null {
   for (const t of compileDefinedTypes()) {
@@ -46,8 +54,14 @@ export function parseIngredientType(str: string): IngredientType | null {
 }
 
 /**
+ * Attach ingredient-type metadata to an ingredient based on its name.
  *
- * @param ingredient
+ * When no explicit type is set, tries to recognize a defined type (density,
+ * concentration). For vinegar the percentage is moved from the name into
+ * `type.concentration`. Mutates and returns the same ingredient.
+ *
+ * @param ingredient - Ingredient to enrich; mutated in-place.
+ * @returns The same ingredient object.
  */
 export function prepareIngredient(ingredient: Ingredient): Ingredient {
   if (!ingredient.type) {

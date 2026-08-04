@@ -5,10 +5,11 @@ interface DefinedIngredientType extends IngredientType {
 }
 
 /**
- *  плотность, г/л или кг/м^3
+ * Built-in ingredient types with known physical properties used for unit
+ * conversion and concentration math.
  *
- *  Пример: Сахар, 900г/л. Литр сахара весит: (900г/л / (1л * 1000)) * 1000 = 900 г
- *  Пример2: Сахар, 900г/л. Килограмм сахара займет: ((1кг*1000) / 900г/л) * 1000 = 1111 мл
+ * Density is expressed in g/l (e.g. sugar 900 g/l, table salt 1300 g/l);
+ * concentration is the percent of active substance (vinegar essence 70%).
  */
 export const DEFINED_INGREDIENT_TYPES: DefinedIngredientType[] = [
   {

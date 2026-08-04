@@ -28,6 +28,17 @@ Rules and context for agents working on this monorepo.
 - Apps = thin wrappers around core logic.
 - Regex-heavy parsing lives in core; avoid scattering it to apps.
 
+## TSDoc conventions
+
+- Follow [TSDoc spec](https://tsdoc.org/) for all public API documentation.
+- Document exported declarations (functions, classes, interfaces, enums). Skip internal helpers.
+- Use imperative mood in summary lines ("Parse...", "Calculate...", not "Parses...").
+- Use `-` between tag name and description: `@param name - Description`.
+- Prefer `@param name - desc` over `@param {Type} name` when TS can infer the type.
+- Include `@returns` and `@throws` only when meaningful.
+- Use `@internal` for non-public members that are exported for technical reasons.
+- Keep descriptions concise; explain **why**, not what is obvious from the signature.
+
 ## Key paths
 
 - Routing (web): `apps/web/src/router/index.ts` (hash history)

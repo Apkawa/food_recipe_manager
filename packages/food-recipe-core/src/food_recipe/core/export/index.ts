@@ -1,6 +1,13 @@
 import {RangeValue, Recipe, Value} from '../types/recipe';
 import {getUnitDisplay, LANG_TYPE} from '../i18n';
 
+/**
+ * Format an ingredient value (single number or min-max range) for display.
+ *
+ * @param value - Value holder with a plain or ranged quantity.
+ * @param lang - Target language; Russian output swaps `.` for `,`.
+ * @returns Display string, empty when no value is set ("to taste").
+ */
 export function valueToString(value: Value | RangeValue, lang: LANG_TYPE='ru'): string {
   let str_value = '';
   if (value.value) {
@@ -18,6 +25,16 @@ export function valueToString(value: Value | RangeValue, lang: LANG_TYPE='ru'): 
 
 }
 
+/**
+ * Serialize a Recipe back to plain text (inverse of parseTextRecipe).
+ *
+ * Uses localized unit labels via getUnitDisplay and appends the type
+ * concentration (e.g. "50%") to the ingredient name when present.
+ *
+ * @param recipe - Recipe to serialize.
+ * @param lang - Target language for unit labels; defaults to Russian.
+ * @returns The recipe as plain text.
+ */
 export function recipeToText(recipe: Recipe, lang: LANG_TYPE = 'ru'): string {
   let s = '';
   if (recipe.name) {

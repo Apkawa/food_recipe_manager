@@ -64,6 +64,17 @@ interface MatchGroupsResult extends UnitGroupsResult {
   unit?: string;
 }
 
+/**
+ * Parse a single recipe line into an Ingredient.
+ *
+ * Recognizes vulgar fractions (½, 3/4), ranges ("1-2"), Russian and English
+ * unit spellings, and "to taste" lines. A bare number without a unit is
+ * treated as pieces (`pcs`).
+ *
+ * @param raw_line - Raw line from the recipe text.
+ * @returns The parsed ingredient, or null when the line is not an ingredient
+ *          (e.g. a group header or the recipe name).
+ */
 export function parseRecipeLine(raw_line: string): Ingredient | null {
   let groups: MatchGroupsResult = {};
   let name: string = '';

@@ -6,6 +6,19 @@ import {prepareIngredient} from '../ingredient_type/parse';
 const DESC_DELIM_RE = /\n\s*[-#=*~+]{3,}\s*\n/;
 const END_LINE = 'o(. _ .)o';
 
+/**
+ * Parse a plain-text recipe into a structured Recipe object.
+ *
+ * Expected layout:
+ * - the first non-ingredient line becomes the recipe name,
+ * - later non-ingredient lines start new ingredient groups,
+ * - lines matching the ingredient pattern become ingredients,
+ * - a line with the `portion` unit sets `recipe.portion`,
+ * - text after a `---` delimiter becomes `recipe.description`.
+ *
+ * @param raw_text - Raw recipe text.
+ * @returns The parsed Recipe; `name` may be empty for unnamed recipes.
+ */
 export function parseTextRecipe(raw_text: string): Recipe {
   const recipe: Recipe = {
     name: '',

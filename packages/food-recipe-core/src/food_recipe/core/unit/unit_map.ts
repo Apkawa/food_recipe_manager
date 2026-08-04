@@ -20,6 +20,12 @@ function buildPluralRe(base: string, plurals: string[]): string {
 
 const unitPluralRu = (base: string) => buildPluralRe(base, ['a', 'ов'])
 
+/**
+ * Alternative spellings recognized by the parser for each unit.
+ *
+ * Each value holds regex fragments (Russian and English forms, plurals and
+ * abbreviations) that map to the corresponding Unit.
+ */
 export const UNIT_PARSE_MAP: UnitMap = {
   pcs: ['шт', 'pcs', 'ps', 'зубчик(?:а|ов)?', 'штук(?:а|и)?'],
   // Volume
