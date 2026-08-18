@@ -12,6 +12,15 @@
     "web#build": {
       "dependsOn": ["@repo/food-recipe-core#build"]
     },
+    "web-react#dev": {
+      "dependsOn": ["@repo/food-recipe-core#build"]
+    },
+    "web-react#build": {
+      "dependsOn": ["@repo/food-recipe-core#build"]
+    },
+    "format:check": {
+      "cache": false
+    },
     "lint": {
       "dependsOn": ["^lint"]
     },
