@@ -1,0 +1,59 @@
+---
+id: function_components
+title: Function Components
+---
+
+These can be written as normal functions that take a `props` argument and return a JSX element.
+
+```tsx
+// Declaring type of props - see "Typing Component Props" for more examples
+type AppProps = {
+  message: string;
+}; /* use `interface` if exporting so that consumers can extend */
+
+// Easiest way to declare a Function Component; return type is inferred.
+const App = ({ message }: AppProps) => <div>{message}</div>;
+
+// You can choose to annotate the return type so an error is raised if you accidentally return some other type
+const App = ({ message }: AppProps): React.JSX.Element => <div>{message}</div>;
+
+// You can also inline the type declaration; eliminates naming the prop types, but looks repetitive
+const App = ({ message }: { message: string }) => <div>{message}</div>;
+
+// Alternatively, you can use `React.FunctionComponent` (or `React.FC`), if you prefer.
+// With latest React types and TypeScript 5.1. it's mostly a stylistic choice, otherwise discouraged.
+const App: React.FunctionComponent<{ message: string }> = ({ message }) => (
+  <div>{message}</div>
+);
+// or
+const App: React.FC<AppProps> = ({ message }) => <div>{message}</div>;
+```
+
+> Tip: You might use [Paul Shen's VS Code Extension](https://marketplace.visualstudio.com/items?itemName=paulshen.paul-typescript-toolkit) to automate the type destructure declaration (incl a [keyboard shortcut](https://twitter.com/_paulshen/status/1392915279466745857?s=20)).
+
+<details>
+
+<summary><b>Why is <code>React.FC</code> not needed? What about <code>React.FunctionComponent</code>/<code>React.VoidFunctionComponent</code>?</b></summary>
+
+You may see this in many React+TypeScript codebases:
+
+```tsx
+const App: React.FunctionComponent<{ message: string }> = ({ message }) => (
+  <div>{message}</div>
+);
+```
+
+However, the general consensus today is that `React.FunctionComponent` (or the shorthand `React.FC`) is not needed. If you're still using React 17 or TypeScript lower than 5.1, it is even [discouraged](https://github.com/facebook/create-react-app/pull/8177). This is a nuanced opinion of course, but if you agree and want to remove `React.FC` from your codebase, you can use [this jscodeshift codemod](https://github.com/gndelia/codemod-replace-react-fc-typescript).
+
+Some differences from the "normal function" version:
+
+- `React.FunctionComponent` is explicit about the return type, while the normal function version is implicit (or else needs additional annotation).
+
+- It provides typechecking and autocomplete for static properties like `displayName`, `propTypes`, and `defaultProps`.
+  - Note that there are some known issues using `defaultProps` with `React.FunctionComponent`. See [this issue for details](https://github.com/typescript-cheatsheets/react/issues/87). We maintain a separate `defaultProps` section you can also look up.
+
+- _In the future_, it may automatically mark props as `readonly`, though that's a moot point if the props object is destructured in the parameter list.
+
+In most cases it makes very little difference which syntax is used, but you may prefer the more explicit nature of `React.FunctionComponent`.
+
+</details>
