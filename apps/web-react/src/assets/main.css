@@ -1,0 +1,150 @@
+@import "./base.css";
+
+/* React renders into #root instead of Vue's #app */
+#root {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1em;
+  font-weight: normal;
+  text-wrap: normal;
+}
+
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+body {
+  display: flex;
+}
+
+/* Layout (App) — port of apps/web/src/App.vue scoped styles */
+
+.wrapper {
+  width: 100%;
+}
+
+header {
+  line-height: 1.5;
+}
+
+nav {
+  display: flex;
+  font-size: 12px;
+}
+
+/* NavLink renders class="active" (Vue Router used .router-link-exact-active) */
+nav a.active {
+  color: var(--color-text);
+}
+
+nav a.active:hover {
+  background-color: transparent;
+}
+
+nav a {
+  display: inline-block;
+  padding: 0 1rem;
+  border-left: 1px solid var(--color-border);
+}
+
+nav a:first-of-type {
+  border: 0;
+}
+
+.content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content footer {
+  margin-top: auto;
+}
+
+/* BuildInfo — port of apps/web/src/components/BuildInfo.vue styles */
+
+.build-info-wrapper {
+  position: relative;
+  width: 100%;
+  left: 0;
+  text-align: right;
+}
+
+.build-info {
+  color: gray;
+  font-size: 0.8em;
+}
+
+/* GrandMother — port of apps/web/src/components/GrandMother.vue styles */
+
+.grandmother-wrapper {
+  max-width: 500px;
+  text-align: center;
+}
+
+.grandmother-wrapper img {
+  width: 100%;
+}
+
+.grandmother-text {
+  font-size: 2.5em;
+  font-weight: bold;
+  top: -125px;
+  position: relative;
+  color: white;
+  text-shadow:
+    1px 1px 0 #000,
+    -1px 1px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000;
+}
+
+/* AboutView — port of apps/web/src/views/AboutView.vue styles */
+
+@media (min-width: 1024px) {
+  header {
+    display: flex;
+    place-items: center;
+  }
+
+  header .wrapper {
+    display: flex;
+    place-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  nav .logo {
+    margin-left: auto;
+  }
+
+  nav {
+    text-align: left;
+    margin-left: -1rem;
+    font-size: 1rem;
+
+    padding: 1rem 0;
+    margin-top: 1rem;
+  }
+
+  #root {
+    width: 640px;
+  }
+
+  .about {
+    word-wrap: normal;
+  }
+
+  p {
+    padding-bottom: 1em;
+  }
+}
