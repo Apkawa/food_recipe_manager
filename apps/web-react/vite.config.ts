@@ -4,8 +4,69 @@ import {fileURLToPath} from "node:url";
 import react from "@vitejs/plugin-react";
 import type {ConfigEnv} from "vite";
 import {loadEnv} from "vite";
+import {VitePWA, type VitePWAOptions} from "vite-plugin-pwa";
 import {defineConfig} from "vitest/config";
 import packageJson from "./package.json";
+
+// Port of the PWA options from apps/web/vite.config.ts (same manifest, icons,
+// screenshots and .txt file handler).
+const PWAOptions: Partial<VitePWAOptions> = {
+  registerType: "autoUpdate",
+  devOptions: {enabled: true},
+  workbox: {
+    globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+  },
+  includeAssets: ["favicon.ico", "apple-touch-icon-180x180.png", "maskable-icon-512x512.png"],
+  manifest: {
+    name: "Кухонный калькулятор",
+    short_name: "Кухонный калькулятор",
+    description: "Калькулятор рецептов и не только",
+    theme_color: "#ffffff",
+    screenshots: [
+      {
+        src: "pwa/screenshot_1_wide.png",
+        sizes: "1422x1363",
+        type: "image/png",
+        form_factor: "wide",
+        label: "Основной интерфейс",
+      },
+      {
+        src: "pwa/screenshot_1_narrow.png",
+        sizes: "430x932",
+        type: "image/png",
+        form_factor: "narrow",
+        label: "Основной интерфейс",
+      },
+      {
+        src: "pwa/screenshot_2_narrow.png",
+        sizes: "430x932",
+        type: "image/png",
+        form_factor: "narrow",
+        label: "Окно валидации ошибки =3",
+      },
+    ],
+    icons: [
+      {
+        src: "pwa-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        src: "pwa-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
+    file_handlers: [
+      {
+        action: "./",
+        accept: {
+          "text/plain": [".txt"],
+        },
+      },
+    ],
+  },
+};
 
 interface BuildInfo {
   commitHash: string;
@@ -46,7 +107,7 @@ export default defineConfig(({mode}: ConfigEnv) => {
   }
 
   return {
-    plugins: [react()],
+    plugins: [react(), VitePWA(PWAOptions)],
     base: "./",
     resolve: {
       alias: {
