@@ -19,36 +19,36 @@
 
 ## Фаза 0 — Каркас и интеграция в монорепо (S)
 
-- [ ] Создать `apps/web-react` (scaffold react-ts через `npm create vite@latest`, затем вычистить бойлерплейт).
-- [ ] `package.json`: имя `web-react`; скрипты: `dev`, `build` (type-check + build-only),
+- [x] Создать `apps/web-react` (scaffold react-ts через `npm create vite@latest`, затем вычистить бойлерплейт).
+- [x] `package.json`: имя `web-react`; скрипты: `dev`, `build` (type-check + build-only),
       `preview`, `test` (vitest run), `format` (`biome format --write src/ dist/`),
       `format:check` (`biome check src/ --write`), `type` (`tsc --noEmit -p .`). Скрипта `lint` нет — ESLint не используем.
-- [ ] Зависимости: `react ^19.2`, `react-dom ^19.2`, `react-router-dom ^6`, `zustand ^5`,
+- [x] Зависимости: `react ^19.2`, `react-dom ^19.2`, `react-router-dom ^6`, `zustand ^5`,
       `@repo/food-recipe-core`; dev: `typescript`, `vite ^5.4`, `@vitejs/plugin-react`, `vitest`,
       `@testing-library/react ^16` (поддержка React 19), `jsdom`, `vite-plugin-pwa`,
       `@types/react ^19`, `@types/react-dom ^19`. ESLint не ставим.
-- [ ] Lint/формат — **Biome + tsc**: `@biomejs/biome` доустановить в корневые devDependencies
+- [x] Lint/формат — **Biome + tsc**: `@biomejs/biome` доустановить в корневые devDependencies
       (корневой `biome.json` уже есть); добавить `apps/web-react/**` в `.prettierignore`, чтобы
       Prettier (корневой `format` / pre-commit) не трогал файлы web-react.
-- [ ] Новый пресет `packages/typescript-config/vite-react.json`
+- [x] Новый пресет `packages/typescript-config/vite-react.json`
       (`module: ESNext`, `moduleResolution: Bundler`, `jsx: react-jsx`, `noEmit`) и подключить его из
       `apps/web-react/tsconfig.json`.
-- [ ] `turbo.json`: добавить `web-react#dev` и `web-react#build` c
+- [x] `turbo.json`: добавить `web-react#dev` и `web-react#build` c
       `dependsOn: ["@repo/food-recipe-core#build"]` (паттерн как у `web`).
-- [ ] Скопировать PWA-ассеты из `apps/web/public/` (иконки, `pwa/`, `img/grandmother.jpg`).
+- [x] Скопировать PWA-ассеты из `apps/web/public/` (иконки, `pwa/`, `img/grandmother.jpg`).
 
 **Критерий:** `npm run build --filter=web-react` собирается; dev-сервер поднимает заглушку;
 turbo видит задачи `web-react#*`.
 
 ## Фаза 1 — Скелет: роутер, views, build-info (S)
 
-- [ ] `src/router/index.tsx`: `createHashRouter`, маршруты `/` (home), `/favorite`, `/about`, `/helpers`
+- [x] `src/router/index.tsx`: `createHashRouter`, маршруты `/` (home), `/favorite`, `/about`, `/helpers`
       (ленивая загрузка для non-home — как в Vue-роутере).
-- [ ] Views: `HomeView` (заглушка калькулятора), `FavoritesView`, `AboutView` (`BuildInfo`),
+- [x] Views: `HomeView` (заглушка калькулятора), `FavoritesView`, `AboutView` (`BuildInfo`),
       `HelpersView` (три заголовка-заглушки).
-- [ ] Layout `App.tsx`: header с навигацией (Калькулятор / Избранное / О проекте) + footer c `BuildInfo` —
+- [x] Layout `App.tsx`: header с навигацией (Калькулятор / Избранное / О проекте) + footer c `BuildInfo` —
       по образцу `apps/web/src/App.vue`.
-- [ ] Инжект build-info в `vite.config.ts` (`git show` → `VITE_GIT_COMMIT_HASH/DATE/BRANCH_NAME`,
+- [x] Инжект build-info в `vite.config.ts` (`git show` → `VITE_GIT_COMMIT_HASH/DATE/BRANCH_NAME`,
       `VITE_PACKAGE_VERSION`) — паттерн из `apps/web/vite.config.ts`; типы переменных в `src/env.d.ts`.
 
 **Критерий:** все 4 маршрута рендерятся; `BuildInfo` показывает версию/ветку/коммит/дату.
@@ -56,15 +56,15 @@ turbo видит задачи `web-react#*`.
 
 ## Фаза 2 — Слой состояния (M)
 
-- [ ] `src/lib/utils.ts`: `cloneDeep`, `isNumber` (порт `apps/web/src/utils/index.ts`).
-- [ ] `src/lib/state.ts`: `base64ToBytes`/`bytesToBase64` (Unicode-safe, идентичны Vue-версии),
+- [x] `src/lib/utils.ts`: `cloneDeep`, `isNumber` (порт `apps/web/src/utils/index.ts`).
+- [x] `src/lib/state.ts`: `base64ToBytes`/`bytesToBase64` (Unicode-safe, идентичны Vue-версии),
       `loadStateFromQuery`, загрузка с приоритетом **URL > localStorage > дефолты**,
       сохранение в URL через replace (без новых записей истории).
-- [ ] `src/stores/recipe.ts`: zustand-store `{rawRecipe, scale, newScale}` + `persist` с записью
+- [x] `src/stores/recipe.ts`: zustand-store `{rawRecipe, scale, newScale}` + `persist` с записью
       **плоских ключей** `'rawRecipe'`, `'scale'`, `'newScale'` (простые строки — формат Vue-версии).
-- [ ] `src/stores/favorites.ts`: `RecipeItem[]`; actions `add`, `addOrUpdateByName`, `getIndexByName`,
+- [x] `src/stores/favorites.ts`: `RecipeItem[]`; actions `add`, `addOrUpdateByName`, `getIndexByName`,
       `removeByIndex`, `updateByName` (паритет с Pinia-store); persist в `'recipe-favorite'` как JSON.
-- [ ] Тесты: base64 round-trip с кириллицей; парсинг query; приоритет загрузки; точные имена/форматы
+- [x] Тесты: base64 round-trip с кириллицей; парсинг query; приоритет загрузки; точные имена/форматы
       localStorage-ключей (сравнение с поведением `apps/web/src/components/RecipeCalculator/state.ts`);
       actions избранного.
 
