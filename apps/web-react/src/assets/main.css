@@ -179,6 +179,19 @@ nav a:first-of-type {
   width: 4em;
 }
 
+/* RecipeShare — port of RecipeShare.vue scoped style */
+
+.modal-content textarea {
+  width: 100%;
+  height: 50vh;
+}
+
+/* FavoritesList — port of RecipeFavoriteList.vue scoped style */
+
+.table {
+  width: 100%;
+}
+
 /* AboutView — port of apps/web/src/views/AboutView.vue styles */
 
 @media (min-width: 1024px) {

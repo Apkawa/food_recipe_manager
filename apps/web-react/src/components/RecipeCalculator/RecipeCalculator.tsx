@@ -10,6 +10,8 @@ import GrandMother from "../GrandMother";
 import Modal from "../ui/Modal";
 import ParsedRecipeTable from "./ParsedRecipeTable";
 import RawRecipeEditor from "./RawRecipeEditor";
+import RecipeFavoriteButton from "./RecipeFavoriteButton";
+import RecipeShare from "./RecipeShare";
 import ScaleControls from "./ScaleControls";
 
 const LANG = "ru" as const;
@@ -94,26 +96,35 @@ function RecipeCalculator() {
         </div>
       </Modal>
       {scaled.ingredient_groups.length > 0 ? (
-        <div id="parsed_recipe">
-          <h2>{parsed.name}</h2>
-          <ParsedRecipeTable recipe={scaled} lang={LANG} onIngredientUpdate={onIngredientUpdate} />
-          <ScaleControls
-            scale={scale}
-            newScale={newScale}
-            onScaleChange={setScale}
-            onNewScaleChange={setNewScale}
-          />
-        </div>
-      ) : null}
-      {parsed.description ? (
-        <div>
+        <>
+          <div id="parsed_recipe">
+            <h2>{parsed.name}</h2>
+            <ParsedRecipeTable
+              recipe={scaled}
+              lang={LANG}
+              onIngredientUpdate={onIngredientUpdate}
+            />
+            <ScaleControls
+              scale={scale}
+              newScale={newScale}
+              onScaleChange={setScale}
+              onNewScaleChange={setNewScale}
+            />
+          </div>
+          {parsed.description ? (
+            <div>
+              <br />
+              <h2>Описание:</h2>
+              <pre>{parsed.description}</pre>
+            </div>
+          ) : null}
           <br />
-          <h2>Описание:</h2>
-          <pre>{parsed.description}</pre>
-        </div>
+          <div>
+            <RecipeShare recipe={parsed} />
+            <RecipeFavoriteButton recipe={parsed} />
+          </div>
+        </>
       ) : null}
-      <br />
-      {/* Phase 4: RecipeShare + RecipeFavoriteButton go here. */}
       <hr />
       <br />
       <div className="rawRecipe-wrap">

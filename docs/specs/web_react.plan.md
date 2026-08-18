@@ -102,13 +102,13 @@ turbo видит задачи `web-react#*`.
 
 ## Фаза 4 — Share и избранное (M)
 
-- [ ] `RecipeShare.tsx`: по открытию — клон рецепта, `portion = calculated_portion`,
+- [x] `RecipeShare.tsx`: по открытию — клон рецепта, `portion = calculated_portion`,
       `value = calculated_value` у всех ингредиентов, `recipeToText`; `navigator.clipboard.writeText`;
       `navigator.share` при `canShare`; readonly-textarea (select-on-focus).
-- [ ] `RecipeFavoriteButton.tsx`: `isFavorited` по имени; текст «Добавить в избранное» / «Обновить избранное».
-- [ ] `FavoritesList.tsx` + подключение в `FavoritesView`: список, клик → навигация на `/` c query
+- [x] `RecipeFavoriteButton.tsx`: `isFavorited` по имени; текст «Добавить в избранное» / «Обновить избранное».
+- [x] `FavoritesList.tsx` + подключение в `FavoritesView`: список, клик → навигация на `/` c query
       (`rawRecipe` base64 от `recipeToText(recipe)`, `scale`, `newScale`), кнопка удаления, пустое состояние.
-- [ ] Тесты: share-текст содержит пересчитанные значения и не мутирует исходный объект;
+- [x] Тесты: share-текст содержит пересчитанные значения и не мутирует исходный объект;
       добавление/обновление по имени; удаление; клик по избранному заполняет query маршрута.
 
 **Критерий:** полный цикл «расчёт → избранное → открыть из списка» и «расчёт → Copy/Share» работают,

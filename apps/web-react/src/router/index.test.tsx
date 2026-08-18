@@ -26,7 +26,7 @@ describe("routing", () => {
 
   it("renders the /favorite route (lazy)", async () => {
     renderAt("/favorite");
-    expect(await screen.findByRole("heading", { name: "Избранное" })).toBeDefined();
+    expect(await screen.findByRole("heading", { name: "Избранные рецепты" })).toBeDefined();
   });
 
   it("renders the /about route with project text and build info", async () => {

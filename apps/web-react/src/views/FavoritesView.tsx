@@ -1,12 +1,13 @@
+import FavoritesList from "../components/FavoritesList";
+
 /**
  * Favorites route.
- * Phase 1 placeholder — the favorites list port lands in phase 4.
+ * Port of apps/web/src/views/RecipeFavoritesView.vue.
  */
 function FavoritesView() {
   return (
     <main>
-      <h2>Избранное</h2>
-      <p>В разработке…</p>
+      <FavoritesList />
     </main>
   );
 }
