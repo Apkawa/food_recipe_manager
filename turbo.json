@@ -6,9 +6,6 @@
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
-    "mvp#build": {
-      "dependsOn": ["@repo/food-recipe-core#build"]
-    },
     "web#dev": {
       "dependsOn": ["@repo/food-recipe-core#build"]
     },
