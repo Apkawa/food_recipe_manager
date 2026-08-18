@@ -73,26 +73,26 @@ turbo видит задачи `web-react#*`.
 
 ## Фаза 3 — Калькулятор рецептов (L)
 
-- [ ] `components/ui/Modal.tsx` (overlay, props `open`/`onClose`).
-- [ ] `RecipeCalculator/constants.ts`: `EXAMPLE_RECIPE` (копия из Vue-версии).
-- [ ] `RecipeCalculator/utils.ts`: `VULGAR_UNITS`, `valueDisplay` (порт) + юнит-тесты
+- [x] `components/ui/Modal.tsx` (overlay, props `open`/`onClose`).
+- [x] `RecipeCalculator/constants.ts`: `EXAMPLE_RECIPE` (копия из Vue-версии).
+- [x] `RecipeCalculator/utils.ts`: `VULGAR_UNITS`, `valueDisplay` (порт) + юнит-тесты
       (vulgar-дроби, диапазоны `[1,2]`, пустые значения).
-- [ ] Контейнер `RecipeCalculator/RecipeCalculator.tsx`:
+- [x] Контейнер `RecipeCalculator/RecipeCalculator.tsx`:
   - производные данные в `useMemo`: `parsed = parseTextRecipe(rawRecipe)`; масштабированная копия —
     `structuredClone(parsed)` → `recipeScale(clone, newScale / scale)` (core мутирует на месте);
   - валидация `scale`/`newScale < 0.1` → сброс + модалка с `GrandMother`;
   - `onIngredientUpdate(ingredient, g_i, i)`: логика customScale (`round(calculated/value, 3)`),
     замена ингредиента, ре-сериализация `rawRecipe = recipeToText(...)`.
-- [ ] `ParsedRecipeTable.tsx` (презентационный): таблица, заголовки групп через `colspan='4'`,
+- [x] `ParsedRecipeTable.tsx` (презентационный): таблица, заголовки групп через `colspan='4'`,
       пропуск пустых имён групп.
-- [ ] `IngredientLine.tsx`: чекбокс + зачёркивание, значение через `valueDisplay(calculated_value ?? value)`,
+- [x] `IngredientLine.tsx`: чекбокс + зачёркивание, значение через `valueDisplay(calculated_value ?? value)`,
       единица через `getUnitDisplay`, кнопка Edit (скрыта для `unit === 'taste'`); локально: `editMode`, `checked`.
-- [ ] `IngredientLineEdit.tsx`: черновик = клон ингредиента; числовое поле значения; `UnitSelect`;
+- [x] `IngredientLineEdit.tsx`: черновик = клон ингредиента; числовое поле значения; `UnitSelect`;
       поле концентрации + `calculateConcentration` (для ингредиентов с `type.concentration`);
       Save → колбэк вверх.
-- [ ] `UnitSelect.tsx`: опции из `getAvailableConvertUnits` c подписями `getUnitDisplay`.
-- [ ] `ScaleControls.tsx`, `RawRecipeEditor.tsx` — controlled-компоненты (controlled-props + onChange).
-- [ ] `GrandMother.tsx` (img `public/img/grandmother.jpg` + «Не балуйся»).
+- [x] `UnitSelect.tsx`: опции из `getAvailableConvertUnits` c подписями `getUnitDisplay`.
+- [x] `ScaleControls.tsx`, `RawRecipeEditor.tsx` — controlled-компоненты (controlled-props + onChange).
+- [x] `GrandMother.tsx` (img `public/img/grandmother.jpg` + «Не балуйся»).
 
 **Критерий:** все сценарии калькулятора работают как в `apps/web`:
 вставить текст → таблица; масштаб 1→6 пересчитывает значения; ручное изменение ингредиента

@@ -41,7 +41,7 @@ export type PartialRecipeState = Record<keyof RecipeState, string | undefined>;
 /** Extract the recipe state fields from a URL query, decoding rawRecipe from base64. */
 export function loadStateFromQuery(query: Record<string, string | undefined>): PartialRecipeState {
   const obj = Object.fromEntries(RECIPE_STATE_KEYS.map((key) => [key, query[key] || undefined]));
-  if (obj["rawRecipe"]) {
+  if (obj.rawRecipe) {
     obj.rawRecipe = base64ToBytes(obj.rawRecipe);
   }
   return obj as PartialRecipeState;

@@ -109,6 +109,76 @@ nav a:first-of-type {
     1px -1px 0 #000;
 }
 
+/* RecipeCalculator — port of the scoped styles from
+   RecipeCalculator.vue, UiModal.vue, IngredientLine/index.vue and Edit.vue */
+
+.scale_wrap {
+  font-size: large;
+  padding: 0.5em;
+}
+
+.scale_wrap > div {
+  padding-top: 1em;
+}
+
+.scale_wrap input {
+  font-size: larger;
+  width: 3em;
+}
+
+#parsed_recipe table {
+  width: 100%;
+}
+
+#raw_recipe {
+  width: 100%;
+  height: 420px;
+}
+
+.modal {
+  position: fixed;
+  /*todo запрет скроллинга body.modal-open {overflow-y: hidden }*/
+  overflow-y: hidden;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgb(127, 127, 127, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal .modal-content {
+  text-align: center;
+  width: 100vw;
+  max-width: 640px;
+}
+
+.checked .name {
+  text-decoration-line: line-through;
+}
+
+.fraction {
+  font-feature-settings: afrc;
+  font-size: 1.5em;
+}
+
+@supports (font-variant-numeric: stacked-fractions) {
+  .fraction {
+    font-feature-settings: afrc;
+    font-variant-numeric: stacked-fractions;
+  }
+}
+
+.concentration {
+  width: 4em;
+}
+
+.edit-value {
+  width: 4em;
+}
+
 /* AboutView — port of apps/web/src/views/AboutView.vue styles */
 
 @media (min-width: 1024px) {
