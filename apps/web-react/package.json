@@ -11,6 +11,7 @@
     "test": "vitest run",
     "format": "biome format --write src/ dist/",
     "format:check": "biome check src/ --write",
+    "lint": "biome check src/",
     "type": "tsc --noEmit -p ."
   },
   "dependencies": {

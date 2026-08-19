@@ -4,10 +4,11 @@ Rules and context for agents working on this monorepo.
 
 ## Project at a glance
 
-- **Monorepo**: npm workspaces + Turborepo. Node >=18, npm@9.8.0
+- **Monorepo**: npm workspaces + Turborepo. Node >=22, npm@9.8.0
 - **Core**: `@repo/food-recipe-core` — shared parser, calculator, unit conversion. Both apps depend on it.
 - **Apps**:
   - `apps/web` — Vue 3 + Vite SPA (PWA, Pinia, Vue Router hash-mode). Deployed to GitHub Pages.
+  - `apps/web-react` — React 19 + Vite SPA (PWA, Zustand, React Router hash mode), port of `apps/web`; deploy pending.
   - `apps/mvp` — Vanilla TS + Webpack SPA. Minimal demo for recipe parsing + scaling.
 - **Packages**:
   - `eslint-config` — shared ESLint presets (ready)
@@ -43,6 +44,8 @@ Rules and context for agents working on this monorepo.
 
 - Routing (web): `apps/web/src/router/index.ts` (hash history)
 - Stores (web): `apps/web/src/stores/`
+- Routing (web-react): `apps/web-react/src/router/index.tsx` (hash history)
+- Stores (web-react): `apps/web-react/src/stores/`
 - Core parser: `packages/food-recipe-core/src/parser/`
 - Core calculator: `packages/food-recipe-core/src/calculator/`
 - Core types: `packages/food-recipe-core/src/types/recipe.d.ts`

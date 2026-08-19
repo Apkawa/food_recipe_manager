@@ -12,6 +12,9 @@ import packageJson from "./package.json";
 // screenshots and .txt file handler).
 const PWAOptions: Partial<VitePWAOptions> = {
   registerType: "autoUpdate",
+  // Dev PWA is intentionally enabled (unlike the Vue app config): the dev service worker
+  // only precaches static assets from dev-dist/, never the app code, so dev builds stay
+  // fresh; autoUpdate keeps the SW current. Verified against vite-plugin-pwa source.
   devOptions: {enabled: true},
   workbox: {
     globPatterns: ["**/*.{js,css,html,ico,png,svg}"],

@@ -50,3 +50,12 @@
 ## Самостоятельная сборка
 
 По вопросам самостоятельной сборки и доработок см в [CONTRIBUTING](./CONTRIBUTING.md)
+
+### web-react (React-порт)
+
+Все команды — из корня репозитория (npm workspaces + Turborepo):
+
+- Разработка: `npm run dev --filter=web-react` → http://localhost:5173 (PWA включён и в dev)
+- Сборка: `npm run build --filter=web-react` → `apps/web-react/dist` (включая PWA: sw.js + manifest)
+- Предпросмотр продакшен-сборки: `npm run preview --filter=web-react`
+- Тесты: `npm run test --filter=web-react`
