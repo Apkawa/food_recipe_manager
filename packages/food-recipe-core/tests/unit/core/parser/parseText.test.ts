@@ -1,23 +1,23 @@
-import {parseTextRecipe} from '@app/core/parser/text';
+import { parseTextRecipe } from "@app/core/parser/text";
 
-describe('parseTextRecipe', () => {
-  it('Empty recipe', () => {
+describe("parseTextRecipe", () => {
+  it("Empty recipe", () => {
     const t = ``;
     expect(parseTextRecipe(t)).toStrictEqual({
       ingredient_groups: [],
-      name: '',
+      name: "",
     });
   });
-  it('Only text', () => {
+  it("Only text", () => {
     const t = `Foo
     Bar
     Baz`;
     expect(parseTextRecipe(t)).toStrictEqual({
       ingredient_groups: [],
-      name: 'Foo',
+      name: "Foo",
     });
   });
-  it('Parse portions', () => {
+  it("Parse portions", () => {
     const t = `Foo
     2 portions 
     4 onions`;
@@ -26,19 +26,19 @@ describe('parseTextRecipe', () => {
         {
           ingredients: [
             {
-              name: 'onions',
-              unit: 'pcs',
+              name: "onions",
+              unit: "pcs",
               value: 4,
             },
           ],
-          name: '',
+          name: "",
         },
       ],
       portion: 2,
-      name: 'Foo',
+      name: "Foo",
     });
   });
-  it('generic', () => {
+  it("generic", () => {
     const t = `Яйцо перепелиное – 6 шт.
 Масло растительное – 150 мл
 Соль - 0,5 ч.л.`;
@@ -47,32 +47,32 @@ describe('parseTextRecipe', () => {
         {
           ingredients: [
             {
-              name: 'Яйцо перепелиное',
-              unit: 'pcs',
+              name: "Яйцо перепелиное",
+              unit: "pcs",
               value: 6,
             },
             {
-              name: 'Масло растительное',
-              unit: 'ml',
+              name: "Масло растительное",
+              unit: "ml",
               value: 150,
             },
             {
-              name: 'Соль',
+              name: "Соль",
               type: {
                 density: 1030,
-                name: 'kosher salt',
+                name: "kosher salt",
               },
-              unit: 'tsp',
+              unit: "tsp",
               value: 0.5,
             },
           ],
-          name: '',
+          name: "",
         },
       ],
-      name: '',
+      name: "",
     });
   });
-  it('with name and groups', () => {
+  it("with name and groups", () => {
     const t = `
     Картофельные дольки с чесноком⁠⁠
     
@@ -87,34 +87,34 @@ describe('parseTextRecipe', () => {
         {
           ingredients: [
             {
-              name: 'Картофель',
-              unit: 'kg',
+              name: "Картофель",
+              unit: "kg",
               value: 1,
             },
             {
-              name: 'Чеснок – головки',
-              unit: 'pcs',
+              name: "Чеснок – головки",
+              unit: "pcs",
               value: 0.5,
             },
             {
-              name: 'Красный перец',
-              unit: 'tsp',
+              name: "Красный перец",
+              unit: "tsp",
               value: [1, 2],
             },
             {
-              name: 'Растительное масло',
-              unit: 'tbsp',
+              name: "Растительное масло",
+              unit: "tbsp",
               value: 3,
             },
           ],
-          name: 'Ингредиенты',
+          name: "Ингредиенты",
         },
       ],
-      name: 'Картофельные дольки с чесноком',
+      name: "Картофельные дольки с чесноком",
     });
   });
 
-  it('eda.ru example', () => {
+  it("eda.ru example", () => {
     const t = `
     Горох
 1 стакан
@@ -132,42 +132,42 @@ describe('parseTextRecipe', () => {
         {
           ingredients: [
             {
-              name: 'Горох',
-              unit: 'cup',
+              name: "Горох",
+              unit: "cup",
               value: 1,
             },
             {
-              name: 'Свежие шампиньоны',
-              unit: 'g',
+              name: "Свежие шампиньоны",
+              unit: "g",
               value: 250,
             },
             {
-              name: 'Морковь',
-              unit: 'pcs',
+              name: "Морковь",
+              unit: "pcs",
               value: 1,
             },
             {
-              name: 'Чеснок',
-              unit: 'pcs',
+              name: "Чеснок",
+              unit: "pcs",
               value: 2,
             },
             {
-              name: 'Соль',
-              unit: 'taste',
+              name: "Соль",
+              unit: "taste",
               type: {
                 density: 1030,
-                name: 'kosher salt',
+                name: "kosher salt",
               },
             },
           ],
-          name: '',
+          name: "",
         },
       ],
-      name: '',
+      name: "",
     });
   });
 
-  it('description parse example', () => {
+  it("description parse example", () => {
     const t = `
     Гороховый суп
     Горох 1 стакан
@@ -179,25 +179,25 @@ describe('parseTextRecipe', () => {
 `;
     expect(parseTextRecipe(t)).toStrictEqual({
       description:
-        'Сварить горох в воде. Вы великолепны\n    #### \n    Остальные разделители игнорируются',
+        "Сварить горох в воде. Вы великолепны\n    #### \n    Остальные разделители игнорируются",
       ingredient_groups: [
         {
           ingredients: [
             {
-              name: 'Горох',
-              unit: 'cup',
+              name: "Горох",
+              unit: "cup",
               value: 1,
             },
             {
-              name: 'Вода литра',
-              unit: 'pcs',
+              name: "Вода литра",
+              unit: "pcs",
               value: 2,
             },
           ],
-          name: '',
+          name: "",
         },
       ],
-      name: 'Гороховый суп',
+      name: "Гороховый суп",
     });
   });
 });

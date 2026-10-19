@@ -1,56 +1,56 @@
-import {Ingredient} from '../types/recipe';
-import {NO_VALUE_UNITS, Unit, UNITS, VALUE_UNITS} from '../unit/constants';
-import {UNIT_PARSE_MAP} from '../unit/unit_map';
-import {parseNumber, VULGAR_LETTER_REGEXP} from '../../utils/number';
-import {stripLine} from '../../utils';
-import {mRegExp} from '../../utils/regexp';
-import {prepareIngredient} from '../ingredient_type/parse';
+import { stripLine } from "../../utils";
+import { parseNumber, VULGAR_LETTER_REGEXP } from "../../utils/number";
+import { mRegExp } from "../../utils/regexp";
+import { prepareIngredient } from "../ingredient_type/parse";
+import type { Ingredient } from "../types/recipe";
+import { NO_VALUE_UNITS, UNITS, type Unit, VALUE_UNITS } from "../unit/constants";
+import { UNIT_PARSE_MAP } from "../unit/unit_map";
 
 const WORD_BOUNDARY_END = /(?=\s+|[.,);/]|$)/;
 
 function buildUnitRegexp(unit_type: Unit, units: string[]): RegExp {
-  return RegExp(`(?<${unit_type}>${units.join('|')})\\.?`);
+  return RegExp(`(?<${unit_type}>${units.join("|")})\\.?`);
 }
 
 const DECIMAL_REGEXP = /(?:\d+[,.]\d+|\d+)/u;
 const DECIMAL_WITH_VULGAR_REGEXP = mRegExp(
-  ['(?:', VULGAR_LETTER_REGEXP, '|', DECIMAL_REGEXP, ')'],
-  'u',
+  ["(?:", VULGAR_LETTER_REGEXP, "|", DECIMAL_REGEXP, ")"],
+  "u",
 );
 
 const VALUE_RANGE_DELIMITER_REGEXP = RegExp(/(?<value_range>\s*\p{Pd}\s*)/u);
 const VALUE_REGEXP = mRegExp(
   [
-    '(?<value>',
+    "(?<value>",
     // With range
     DECIMAL_WITH_VULGAR_REGEXP,
     VALUE_RANGE_DELIMITER_REGEXP,
     DECIMAL_WITH_VULGAR_REGEXP,
-    '|',
+    "|",
     DECIMAL_WITH_VULGAR_REGEXP,
-    ')',
+    ")",
   ],
-  'u',
+  "u",
 );
 
 const UNIT_REGEXP = mRegExp(
   [
-    '(?:',
+    "(?:",
     // Value units
     VALUE_REGEXP,
     /[\s\t]*/, // Space
-    '(?<unit>',
+    "(?<unit>",
     // build all regexps
-    ...VALUE_UNITS.map((k) => buildUnitRegexp(k, UNIT_PARSE_MAP[k]).source).join('|'),
-    ')', // unit
-    '|',
-    '(?<no_value_unit>',
-    ...NO_VALUE_UNITS.map((k) => buildUnitRegexp(k, UNIT_PARSE_MAP[k]).source).join('|'),
-    ')', // no_value_units
-    ')\\.?',
+    ...VALUE_UNITS.map((k) => buildUnitRegexp(k, UNIT_PARSE_MAP[k]).source).join("|"),
+    ")", // unit
+    "|",
+    "(?<no_value_unit>",
+    ...NO_VALUE_UNITS.map((k) => buildUnitRegexp(k, UNIT_PARSE_MAP[k]).source).join("|"),
+    ")", // no_value_units
+    ")\\.?",
     WORD_BOUNDARY_END,
   ],
-  'u',
+  "u",
 );
 
 type UnitGroupsResult = {
@@ -64,13 +64,24 @@ interface MatchGroupsResult extends UnitGroupsResult {
   unit?: string;
 }
 
+/**
+ * Parse a single recipe line into an Ingredient.
+ *
+ * Recognizes vulgar fractions (½, 3/4), ranges ("1-2"), Russian and English
+ * unit spellings, and "to taste" lines. A bare number without a unit is
+ * treated as pieces (`pcs`).
+ *
+ * @param raw_line - Raw line from the recipe text.
+ * @returns The parsed ingredient, or null when the line is not an ingredient
+ *          (e.g. a group header or the recipe name).
+ */
 export function parseRecipeLine(raw_line: string): Ingredient | null {
   let groups: MatchGroupsResult = {};
-  let name: string = '';
+  let name: string = "";
   for (const regexp of [UNIT_REGEXP, VALUE_REGEXP]) {
     groups = (regexp.exec(raw_line)?.groups || {}) as MatchGroupsResult;
     if (groups?.value || groups?.no_value_unit) {
-      name = stripLine(raw_line.replace(regexp, ''));
+      name = stripLine(raw_line.replace(regexp, ""));
       break;
     }
   }
@@ -108,7 +119,7 @@ export function parseRecipeLine(raw_line: string): Ingredient | null {
   }
   if (!ingredient.unit) {
     // Скорее всего была строка с одним числом без единиц измерения. Будем считать что это шт
-    ingredient.unit = 'pcs';
+    ingredient.unit = "pcs";
   }
   ingredient = prepareIngredient(ingredient as Ingredient);
   return ingredient as Ingredient;

@@ -1,17 +1,17 @@
-import {Cases} from '@tests/unit/types';
-import {stripLine} from '@app/utils';
+import { stripLine } from "@app/utils";
+import type { Cases } from "@tests/unit/types";
 
-describe('stripLine', () => {
+describe("stripLine", () => {
   const cases: Cases<string, string> = [
     {
-      arg: ' --- foo    bar  \t  123 ---',
-      expected: 'foo bar 123',
+      arg: " --- foo    bar  \t  123 ---",
+      expected: "foo bar 123",
     },
   ];
-  it.each(cases)('[$#] $arg -> $expected', (c) => {
+  it.each(cases)("[$#] $arg -> $expected", (c) => {
     expect(stripLine(c.arg)).toStrictEqual(c.expected);
   });
-  it('Manual debug case', () => {
+  it("Manual debug case", () => {
     const c = cases[cases.length - 1];
     expect(stripLine(c.arg)).toStrictEqual(c.expected);
   });

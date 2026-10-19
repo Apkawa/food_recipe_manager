@@ -1,22 +1,22 @@
-import {Cases} from '@tests/unit/types';
+import type { Cases } from "@tests/unit/types";
 
-describe('foo', () => {
-  it('bar', () => {
+describe("foo", () => {
+  it("bar", () => {
     expect(1).toStrictEqual(1);
   });
 });
 
-describe('cases', () => {
+describe("cases", () => {
   const cases: Cases<string, string> = [
     {
-      arg: '',
-      expected: '',
+      arg: "",
+      expected: "",
     },
   ];
-  it.each(cases)('[$#] $arg -> $expected', (c) => {
+  it.each(cases)("[$#] $arg -> $expected", (c) => {
     expect(c.arg).toStrictEqual(c.expected);
   });
-  it('Manual debug case', () => {
+  it("Manual debug case", () => {
     const c = cases[cases.length - 1];
     expect(c.arg).toStrictEqual(c.expected);
   });

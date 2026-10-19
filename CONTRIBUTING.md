@@ -1,63 +1,42 @@
-### Apps and Packages
+# Вклад в проект
 
-- `mvp`: примитивный интерфейс на чистом js
-- `userscript`: Заготовка для интерфейса юзерскрипта
-- `@repo/food-recipe-core`: Логика рецептов
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+Монорепозиторий на pnpm workspaces (pnpm 11). Все команды — из корня репозитория.
 
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## Установка
 
 ```
-cd my-turborepo
-pnpm build
+pnpm install
 ```
 
-### Develop
+## Основные команды
 
-To develop all apps and packages, run the following command:
+- Сборка всех пакетов и приложений: `pnpm build`
+- Тесты: `pnpm test`
+- Линт: `pnpm lint`
+- Форматирование: `pnpm format`
+- Проверка типов: `pnpm check`
+- Разработка: `pnpm dev`
+- Коммит с conventional-сообщением: `pnpm commit`
+- Релиз: `pnpm release:patch` / `pnpm release:minor` / `pnpm release:pre`
 
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+Для конкретного пакета используется флаг `--filter`, например:
 
 ```
-cd my-turborepo
-npx turbo login
+pnpm --filter web-react dev
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## Компоненты
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+- `apps/web-react` — интерфейс на React 19 (PWA)
+- `packages/food-recipe-core` — общая логика рецептов (парсер, калькулятор, единицы)
+- `packages/typescript-config` — общие пресеты tsconfig
 
-```
-npx turbo link
-```
+## Хуки (Husky)
 
-## Useful Links
+Хуки git активны (устанавливаются автоматически при `pnpm install`). Pre-commit хук выполняет
+`format + check + build` — это может быть медленно; при мелких правках можно пропустить с `--no-verify`.
 
-Learn more about the power of Turborepo:
+## Catalog
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+Версии зависимостей и настройки централизованы в `pnpm-workspace.yaml` (pnpm catalog) —
+добавляйте новые версии туда, а не по отдельности в каждый `package.json`.

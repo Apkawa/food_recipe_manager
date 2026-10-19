@@ -2,37 +2,38 @@
   "name": "food_recipe_manager",
   "private": true,
   "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "test": "turbo test",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check": "npm run test && npm run lint",
-    "pre-commit": "npm run format && npm run check && npm run build",
+    "build": "pnpm -r build",
+    "dev": "pnpm -r --parallel dev",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
+    "format": "biome format apps packages --diagnostic-level=error",
+    "format:fix": "pnpm format --fix",
+    "format:check": "pnpm -r format:check",
+    "check": "pnpm run test && pnpm run lint",
+    "pre-commit": "pnpm run format && pnpm run check && pnpm run build",
     "commitlint": "commitlint --config '.config/.commitlintrc.json'",
-    "commit": "npm run pre-commit && ts-node node_modules/.bin/cz",
+    "commit": "pnpm run pre-commit && ts-node node_modules/.bin/cz",
+    "prepare": "husky install",
     "release": "standard-version",
-    "release:pre": "npm run release -- --prerelease --skip.tag",
-    "release:patch": "npm run release -- --release-as patch",
-    "release:minor": "npm run release -- --release-as minor"
+    "release:pre": "pnpm run release -- --prerelease --skip.tag",
+    "release:patch": "pnpm run release -- --release-as patch",
+    "release:minor": "pnpm run release -- --release-as minor"
   },
   "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
-    "commitizen": "^4.2.6",
-    "cross-env": "^7.0.3",
-    "cz-customizable": "^7.0.0",
-    "prettier": "^3.1.1",
-    "turbo": "latest"
+    "@biomejs/biome": "catalog:",
+    "@commitlint/cli": "catalog:",
+    "@commitlint/config-conventional": "catalog:",
+    "@repo/typescript-config": "workspace:",
+    "commitizen": "catalog:",
+    "cz-customizable": "catalog:",
+    "husky": "catalog:",
+    "standard-version": "catalog:",
+    "ts-node": "catalog:"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
-  "packageManager": "npm@9.8.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "packageManager": "pnpm@11.22.0",
   "config": {
     "commitizen": {
       "path": "node_modules/cz-customizable"
@@ -40,28 +41,5 @@
     "cz-customizable": {
       "config": "./.config/commitzen.ts"
     }
-  },
-  "browserslist": [
-    "last 2 years",
-    "> 1%",
-    "not dead"
-  ],
-  "babel": {
-    "plugins": [
-      [
-        "@babel/plugin-proposal-pipeline-operator",
-        {
-          "proposal": "minimal"
-        }
-      ]
-    ]
-  },
-  "prettier": {
-    "bracketSpacing": false,
-    "tabWidth": 2,
-    "useTabs": false,
-    "trailingComma": "all",
-    "singleQuote": true,
-    "printWidth": 100
   }
 }

@@ -17,32 +17,37 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Use Node.js 18.x
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
 
-      - name: cache dependencies
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - name: Cache pnpm store
         uses: actions/cache@v4
         with:
-          path: '**/node_modules'
-          key: node_modules-${{ hashFiles('**/package-lock.json')}}
+          path: ~/.local/share/pnpm/store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
 
       - name: Install dependencies
-        run: |
-          npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: npm run build
+        run: pnpm run build
 
       - name: Run unit tests
-        run: npm run test
+        run: pnpm run test
         # TODO надо подумать над обходом cloudflare
 #      - name: Run e2e tests
-#        run: npm run test:e2e
+#        run: pnpm run test:e2e
 
       - name: Run lint
-        run: npm run lint
+        run: pnpm run lint
 
   publish:
     permissions:
@@ -58,16 +63,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Use Node.js 18
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
 
-      - name: cache dependencies
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - name: Cache pnpm store
         uses: actions/cache@v4
         with:
-          path: '**/node_modules'
-          key: node_modules-${{ hashFiles('**/package-lock.json')}}
+          path: ~/.local/share/pnpm/store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-
 
       - name: Extract branch name
         run: echo "branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
@@ -97,14 +108,13 @@ jobs:
           if_false: ${{ steps.extract_branch.outputs.branch }}
 
       - name: Install dependencies
-        run: |
-          npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: |
           echo $DOWNLOAD_SUFFIX
           export DOWNLOAD_SUFFIX=$DOWNLOAD_SUFFIX
-          npm run build
+          pnpm run build
         env:
           DOWNLOAD_SUFFIX: '/raw/release/${{ steps.target_folder.outputs.value }}/'
 
@@ -112,7 +122,6 @@ jobs:
         if: success()
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          # Потом когда сделаю версию на vue то поменяю на apps/web/dist/
-          folder: apps/web/dist # The folder the action should deploy.
+          folder: apps/web-react/dist # The folder the action should deploy.
           clean: true # Automatically remove deleted files from the deploy branch
           target-folder: ${{ steps.target_folder.outputs.value }}

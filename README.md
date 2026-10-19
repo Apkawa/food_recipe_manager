@@ -41,7 +41,7 @@
 - [ ] i18n, начальный язык - русский
 - [ ] Браузерные расширения
 - [ ] Телеграм бот \
-       https://github.com/revenkroz/telegram-web-app-bot-example
+      https://github.com/revenkroz/telegram-web-app-bot-example
 
 ## Обратная связь
 
@@ -50,3 +50,13 @@
 ## Самостоятельная сборка
 
 По вопросам самостоятельной сборки и доработок см в [CONTRIBUTING](./CONTRIBUTING.md)
+
+### web-react (React-порт)
+
+Все команды — из корня репозитория (pnpm workspaces):
+
+- Установка зависимостей: `pnpm install`
+- Разработка: `pnpm --filter web-react dev` → http://localhost:5173 (PWA включён и в dev)
+- Сборка: `pnpm --filter web-react build` → `apps/web-react/dist` (включая PWA: sw.js + manifest)
+- Предпросмотр продакшен-сборки: `pnpm --filter web-react preview`
+- Тесты: `pnpm --filter web-react test`

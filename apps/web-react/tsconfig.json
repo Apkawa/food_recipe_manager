@@ -1,0 +1,14 @@
+{
+  "extends": "@repo/typescript-config/vite-react.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    // Core sources are deep-imported (same style as the Vue app) and are not
+    // written for noUncheckedIndexedAccess; align with the Vue app's effective strictness.
+    "noUncheckedIndexedAccess": false
+  },
+  "include": ["src", "vite.config.ts"],
+  "exclude": ["node_modules", "dist"]
+}

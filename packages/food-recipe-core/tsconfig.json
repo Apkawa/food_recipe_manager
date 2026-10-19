@@ -1,33 +1,19 @@
 {
   "extends": "@tsconfig/node20/tsconfig.json",
-  "ts-node": {
-    "compilerOptions": {
-      "module": "commonjs",
-      "target": "es2017",
-      "esModuleInterop": true,
-      "moduleResolution": "nodenext",
-    }
-  },
-  "exclude": [
-    "tests/**"
-  ],
+  "exclude": ["tests/**", "vitest.config.ts"],
   "compilerOptions": {
     "module": "Node16",
-    "target": "es2017",
+    "target": "es2022",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "noEmit": true,
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@app/*": [
-        "./src/food_recipe/*"
-      ],
-      "@tests/*": [
-        "./tests/*"
-      ]
+      "@app/*": ["./src/food_recipe/*"],
+      "@tests/*": ["./tests/*"]
     },
-    "types": ["node", "jest"],
+    "types": ["node", "vitest/globals"],
     "verbatimModuleSyntax": false
   }
 }
