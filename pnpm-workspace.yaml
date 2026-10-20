@@ -5,6 +5,7 @@ allowBuilds:
   '@swc/core': True
   core-js: True
   esbuild: True
+  sharp: True
 catalog:
   '@biomejs/biome': ^2.4.12
   '@commitlint/cli': ^17.3.0
