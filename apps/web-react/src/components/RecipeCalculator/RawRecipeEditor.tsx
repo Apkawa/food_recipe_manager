@@ -23,6 +23,7 @@ function RawRecipeEditor({ value, onChange }: RawRecipeEditorProps) {
   return (
     <textarea
       id="raw_recipe"
+      aria-label="Текст рецепта"
       value={text}
       onFocus={() => {
         focused.current = true;

@@ -1,4 +1,5 @@
 import { recipeToText } from "@repo/food-recipe-core/src/food_recipe/core/export";
+import type { KeyboardEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { type RecipeState, saveStateToUrl } from "../lib/state";
@@ -33,23 +34,48 @@ function FavoritesList() {
     <>
       <h1>Избранные рецепты</h1>
       <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">Рецепт</th>
+            <th scope="col">
+              <span className="sr-only">Действия</span>
+            </th>
+          </tr>
+        </thead>
         <tbody>
           {recipes.length > 0 ? (
-            recipes.map((recipe, i) => (
-              <tr key={recipe.name}>
-                <td>
-                  {/* biome-ignore lint/a11y/useValidAnchor: parity with the Vue <a @click> link */}
-                  {/* biome-ignore lint/a11y/noStaticElementInteractions: parity with the Vue <a @click> link */}
-                  {/* biome-ignore lint/a11y/useKeyWithClickEvents: no keyboard handler in the Vue original */}
-                  <a onClick={() => onClickRecipe(recipe)}>{recipe.name}</a>
-                </td>
-                <td>
-                  <button type="button" className="remove-item" onClick={() => removeByIndex(i)}>
-                    X
-                  </button>
-                </td>
-              </tr>
-            ))
+            recipes.map((recipe, i) => {
+              const openRecipe = () => onClickRecipe(recipe);
+              const keyRecipe = (event: KeyboardEvent<HTMLAnchorElement>) => {
+                // Enter/Space activate the name like a button; preventDefault
+                // stops Space from scrolling the page.
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  openRecipe();
+                }
+              };
+              return (
+                <tr key={recipe.name}>
+                  <td>
+                    {/* biome-ignore lint/a11y/noStaticElementInteractions: parity with the Vue <a @click> link */}
+                    {/* biome-ignore lint/a11y/useValidAnchor: parity with the Vue <a @click> link */}
+                    <a onClick={openRecipe} tabIndex={0} onKeyDown={keyRecipe}>
+                      {recipe.name}
+                    </a>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      className="remove-item"
+                      aria-label="Удалить"
+                      onClick={() => removeByIndex(i)}
+                    >
+                      X
+                    </button>
+                  </td>
+                </tr>
+              );
+            })
           ) : (
             <tr>
               <td>Пусто, добавьте из каркурлятора</td>

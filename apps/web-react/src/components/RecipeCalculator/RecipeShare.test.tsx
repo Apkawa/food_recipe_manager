@@ -28,7 +28,7 @@ describe("RecipeShare", () => {
   it("bakes calculated values into the share text without mutating the original recipe", () => {
     const recipe = makeScaledRecipe();
     render(<RecipeShare recipe={recipe} />);
-    fireEvent.click(screen.getByText("Copy/Share"));
+    fireEvent.click(screen.getByText("Поделиться"));
 
     const textarea = document.querySelector<HTMLTextAreaElement>(".modal-content textarea");
     expect(textarea).not.toBeNull();
@@ -47,7 +47,7 @@ describe("RecipeShare", () => {
 
   it("closes on overlay click", () => {
     render(<RecipeShare recipe={makeScaledRecipe()} />);
-    fireEvent.click(screen.getByText("Copy/Share"));
+    fireEvent.click(screen.getByText("Поделиться"));
     expect(document.querySelector(".modal-overlay")).not.toBeNull();
 
     const overlay = document.querySelector<HTMLElement>(".modal-overlay");

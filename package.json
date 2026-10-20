@@ -6,6 +6,8 @@
     "dev": "pnpm -r --parallel dev",
     "lint": "pnpm -r lint",
     "test": "pnpm -r test",
+    "test:smoke": "PLAYWRIGHT_BROWSERS_PATH=./.cache/ms-playwright playwright test tests/smoke",
+    "test:e2e": "PLAYWRIGHT_BROWSERS_PATH=./.cache/ms-playwright playwright test tests/e2e",
     "format": "biome format apps packages --diagnostic-level=error",
     "format:fix": "pnpm format --fix",
     "format:check": "pnpm -r format:check",
@@ -20,9 +22,11 @@
     "release:minor": "pnpm run release -- --release-as minor"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@biomejs/biome": "catalog:",
     "@commitlint/cli": "catalog:",
     "@commitlint/config-conventional": "catalog:",
+    "@playwright/test": "^1.64.1",
     "@repo/typescript-config": "workspace:",
     "commitizen": "catalog:",
     "cz-customizable": "catalog:",

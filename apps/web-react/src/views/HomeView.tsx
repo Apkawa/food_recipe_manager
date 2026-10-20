@@ -6,7 +6,7 @@ import RecipeCalculator from "@/components/RecipeCalculator/RecipeCalculator";
 function HomeView() {
   return (
     <main>
-      <h2>Калькулятор</h2>
+      <h1 className="page-title">Калькулятор</h1>
       <RecipeCalculator />
     </main>
   );

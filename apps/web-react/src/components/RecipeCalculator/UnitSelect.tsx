@@ -25,7 +25,11 @@ function UnitSelect({ ingredient, onChange }: UnitSelectProps) {
   }
 
   return (
-    <select value={ingredient.unit} onChange={(e) => onChange(e.target.value as Unit)}>
+    <select
+      aria-label="Единица измерения"
+      value={ingredient.unit}
+      onChange={(e) => onChange(e.target.value as Unit)}
+    >
       {availableUnits.map((u) => (
         <option key={u.unit} value={u.unit}>
           {u.display}

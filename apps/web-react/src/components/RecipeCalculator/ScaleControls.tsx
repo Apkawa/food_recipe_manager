@@ -64,11 +64,11 @@ function ScaleControls({ scale, newScale, onScaleChange, onNewScaleChange }: Sca
   return (
     <div className="scale_wrap">
       <div>
-        Рецепт на <LazyNumberInput id="scale" value={scale} min={1} onCommit={onScaleChange} />{" "}
-        порций
+        <label htmlFor="scale">Рецепт на</label>{" "}
+        <LazyNumberInput id="scale" value={scale} min={1} onCommit={onScaleChange} /> порций
       </div>
       <div>
-        Пересчитать на{" "}
+        <label htmlFor="new_scale">Пересчитать на</label>{" "}
         <LazyNumberInput
           id="new_scale"
           value={newScale}

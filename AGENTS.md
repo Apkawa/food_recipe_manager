@@ -14,6 +14,9 @@ Rules and context for agents working on this monorepo.
 ## How to work
 
 - Run everything from root: `pnpm build`, `pnpm test`, `pnpm lint`, `pnpm dev` (all run recursively via `pnpm -r`). `food-recipe-core` has no build step — apps import its `src/` directly.
+- `pnpm test:smoke` — Playwright smoke suite (`tests/smoke/`): each app route loads, a route-unique marker is visible, zero console/page errors. Auto-starts the Vite dev server. Local-only (not run in CI).
+- `pnpm test:e2e` — Playwright e2e suite (`tests/e2e/`): currently a stub of `test.fixme` placeholders; the full scenarios land in a separate task after the a11y work. Local-only (not run in CI).
+- Both browser suites need Chromium from the project cache: `PLAYWRIGHT_BROWSERS_PATH=./.cache/ms-playwright pnpm exec playwright install chromium` (the `test:smoke`/`test:e2e` scripts set the env var automatically).
 - Local pre-commit hook (Husky, installed on `pnpm install`) runs full `format + check + build` — can be slow.
 
 ## Architecture principles
@@ -39,10 +42,14 @@ Rules and context for agents working on this monorepo.
 
 - Routing (web-react): `apps/web-react/src/router/index.tsx` (hash history)
 - Stores (web-react): `apps/web-react/src/stores/`
-- Core parser: `packages/food-recipe-core/src/parser/`
-- Core calculator: `packages/food-recipe-core/src/calculator/`
-- Core types: `packages/food-recipe-core/src/types/recipe.d.ts`
+- Core parser: `packages/food-recipe-core/src/food_recipe/core/parser/`
+- Core calculator: `packages/food-recipe-core/src/food_recipe/core/calculator/`
+- Core types: `packages/food-recipe-core/src/food_recipe/core/types/recipe.d.ts`
 - CI/CD: `.github/workflows/ci.yml` (build + deploy web-react to Pages on branches/tags)
+- Playwright config (root): `playwright.config.ts` (shared by smoke + e2e; suite selected by CLI path)
+- Smoke tests (root): `tests/smoke/`
+- E2E tests (root): `tests/e2e/` (stub until the post-a11y task)
+- Shared browser-test helper: `tests/helpers.ts` (`trackConsoleErrors`)
 
 ## Known issues
 

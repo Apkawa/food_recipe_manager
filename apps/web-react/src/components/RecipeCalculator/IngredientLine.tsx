@@ -44,7 +44,7 @@ function IngredientLine({ lang, ingredient, onUpdate }: IngredientLineProps) {
         <td>
           {!editMode && allowEdit ? (
             <button type="button" onClick={() => setEditMode((m) => !m)}>
-              Edit
+              Изменить
             </button>
           ) : null}
         </td>

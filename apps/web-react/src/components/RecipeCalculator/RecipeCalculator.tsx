@@ -88,17 +88,17 @@ function RecipeCalculator() {
 
   return (
     <>
-      <Modal open={modalShow} onClose={() => setModalShow(false)}>
-        {/* biome-ignore lint/a11y/noStaticElementInteractions: parity with Vue click-to-close wrapper */}
-        {/* biome-ignore lint/a11y/useKeyWithClickEvents: no keyboard handler in the Vue original */}
-        <div style={{ maxWidth: "500px" }} onClick={() => setModalShow(false)}>
-          <GrandMother />
-        </div>
+      <Modal
+        open={modalShow}
+        onClose={() => setModalShow(false)}
+        ariaLabel="Внимание — рецепт не рассчитан"
+      >
+        <GrandMother />
       </Modal>
       {scaled.ingredient_groups.length > 0 ? (
         <>
           <div id="parsed_recipe">
-            <h2>{parsed.name}</h2>
+            {parsed.name.trim() ? <h2>{parsed.name}</h2> : null}
             <ParsedRecipeTable
               recipe={scaled}
               lang={LANG}

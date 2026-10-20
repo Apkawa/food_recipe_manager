@@ -57,11 +57,16 @@ function RecipeShare({ recipe }: RecipeShareProps) {
   return (
     <>
       <button type="button" onClick={() => setShowModal(true)}>
-        Copy/Share
+        Поделиться
       </button>
-      <Modal open={showModal} onClose={() => setShowModal(false)}>
+      <Modal open={showModal} onClose={() => setShowModal(false)} ariaLabel="Поделиться рецептом">
         <div className="modal-content">
-          <textarea readOnly value={textRecipe} onFocus={onFocusAllSelectCb} />
+          <textarea
+            readOnly
+            aria-label="Текст для обмена"
+            value={textRecipe}
+            onFocus={onFocusAllSelectCb}
+          />
         </div>
       </Modal>
     </>

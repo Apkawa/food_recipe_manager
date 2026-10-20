@@ -62,7 +62,7 @@ describe("RecipeCalculator", () => {
     if (!valueInput) return;
     fireEvent.change(valueInput, { target: { value: "5.4" } });
     fireEvent.blur(valueInput);
-    fireEvent.click(screen.getByText("Save"));
+    fireEvent.click(screen.getByText("Сохранить"));
     const state = useRecipeStore.getState();
     expect(state.newScale).toBe(2);
     expect(state.rawRecipe).toContain("2,7");
@@ -76,7 +76,7 @@ describe("RecipeCalculator", () => {
     expect(select).not.toBeNull();
     if (!select) return;
     fireEvent.change(select, { target: { value: "ml" } });
-    fireEvent.click(screen.getByText("Save"));
+    fireEvent.click(screen.getByText("Сохранить"));
     const state = useRecipeStore.getState();
     expect(state.rawRecipe).toContain("мл");
     expect(screen.getByText("500")).toBeDefined();
@@ -92,7 +92,7 @@ describe("RecipeCalculator", () => {
     expect(concInput.value).toBe("90");
     fireEvent.change(concInput, { target: { value: "45" } });
     fireEvent.blur(concInput);
-    fireEvent.click(screen.getByText("Save"));
+    fireEvent.click(screen.getByText("Сохранить"));
     const state = useRecipeStore.getState();
     expect(state.rawRecipe).toContain("45%");
     expect(state.rawRecipe).toContain("200");

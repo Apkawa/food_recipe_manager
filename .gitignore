@@ -21,6 +21,10 @@ node_modules
 # Testing
 coverage
 
+# Playwright
+test-results/
+playwright-report/
+
 # Vercel
 .vercel
 
@@ -45,3 +49,6 @@ yarn-error.log*
 .DS_Store
 *.pem
 *.tsbuildinfo
+
+# playwright-cli scratch logs (sessions run from repo root)
+.playwright-cli/

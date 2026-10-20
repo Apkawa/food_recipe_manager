@@ -12,7 +12,7 @@
 a,
 .green {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
+  color: hsl(160, 100%, 25%);
   transition: 0.4s;
   padding: 3px;
 }
@@ -25,6 +25,12 @@ a,
 
 body {
   display: flex;
+}
+
+/* Home page title: keep the previous h2 look (base.css resets already
+   zero margins and font-weight; only the default size differs) */
+.page-title {
+  font-size: 1.5em;
 }
 
 /* Layout (App) — port of apps/web/src/App.vue scoped styles */
@@ -81,7 +87,7 @@ nav a:first-of-type {
 }
 
 .build-info {
-  color: gray;
+  color: #525252;
   font-size: 0.8em;
 }
 
@@ -192,7 +198,26 @@ nav a:first-of-type {
   width: 100%;
 }
 
+/* Visually hidden text, still announced by screen readers (clip technique). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* AboutView — port of apps/web/src/views/AboutView.vue styles */
+
+/* In-text links must be distinguishable without relying on color
+   (axe: link-in-text-block). Nav links (nav a) are not in text blocks and stay as-is. */
+.about p a {
+  text-decoration: underline;
+}
 
 @media (min-width: 1024px) {
   header {

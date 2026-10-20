@@ -23,10 +23,10 @@ function ParsedRecipeTable({ lang, recipe, onIngredientUpdate }: ParsedRecipeTab
       </colgroup>
       <thead>
         <tr>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
+          <th scope="col">Ингредиент</th>
+          <th scope="col">Значение</th>
+          <th scope="col">Ед. изм.</th>
+          <th scope="col">Действия</th>
         </tr>
       </thead>
       <tbody>

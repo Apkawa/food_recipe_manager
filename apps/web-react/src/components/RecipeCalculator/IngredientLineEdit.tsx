@@ -113,6 +113,7 @@ function IngredientLineEdit({ ingredient, onSave }: IngredientLineEditProps) {
             Концентрация:{" "}
             <input
               className="concentration"
+              aria-label="Концентрация"
               type="number"
               min={1}
               max={100}
@@ -138,6 +139,7 @@ function IngredientLineEdit({ ingredient, onSave }: IngredientLineEditProps) {
       <td>
         <input
           className="edit-value"
+          aria-label="Значение"
           type="number"
           value={valueText}
           onFocus={onFocusSelect}
@@ -155,7 +157,7 @@ function IngredientLineEdit({ ingredient, onSave }: IngredientLineEditProps) {
       </td>
       <td>
         <button type="button" onClick={saveCb}>
-          Save
+          Сохранить
         </button>
       </td>
     </tr>
