@@ -13,6 +13,12 @@ export interface RecipeStore extends RecipeState {
   setRawRecipe: (rawRecipe: string) => void;
   setScale: (scale: number) => void;
   setNewScale: (newScale: number) => void;
+  /**
+   * Re-resolve the state from a navigation query (URL > localStorage >
+   * defaults) and apply it. Plain set without a URL mirror: the URL is
+   * already the source of truth, so mirroring back would loop.
+   */
+  applyFromQuery: (query: Record<string, string | undefined>) => void;
 }
 
 /**
@@ -65,6 +71,9 @@ export const useRecipeStore = create<RecipeStore>()(
       setNewScale: (newScale) => {
         set({ newScale });
         syncUrlToRouter(get());
+      },
+      applyFromQuery: (query) => {
+        set(loadState(query));
       },
     }),
     { name: "recipe-state", storage: createJSONStorage(() => flatStorage) },

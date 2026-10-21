@@ -17,6 +17,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import BuildInfo from "./components/BuildInfo";
 import { SidebarContext } from "./lib/SidebarContext";
 import { useThemeSync } from "./lib/useThemeSync";
+import { useRecipeStore } from "./stores/recipe";
 import { Scheme, type SchemeId, useThemeStore } from "./stores/theme";
 
 /**
@@ -62,6 +63,14 @@ function App() {
   useEffect(() => {
     setSidebarOpen(false);
   }, [location.pathname]);
+
+  // Re-apply the recipe state whenever the route query changes (the store is
+  // seeded once at creation, so a navigation with a fresh `rawRecipe`/`scale`
+  // /`newScale` query — e.g. opening a favorite — must be pushed in here).
+  const search = location.search;
+  useEffect(() => {
+    useRecipeStore.getState().applyFromQuery(Object.fromEntries(new URLSearchParams(search)));
+  }, [search]);
 
   const dark = useThemeStore((state) => state.dark);
   const scheme = useThemeStore((state) => state.scheme);

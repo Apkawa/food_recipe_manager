@@ -3,10 +3,14 @@ import type { Recipe } from "@repo/food-recipe-core/src/food_recipe/core/types/r
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { createMemoryRouter, RouterProvider, useLocation } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-
+import App from "../App";
 import { base64ToBytes } from "../lib/state";
 import { type RecipeItem, useFavoritesStore } from "../stores/favorites";
+import { useRecipeStore } from "../stores/recipe";
+import FavoritesView from "../views/FavoritesView";
 import FavoritesList from "./FavoritesList";
+import { EXAMPLE_RECIPE } from "./RecipeCalculator/constants";
+import RecipeCalculator from "./RecipeCalculator/RecipeCalculator";
 
 const makeFavorite = (name: string): RecipeItem => ({
   name,
@@ -63,6 +67,36 @@ describe("FavoritesList", () => {
     const rawRecipe = base64ToBytes(search.get("rawRecipe") ?? "");
     const expected: Recipe = makeFavorite("Борщ");
     expect(rawRecipe).toBe(recipeToText(expected));
+  });
+
+  it("updates the recipe store when a favorite is opened (App query effect)", async () => {
+    localStorage.clear();
+    useRecipeStore.setState({ rawRecipe: EXAMPLE_RECIPE, scale: 1, newScale: 1 });
+    useFavoritesStore.getState().add(makeFavorite("Борщ"));
+
+    const router = createMemoryRouter(
+      [
+        {
+          path: "/",
+          element: <App />,
+          children: [
+            { index: true, element: <RecipeCalculator /> },
+            { path: "favorite", element: <FavoritesView /> },
+          ],
+        },
+      ],
+      { initialEntries: ["/favorite"] },
+    );
+    render(<RouterProvider router={router} />);
+
+    fireEvent.click(screen.getByText("Борщ"));
+
+    await waitFor(() => {
+      expect(useRecipeStore.getState().rawRecipe).toBe(recipeToText(makeFavorite("Борщ")));
+    });
+    const state = useRecipeStore.getState();
+    expect(state.scale).toBe(2);
+    expect(state.newScale).toBe(4);
   });
 
   it("removes a favorite via the remove icon button", () => {
