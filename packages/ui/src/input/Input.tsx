@@ -15,6 +15,8 @@ export type InputProps = Omit<ComponentProps<"input">, "onChange" | "size" | "ty
    * state). Defaults to `false`.
    */
   highlighted?: boolean;
+  /** Non-editable text pinned to the right edge inside the input (e.g. a unit symbol). */
+  suffix?: string;
   /** Extra classes for the input. */
   className?: string;
 };
@@ -26,7 +28,9 @@ export type InputProps = Omit<ComponentProps<"input">, "onChange" | "size" | "ty
  * `tabular-nums` bold text on `bg-input`. The `highlighted` state swaps the
  * 1px `border-border` for a 2px `border-accentbg` accent border. Standard
  * input attributes (`min`, `max`, `step`, `placeholder`, `disabled`,
- * `inputMode`, `aria-*`, …) are passed through to the element.
+ * `inputMode`, `aria-*`, …) are passed through to the element. When `suffix`
+ * is set, the input gains right padding and the suffix is overlaid at the
+ * right edge in muted color.
  *
  * @param props - Input properties.
  */
@@ -36,6 +40,7 @@ export function Input({
   type = "text",
   size = "sm",
   highlighted = false,
+  suffix,
   className,
   ...rest
 }: InputProps) {
@@ -44,12 +49,13 @@ export function Input({
     highlighted ? "border-2 border-accentbg" : "border border-border",
     size === "sm" ? "w-16" : "w-full",
     "focus-visible:ring-2 ring-ring",
+    suffix ? "pr-5" : null,
     className,
   ]
     .filter(Boolean)
     .join(" ");
 
-  return (
+  const input = (
     <input
       type={type}
       value={value}
@@ -57,5 +63,21 @@ export function Input({
       className={classes}
       {...rest}
     />
+  );
+
+  if (!suffix) {
+    return input;
+  }
+
+  return (
+    <span className="relative inline-flex">
+      {input}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-xs font-medium text-muted2"
+      >
+        {suffix}
+      </span>
+    </span>
   );
 }

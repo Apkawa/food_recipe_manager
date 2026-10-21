@@ -109,32 +109,30 @@ function IngredientLineEdit({ ingredient, onSave }: IngredientLineEditProps) {
   return (
     <>
       {isEditConcentration ? (
-        <span className="flex shrink-0 items-center gap-1.5 text-sm text-muted2">
-          Концентрация:
-          <Input
-            className="concentration"
-            aria-label="Концентрация"
-            type="number"
-            min={1}
-            max={100}
-            value={editConcentration === undefined ? "" : String(editConcentration)}
-            onFocus={onFocusSelect}
-            onChange={(v) => {
-              if (v === "") {
-                setEditConcentration(undefined);
-                return;
-              }
-              const n = Number(v);
-              if (Number.isFinite(n)) {
-                setEditConcentration(n);
-              }
-            }}
-            onBlur={() => updateConcentration(editConcentration)}
-          />
-        </span>
+        <Input
+          className="concentration"
+          aria-label="Концентрация"
+          type="number"
+          min={1}
+          max={100}
+          suffix="%"
+          value={editConcentration === undefined ? "" : String(editConcentration)}
+          onFocus={onFocusSelect}
+          onChange={(v) => {
+            if (v === "") {
+              setEditConcentration(undefined);
+              return;
+            }
+            const n = Number(v);
+            if (Number.isFinite(n)) {
+              setEditConcentration(n);
+            }
+          }}
+          onBlur={() => updateConcentration(editConcentration)}
+        />
       ) : null}
       <Input
-        className="edit-value"
+        className="edit-value w-20"
         aria-label="Значение"
         type="number"
         highlighted

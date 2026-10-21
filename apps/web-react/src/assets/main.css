@@ -164,9 +164,11 @@
 }
 
 .concentration {
-  width: 4em;
+  /* wide enough for "100" + the % suffix overlay */
+  width: 5em;
 }
 
 .edit-value {
-  width: 4em;
+  /* wide enough for ~10000 plus the number spinner */
+  width: 5.5em;
 }
