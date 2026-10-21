@@ -1,6 +1,6 @@
 import { recipeToText } from "@repo/food-recipe-core/src/food_recipe/core/export";
 import { parseTextRecipe } from "@repo/food-recipe-core/src/food_recipe/core/parser/text";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { useRecipeStore } from "@/stores/recipe";
 import { EXAMPLE_RECIPE } from "./constants";
@@ -13,15 +13,15 @@ function setup(rawRecipe: string = EXAMPLE_RECIPE, scale = 1, newScale = 1) {
   render(<RecipeCalculator />);
 }
 
-/** Find the table row (display or edit) whose text contains the given fragment. */
-function rowContaining(text: string): HTMLTableRowElement {
-  const rows = Array.from(document.querySelectorAll("tr"));
+/** Find the ingredient row (li of the recipe list) whose text contains the given fragment. */
+function rowContaining(text: string): HTMLLIElement {
+  const rows = Array.from(document.querySelectorAll("li"));
   const row = rows.find((r) => (r.textContent ?? "").includes(text));
   expect(row, `row containing "${text}"`).toBeDefined();
-  return row as HTMLTableRowElement;
+  return row as HTMLLIElement;
 }
 
-function clickRowButton(row: HTMLTableRowElement): void {
+function clickRowButton(row: HTMLLIElement): void {
   fireEvent.click(row.querySelector("button") as HTMLButtonElement);
 }
 
@@ -34,16 +34,18 @@ afterEach(() => {
 describe("RecipeCalculator", () => {
   it("renders the example recipe with base quantities", () => {
     setup();
-    expect(screen.getByRole("heading", { name: "Традиционный кимчи" })).toBeDefined();
+    expect(screen.getByRole("heading", { name: "Калькулятор" })).toBeDefined();
+    expect(screen.getByText("Традиционный кимчи")).toBeDefined();
     expect(screen.getByText("Капуста пекинская")).toBeDefined();
     expect(screen.getByText("2.7")).toBeDefined();
   });
 
   it("rescales quantities when newScale changes", () => {
     setup();
-    const input = document.getElementById("new_scale") as HTMLInputElement;
-    fireEvent.change(input, { target: { value: "3" } });
-    fireEvent.blur(input);
+    // The portion stepper replaces the old #new_scale input: step 1 → 3.
+    const increment = screen.getByRole("button", { name: "Больше порций" });
+    fireEvent.click(increment);
+    fireEvent.click(increment);
     expect(screen.getByText("8.1")).toBeDefined();
   });
 
@@ -51,7 +53,8 @@ describe("RecipeCalculator", () => {
     const recipe = parseTextRecipe("Тест\nВода 2 cup");
     recipe.portion = 3;
     setup(recipeToText(recipe));
-    expect((document.getElementById("scale") as HTMLInputElement).value).toBe("3");
+    // The scale is no longer an input; assert the adopted store state.
+    expect(useRecipeStore.getState().scale).toBe(3);
   });
 
   it("edits an ingredient value and adjusts newScale", () => {
@@ -62,7 +65,7 @@ describe("RecipeCalculator", () => {
     if (!valueInput) return;
     fireEvent.change(valueInput, { target: { value: "5.4" } });
     fireEvent.blur(valueInput);
-    fireEvent.click(screen.getByText("Сохранить"));
+    fireEvent.click(screen.getByRole("button", { name: "Сохранить" }));
     const state = useRecipeStore.getState();
     expect(state.newScale).toBe(2);
     expect(state.rawRecipe).toContain("2,7");
@@ -76,7 +79,7 @@ describe("RecipeCalculator", () => {
     expect(select).not.toBeNull();
     if (!select) return;
     fireEvent.change(select, { target: { value: "ml" } });
-    fireEvent.click(screen.getByText("Сохранить"));
+    fireEvent.click(screen.getByRole("button", { name: "Сохранить" }));
     const state = useRecipeStore.getState();
     expect(state.rawRecipe).toContain("мл");
     expect(screen.getByText("500")).toBeDefined();
@@ -92,7 +95,7 @@ describe("RecipeCalculator", () => {
     expect(concInput.value).toBe("90");
     fireEvent.change(concInput, { target: { value: "45" } });
     fireEvent.blur(concInput);
-    fireEvent.click(screen.getByText("Сохранить"));
+    fireEvent.click(screen.getByRole("button", { name: "Сохранить" }));
     const state = useRecipeStore.getState();
     expect(state.rawRecipe).toContain("45%");
     expect(state.rawRecipe).toContain("200");
@@ -102,12 +105,14 @@ describe("RecipeCalculator", () => {
 
   it("shows the GrandMother modal when scale is cleared", () => {
     setup();
-    const input = document.getElementById("scale") as HTMLInputElement;
-    fireEvent.change(input, { target: { value: "" } });
-    fireEvent.blur(input);
+    // The old #scale input is gone; clear the scale the same way an emptied
+    // field used to commit it (0 → below the 0.1 guard threshold).
+    act(() => {
+      useRecipeStore.setState({ scale: 0 });
+    });
     expect(screen.getByText("Не балуйся")).toBeDefined();
-    expect((document.getElementById("scale") as HTMLInputElement).value).toBe("1");
-    fireEvent.click(document.querySelector(".modal-overlay") as HTMLElement);
+    expect(useRecipeStore.getState().scale).toBe(1);
+    fireEvent.click(screen.getByRole("dialog"));
     expect(screen.queryByText("Не балуйся")).toBeNull();
   });
 });

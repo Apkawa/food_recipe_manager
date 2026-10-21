@@ -3,11 +3,12 @@ import { recipeToText } from "@repo/food-recipe-core/src/food_recipe/core/export
 import { parseTextRecipe } from "@repo/food-recipe-core/src/food_recipe/core/parser/text";
 import type { Ingredient } from "@repo/food-recipe-core/src/food_recipe/core/types/recipe";
 import { round } from "@repo/food-recipe-core/src/food_recipe/utils";
+import { Card, CardHeader, Modal } from "@repo/ui";
 import { useEffect, useMemo, useState } from "react";
 import { isNumber } from "@/lib/utils";
 import { useRecipeStore } from "@/stores/recipe";
 import GrandMother from "../GrandMother";
-import Modal from "../ui/Modal";
+import { PageHeader } from "../PageHeader";
 import ParsedRecipeTable from "./ParsedRecipeTable";
 import RawRecipeEditor from "./RawRecipeEditor";
 import RecipeFavoriteButton from "./RecipeFavoriteButton";
@@ -95,41 +96,39 @@ function RecipeCalculator() {
       >
         <GrandMother />
       </Modal>
-      {scaled.ingredient_groups.length > 0 ? (
-        <>
-          <div id="parsed_recipe">
-            {parsed.name.trim() ? <h2>{parsed.name}</h2> : null}
-            <ParsedRecipeTable
-              recipe={scaled}
-              lang={LANG}
-              onIngredientUpdate={onIngredientUpdate}
-            />
-            <ScaleControls
-              scale={scale}
-              newScale={newScale}
-              onScaleChange={setScale}
-              onNewScaleChange={setNewScale}
-            />
-          </div>
-          {parsed.description ? (
-            <div>
-              <br />
-              <h2>Описание:</h2>
-              <pre>{parsed.description}</pre>
-            </div>
-          ) : null}
-          <br />
-          <div>
+
+      <PageHeader
+        title="Калькулятор"
+        actions={
+          <>
             <RecipeShare recipe={parsed} />
             <RecipeFavoriteButton recipe={parsed} />
-          </div>
-        </>
+          </>
+        }
+      />
+      <p className="truncate text-base font-medium text-text2">{parsed.name}</p>
+
+      {scaled.ingredient_groups.length > 0 ? (
+        <div className="mt-5 flex flex-col gap-3">
+          <ParsedRecipeTable recipe={scaled} lang={LANG} onIngredientUpdate={onIngredientUpdate} />
+          {parsed.description ? (
+            <Card>
+              <CardHeader>Описание</CardHeader>
+              <p className="whitespace-pre-wrap px-4 pb-4 pt-2 text-sm leading-relaxed text-muted">
+                {parsed.description}
+              </p>
+            </Card>
+          ) : null}
+          <ScaleControls
+            scale={scale}
+            newScale={newScale}
+            onScaleChange={setScale}
+            onNewScaleChange={setNewScale}
+          />
+        </div>
       ) : null}
-      <hr />
-      <br />
-      <div className="rawRecipe-wrap">
-        <h3>Текстовый рецепт</h3>
-        <div>* Вставьте сюда текст скопированного рецепта</div>
+
+      <div className="mt-3">
         <RawRecipeEditor value={rawRecipe} onChange={setRawRecipe} />
       </div>
     </>

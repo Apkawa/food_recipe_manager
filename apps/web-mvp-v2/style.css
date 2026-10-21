@@ -1,0 +1,98 @@
+/* web-mvp-v2: fine polish only — no functional logic. */
+
+/* Font smoothing */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Subtle warm scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(214 211 209) transparent;
+}
+.dark * {
+  scrollbar-color: rgb(68 64 60) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: rgb(214 211 209);
+}
+.dark *::-webkit-scrollbar-thumb {
+  background: rgb(68 64 60);
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Details/summary: hide the native marker (we use list-none in markup) */
+summary {
+  -webkit-tap-highlight-color: transparent;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Visible focus rings for keyboard users */
+:focus-visible {
+  outline: 2px solid rgb(245 158 11);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+/* Decorative portions slider */
+input[type='range'].portions-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    rgb(245 158 11) 0%,
+    rgb(245 158 11) 50%,
+    rgb(214 211 209) 50%,
+    rgb(214 211 209) 100%
+  );
+}
+.dark input[type='range'].portions-range {
+  background: linear-gradient(
+    to right,
+    rgb(251 191 36) 0%,
+    rgb(251 191 36) 50%,
+    rgb(41 37 36) 50%,
+    rgb(41 37 36) 100%
+  );
+}
+input[type='range'].portions-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  background: #fff;
+  border: 3px solid rgb(245 158 11);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+  cursor: default;
+}
+.dark input[type='range'].portions-range::-webkit-slider-thumb {
+  background: rgb(251 191 36);
+  border-color: rgb(251 191 36);
+}
+input[type='range'].portions-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  background: #fff;
+  border: 3px solid rgb(245 158 11);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+  cursor: default;
+}
+.dark input[type='range'].portions-range::-moz-range-thumb {
+  background: rgb(251 191 36);
+  border-color: rgb(251 191 36);
+}

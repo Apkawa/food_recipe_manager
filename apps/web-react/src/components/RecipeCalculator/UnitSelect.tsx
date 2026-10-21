@@ -2,6 +2,7 @@ import { getUnitDisplay } from "@repo/food-recipe-core/src/food_recipe/core/i18n
 import type { Ingredient } from "@repo/food-recipe-core/src/food_recipe/core/types/recipe";
 import type { Unit } from "@repo/food-recipe-core/src/food_recipe/core/unit/constants";
 import { getAvailableConvertUnits } from "@repo/food-recipe-core/src/food_recipe/core/unit/convert";
+import { Select } from "@repo/ui";
 import { useMemo } from "react";
 
 interface UnitSelectProps {
@@ -25,17 +26,18 @@ function UnitSelect({ ingredient, onChange }: UnitSelectProps) {
   }
 
   return (
-    <select
+    <Select
       aria-label="Единица измерения"
-      value={ingredient.unit}
-      onChange={(e) => onChange(e.target.value as Unit)}
+      value={ingredient.unit ?? ""}
+      onChange={(value) => onChange(value as Unit)}
+      className="shrink-0"
     >
       {availableUnits.map((u) => (
         <option key={u.unit} value={u.unit}>
           {u.display}
         </option>
       ))}
-    </select>
+    </Select>
   );
 }
 

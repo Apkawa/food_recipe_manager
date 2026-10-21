@@ -28,9 +28,11 @@ describe("RecipeShare", () => {
   it("bakes calculated values into the share text without mutating the original recipe", () => {
     const recipe = makeScaledRecipe();
     render(<RecipeShare recipe={recipe} />);
-    fireEvent.click(screen.getByText("Поделиться"));
+    fireEvent.click(screen.getByRole("button", { name: "Поделиться" }));
 
-    const textarea = document.querySelector<HTMLTextAreaElement>(".modal-content textarea");
+    const textarea = screen.getByRole("textbox", {
+      name: "Текст для обмена",
+    }) as HTMLTextAreaElement;
     expect(textarea).not.toBeNull();
     if (!textarea) return;
     expect(textarea.value).toContain("Тест");
@@ -45,14 +47,19 @@ describe("RecipeShare", () => {
     expect(recipe.portion).toBe(2);
   });
 
+  it("shows the share heading and copy hint above the textarea", () => {
+    render(<RecipeShare recipe={makeScaledRecipe()} />);
+    fireEvent.click(screen.getByRole("button", { name: "Поделиться" }));
+
+    expect(screen.getByRole("heading", { name: "Поделиться рецептом" })).not.toBeNull();
+    expect(screen.getByText("Ссылка/текст копируется при открытии")).not.toBeNull();
+  });
+
   it("closes on overlay click", () => {
     render(<RecipeShare recipe={makeScaledRecipe()} />);
-    fireEvent.click(screen.getByText("Поделиться"));
-    expect(document.querySelector(".modal-overlay")).not.toBeNull();
-
-    const overlay = document.querySelector<HTMLElement>(".modal-overlay");
-    if (!overlay) return;
-    fireEvent.click(overlay);
-    expect(document.querySelector(".modal-overlay")).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Поделиться" }));
+    const dialog = screen.getByRole("dialog");
+    fireEvent.click(dialog);
+    expect(screen.queryByRole("dialog")).toBeNull();
   });
 });

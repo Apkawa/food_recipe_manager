@@ -1,4 +1,5 @@
 import FavoritesList from "../components/FavoritesList";
+import { PageHeader } from "../components/PageHeader";
 
 /**
  * Favorites route.
@@ -6,9 +7,10 @@ import FavoritesList from "../components/FavoritesList";
  */
 function FavoritesView() {
   return (
-    <main>
+    <div className="flex flex-col gap-4">
+      <PageHeader title="Избранное" />
       <FavoritesList />
-    </main>
+    </div>
   );
 }
 

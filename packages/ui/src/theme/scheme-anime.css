@@ -1,0 +1,73 @@
+/*
+ * scheme-anime — soft anime (sakura / dark plum) color scheme.
+ * Source: apps/web-mvp-v2/scheme-anime.css (static mockup).
+ * Activated by data-scheme="anime" on <html>; dark mode adds the .dark class.
+ */
+
+[data-scheme="anime"] {
+  /* colors */
+  --page: #fff1f5;
+  --inputd: #fff7fa;
+  --card: #ffffff;
+  --card95: rgba(255, 255, 255, 0.95);
+  --input: #fff7fa;
+  --text: #5d4a5a;
+  --text2: #7d6878;
+  --muted: #a58fa0;
+  --muted2: #c0a8b8;
+  --grip: #d8c2d0;
+  --gripd: #b8a2b2;
+  --accent: #f77fa8;
+  --accent2: #e75f92;
+  --accentbg: #ff8fb3;
+  --accentbg2: #f77fa8;
+  --accentbg3: #ffa8c8;
+  --soft: rgba(247, 127, 168, 0.14);
+  --ring: rgba(247, 127, 168, 0.45);
+  --accentcontrast: #ffffff;
+  --border: #f3d9e3;
+  --border2: #e8c4d2;
+  --divider: #f6e4ec;
+  --track: #f0dbe6;
+  --hover: #fbe9f0;
+  /* structure — plush radii, soft pink glow */
+  --rad-card: 24px;
+  --rad-control: 14px;
+  --rad-field: 10px;
+  --sh-card: 0 6px 20px rgba(247, 127, 168, 0.18);
+  --font-body: "Manrope", system-ui, sans-serif;
+}
+
+[data-scheme="anime"].dark {
+  /* colors */
+  --page: #241d2e;
+  --inputd: #1e1826;
+  --card: #2e2639;
+  --card95: rgba(46, 38, 57, 0.95);
+  --input: #241d2e;
+  --text: #f6ecf4;
+  --text2: #cbb8cc;
+  --muted: #937f99;
+  --muted2: #6e5d76;
+  --grip: #4a3d55;
+  --gripd: #3e3248;
+  --accent: #ff9ecf;
+  --accent2: #ffb8dc;
+  --accentbg: #ff9ecf;
+  --accentbg2: #ff8ac6;
+  --accentbg3: #ffb0d8;
+  --soft: rgba(255, 158, 207, 0.14);
+  --ring: rgba(255, 158, 207, 0.45);
+  --accentcontrast: #33122a;
+  --border: #443a52;
+  --border2: #55486a;
+  --divider: #3a3048;
+  --track: #382e45;
+  --hover: #382e45;
+  /* structure — plush radii, deep soft shadow */
+  --rad-card: 24px;
+  --rad-control: 14px;
+  --rad-field: 10px;
+  --sh-card: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --font-body: "Manrope", system-ui, sans-serif;
+}

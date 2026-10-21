@@ -1,0 +1,96 @@
+/*
+ * scheme-win95 — Windows 95 (silver + navy, 3D bevels) color scheme.
+ * Source: apps/web-mvp-v2/scheme-win95.css (static mockup).
+ * Activated by data-scheme="win95" on <html>; dark mode adds the .dark class.
+ */
+
+[data-scheme="win95"] {
+  /* colors */
+  --page: #c0c0c0;
+  --inputd: #ffffff;
+  --card: #f0f0f0;
+  --card95: rgba(240, 240, 240, 0.95);
+  --input: #ffffff;
+  --text: #000000;
+  --text2: #333333;
+  --muted: #666666;
+  --muted2: #888888;
+  --grip: #9a9a9a;
+  --gripd: #7a7a7a;
+  --accent: #000080;
+  --accent2: #00006b;
+  --accentbg: #000080;
+  --accentbg2: #00006b;
+  --accentbg3: #3333aa;
+  --soft: rgba(0, 0, 128, 0.12);
+  --ring: rgba(0, 0, 128, 0.45);
+  --accentcontrast: #ffffff;
+  --border: #9a9a9a;
+  --border2: #7a7a7a;
+  --divider: #b8b8b8;
+  --track: #a8a8a8;
+  --hover: #e0e0e0;
+  /* structure — square corners, no shadows, Tahoma */
+  --rad-card: 0;
+  --rad-control: 0;
+  --rad-field: 0;
+  --sh-card: none;
+  --font-body: Tahoma, "MS Sans Serif", "Segoe UI", sans-serif;
+}
+
+[data-scheme="win95"].dark {
+  /* colors */
+  --page: #262626;
+  --inputd: #1e1e1e;
+  --card: #323232;
+  --card95: rgba(50, 50, 50, 0.95);
+  --input: #2a2a2a;
+  --text: #e6e6e6;
+  --text2: #c4c4c4;
+  --muted: #8f8f8f;
+  --muted2: #6f6f6f;
+  --grip: #555555;
+  --gripd: #4a4a4a;
+  --accent: #8888ff;
+  --accent2: #a8a8ff;
+  --accentbg: #6a6ad8;
+  --accentbg2: #5555c8;
+  --accentbg3: #9999ff;
+  --soft: rgba(136, 136, 255, 0.14);
+  --ring: rgba(136, 136, 255, 0.45);
+  --accentcontrast: #101030;
+  --border: #4a4a4a;
+  --border2: #5a5a5a;
+  --divider: #454545;
+  --track: #3a3a3a;
+  --hover: #3e3e3e;
+  /* structure — square corners, no shadows, Tahoma */
+  --rad-card: 0;
+  --rad-control: 0;
+  --rad-field: 0;
+  --sh-card: none;
+  --font-body: Tahoma, "MS Sans Serif", "Segoe UI", sans-serif;
+}
+
+/* structure — Win95: raised bevel for cards/controls/general borders */
+[data-scheme="win95"] .rounded-card,
+[data-scheme="win95"] .rounded-control,
+[data-scheme="win95"] .border-border {
+  border-color: #ffffff #404040 #404040 #ffffff;
+}
+/* structure — Win95: sunken bevel for fields/inputs (2px edited border) */
+[data-scheme="win95"] .rounded-field,
+[data-scheme="win95"] .border-accentbg {
+  border-color: #404040 #ffffff #ffffff #404040;
+}
+/* structure — Win95 (dark): raised bevel */
+[data-scheme="win95"].dark .rounded-card,
+[data-scheme="win95"].dark .rounded-control,
+[data-scheme="win95"].dark .border-border {
+  border-color: #5a5a5a #141414 #141414 #5a5a5a;
+}
+/* structure — Win95 (dark): sunken bevel */
+[data-scheme="win95"].dark .rounded-field,
+[data-scheme="win95"].dark .border-accentbg {
+  border-color: #141414 #5a5a5a #5a5a5a #141414;
+}

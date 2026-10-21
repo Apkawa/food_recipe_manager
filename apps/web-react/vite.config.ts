@@ -1,6 +1,7 @@
 import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import type { ConfigEnv } from "vite";
 import { loadEnv } from "vite";
@@ -110,7 +111,7 @@ export default defineConfig(({ mode }: ConfigEnv) => {
   }
 
   return {
-    plugins: [react(), VitePWA(PWAOptions)],
+    plugins: [react(), tailwindcss(), VitePWA(PWAOptions)],
     base: "./",
     resolve: {
       alias: {

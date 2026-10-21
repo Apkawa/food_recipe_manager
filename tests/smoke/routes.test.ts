@@ -24,7 +24,7 @@ interface RouteCase {
 const routes: RouteCase[] = [
   { name: "home", url: "/#/", marker: "Текстовый рецепт" },
   { name: "about", url: "/#/about", marker: "Цель проекта" },
-  { name: "favorite", url: "/#/favorite", marker: "Избранные рецепты" },
+  { name: "favorite", url: "/#/favorite", marker: "Избранное" },
   { name: "helpers", url: "/#/helpers", marker: "Таблица плотности" },
 ];
 

@@ -1,0 +1,73 @@
+/*
+ * scheme-dos — DOS terminal (green phosphor / CGA) color scheme.
+ * Source: apps/web-mvp-v2/scheme-dos.css (static mockup).
+ * Activated by data-scheme="dos" on <html>; dark mode adds the .dark class.
+ */
+
+[data-scheme="dos"] {
+  /* colors */
+  --page: #c9c9c0;
+  --inputd: #f0f0e8;
+  --card: #dcdcd2;
+  --card95: rgba(220, 220, 210, 0.95);
+  --input: #e8e8de;
+  --text: #101010;
+  --text2: #333330;
+  --muted: #5a5a52;
+  --muted2: #75756c;
+  --grip: #8a8a80;
+  --gripd: #6a6a62;
+  --accent: #007800;
+  --accent2: #005800;
+  --accentbg: #009911;
+  --accentbg2: #007800;
+  --accentbg3: #33cc4d;
+  --soft: rgba(0, 120, 0, 0.14);
+  --ring: rgba(0, 120, 0, 0.45);
+  --accentcontrast: #ffffff;
+  --border: #9a9a8e;
+  --border2: #8a8a80;
+  --divider: #b8b8ac;
+  --track: #b0b0a4;
+  --hover: #c8c8bc;
+  /* structure — square corners, flat, no shadows, monospace */
+  --rad-card: 0;
+  --rad-control: 0;
+  --rad-field: 0;
+  --sh-card: none;
+  --font-body: "Courier New", Courier, monospace;
+}
+
+[data-scheme="dos"].dark {
+  /* colors */
+  --page: #050805;
+  --inputd: #061006;
+  --card: #0b140b;
+  --card95: rgba(11, 20, 11, 0.95);
+  --input: #081208;
+  --text: #4dff7a;
+  --text2: #35c463;
+  --muted: #23924a;
+  --muted2: #1b6e39;
+  --grip: #17562c;
+  --gripd: #12492a;
+  --accent: #00e64a;
+  --accent2: #5cff9a;
+  --accentbg: #00c23c;
+  --accentbg2: #00a832;
+  --accentbg3: #33ff70;
+  --soft: rgba(0, 230, 74, 0.12);
+  --ring: rgba(0, 230, 74, 0.45);
+  --accentcontrast: #001a08;
+  --border: #173517;
+  --border2: #1e4420;
+  --divider: #12240f;
+  --track: #102010;
+  --hover: #101f10;
+  /* structure — square corners, flat, no shadows, monospace */
+  --rad-card: 0;
+  --rad-control: 0;
+  --rad-field: 0;
+  --sh-card: none;
+  --font-body: "Courier New", Courier, monospace;
+}

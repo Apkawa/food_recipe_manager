@@ -1,9 +1,9 @@
 import { recipeToText } from "@repo/food-recipe-core/src/food_recipe/core/export";
 import type { Recipe } from "@repo/food-recipe-core/src/food_recipe/core/types/recipe";
+import { IconButton, Modal, ShareIcon } from "@repo/ui";
 import { useEffect, useState } from "react";
 
 import { cloneDeep } from "../../lib/utils";
-import Modal from "../ui/Modal";
 
 interface RecipeShareProps {
   recipe: Recipe;
@@ -14,14 +14,12 @@ interface RecipeShareProps {
  * Port of apps/web/src/components/RecipeCalculator/RecipeShare.vue — opening the
  * modal bakes `calculated_value` into `value` on a clone (the core mutates in
  * place), serializes via `recipeToText`, copies to the clipboard and, when
- * supported, opens the native share sheet. The inner `.modal-content` div is
- * kept: the Vue template nests it inside UiModal's own `.modal-content`.
+ * supported, opens the native share sheet.
  */
 function RecipeShare({ recipe }: RecipeShareProps) {
   const [textRecipe, setTextRecipe] = useState("");
   const [showModal, setShowModal] = useState(false);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: parity with the Vue watch(showModal) — recompute only when the modal opens
   useEffect(() => {
     if (!showModal) return;
     const shared = cloneDeep(recipe) as Recipe;
@@ -56,18 +54,21 @@ function RecipeShare({ recipe }: RecipeShareProps) {
 
   return (
     <>
-      <button type="button" onClick={() => setShowModal(true)}>
-        Поделиться
-      </button>
+      <IconButton type="button" aria-label="Поделиться" onClick={() => setShowModal(true)}>
+        <ShareIcon className="h-5 w-5" />
+      </IconButton>
       <Modal open={showModal} onClose={() => setShowModal(false)} ariaLabel="Поделиться рецептом">
-        <div className="modal-content">
-          <textarea
-            readOnly
-            aria-label="Текст для обмена"
-            value={textRecipe}
-            onFocus={onFocusAllSelectCb}
-          />
-        </div>
+        <h2 className="text-xs font-bold uppercase tracking-wider text-muted">
+          Поделиться рецептом
+        </h2>
+        <p className="pt-1 text-xs text-muted">Ссылка/текст копируется при открытии</p>
+        <textarea
+          readOnly
+          aria-label="Текст для обмена"
+          className="mt-3 h-[50vh] w-full rounded-md border border-border bg-input p-2 font-mono text-sm text-text"
+          value={textRecipe}
+          onFocus={onFocusAllSelectCb}
+        />
       </Modal>
     </>
   );

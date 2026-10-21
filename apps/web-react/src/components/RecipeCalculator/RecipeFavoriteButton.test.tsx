@@ -25,11 +25,11 @@ describe("RecipeFavoriteButton", () => {
     const recipe = makeRecipe("Борщ");
     render(<RecipeFavoriteButton recipe={recipe} />);
 
-    expect(screen.getByText("Добавить в избранное")).toBeDefined();
-    fireEvent.click(screen.getByRole("button"));
+    expect(screen.getByRole("button", { name: "Добавить в избранное" })).toBeDefined();
+    fireEvent.click(screen.getByRole("button", { name: "Добавить в избранное" }));
 
     expect(useFavoritesStore.getState().recipes).toHaveLength(1);
-    expect(screen.getByText("Обновить избранное")).toBeDefined();
+    expect(screen.getByRole("button", { name: "Обновить избранное" })).toBeDefined();
   });
 
   it("updates the existing favorite in place (no duplicate)", () => {
@@ -37,7 +37,7 @@ describe("RecipeFavoriteButton", () => {
     useFavoritesStore.getState().add(recipe);
     render(<RecipeFavoriteButton recipe={recipe} />);
 
-    fireEvent.click(screen.getByText("Обновить избранное"));
+    fireEvent.click(screen.getByRole("button", { name: "Обновить избранное" }));
 
     expect(useFavoritesStore.getState().recipes).toHaveLength(1);
   });

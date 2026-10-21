@@ -1,15 +1,12 @@
 import RecipeCalculator from "@/components/RecipeCalculator/RecipeCalculator";
 
 /**
- * Main route: recipe calculator.
+ * Main route: recipe calculator. The visible page title (the recipe name) and
+ * the document `<h1>` are rendered by {@link RecipeCalculator} via the unified
+ * `PageHeader`.
  */
 function HomeView() {
-  return (
-    <main>
-      <h1 className="page-title">Калькулятор</h1>
-      <RecipeCalculator />
-    </main>
-  );
+  return <RecipeCalculator />;
 }
 
 export default HomeView;

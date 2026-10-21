@@ -1,80 +1,121 @@
-@import "./base.css";
+@import "tailwindcss";
 
-/* React renders into #root instead of Vue's #app */
-#root {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 1em;
-  font-weight: normal;
-  text-wrap: normal;
+/* Scan the no-build @repo/ui workspace package for utility classes. It is
+   linked via `workspace:` into node_modules (which Tailwind skips by
+   default), so transform/spacing utilities used only inside @repo/ui
+   (e.g. -translate-x-full, transition-transform) would otherwise never be
+   generated. */
+@source "../../../../packages/ui/src";
+
+/* Class-based dark mode: <html class="dark"> (mockup toggles it on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Semantic color tokens -> CSS variables, so Tailwind generates utilities
+   like bg-page, bg-card, text-text, text-muted, text-accent, bg-accentbg,
+   border-border, divide-divider, ring-ring, bg-soft, text-grip, bg-track,
+   bg-hover, text-accentcontrast, bg-input, bg-card95.
+   Values are resolved at runtime from the per-theme-scheme variables below. */
+@theme {
+  --color-page: var(--page);
+  --color-card: var(--card);
+  --color-card95: var(--card95);
+  --color-input: var(--input);
+  --color-inputd: var(--inputd);
+  --color-text: var(--text);
+  --color-text2: var(--text2);
+  --color-muted: var(--muted);
+  --color-muted2: var(--muted2);
+  --color-grip: var(--grip);
+  --color-gripd: var(--gripd);
+  --color-accent: var(--accent);
+  --color-accent2: var(--accent2);
+  --color-accentbg: var(--accentbg);
+  --color-accentbg2: var(--accentbg2);
+  --color-accentbg3: var(--accentbg3);
+  --color-soft: var(--soft);
+  --color-ring: var(--ring);
+  --color-accentcontrast: var(--accentcontrast);
+  --color-border: var(--border);
+  --color-border2: var(--border2);
+  --color-divider: var(--divider);
+  --color-track: var(--track);
+  --color-hover: var(--hover);
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsl(160, 100%, 25%);
-  transition: 0.4s;
-  padding: 3px;
+/* Structural tokens (inline: values are inlined into utilities, not emitted
+   as :root variables) so color schemes can override radii/shadows/fonts
+   without !important. */
+@theme inline {
+  --radius-card: var(--rad-card, 1rem);
+  --radius-control: var(--rad-control, 0.75rem);
+  --radius-field: var(--rad-field, 0.5rem);
+  --shadow-card: var(--sh-card, 0 1px 2px 0 rgb(0 0 0 / 0.05));
+  --font-sans: var(--font-body, "Manrope", system-ui, sans-serif);
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+/* Classic scheme (default): stone/amber palette, mapped from
+   apps/web-mvp-v2/index.html mockup usage:
+   page bg stone-100/stone-950, cards white/stone-900, borders stone-200/
+   stone-800, text hierarchy stone-900/700/500/400, accent amber-600/500/400. */
+:root {
+  --page: #f5f5f4;
+  --card: #ffffff;
+  --card95: rgb(255 255 255 / 0.95);
+  --input: #ffffff;
+  --inputd: #f5f5f4;
+  --text: #1c1917;
+  --text2: #44403c;
+  --muted: #78716c;
+  --muted2: #a8a29e;
+  --grip: #d6d3d1;
+  --gripd: #a8a29e;
+  --accent: #d97706;
+  --accent2: #92400e;
+  --accentbg: #f59e0b;
+  --accentbg2: #d97706;
+  --accentbg3: #b45309;
+  --soft: rgb(245 158 11 / 0.1);
+  --ring: rgb(245 158 11 / 0.4);
+  --accentcontrast: #ffffff;
+  --border: #e7e5e4;
+  --border2: #d6d3d1;
+  --divider: #f5f5f4;
+  --track: #e7e5e4;
+  --hover: #f5f5f4;
 }
 
-body {
-  display: flex;
+:root.dark,
+.dark {
+  --page: #0c0a09;
+  --card: #1c1917;
+  --card95: rgb(28 25 23 / 0.95);
+  --input: #0c0a09;
+  --inputd: #1c1917;
+  --text: #f5f5f4;
+  --text2: #d6d3d1;
+  --muted: #a8a29e;
+  --muted2: #78716c;
+  --grip: #44403c;
+  --gripd: #57534e;
+  --accent: #fbbf24;
+  --accent2: #fcd34d;
+  --accentbg: #fbbf24;
+  --accentbg2: #f59e0b;
+  --accentbg3: #fbbf24;
+  --accentcontrast: #1c1917;
+  --border: #292524;
+  --border2: #44403c;
+  --divider: #292524;
+  --track: #292524;
+  --hover: #292524;
 }
 
-/* Home page title: keep the previous h2 look (base.css resets already
-   zero margins and font-weight; only the default size differs) */
-.page-title {
-  font-size: 1.5em;
-}
-
-/* Layout (App) — port of apps/web/src/App.vue scoped styles */
-
-.wrapper {
-  width: 100%;
-}
-
-header {
-  line-height: 1.5;
-}
-
-nav {
-  display: flex;
-  font-size: 12px;
-}
-
-/* NavLink renders class="active" (Vue Router used .router-link-exact-active) */
-nav a.active {
-  color: var(--color-text);
-}
-
-nav a.active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-.content {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.content footer {
-  margin-top: auto;
+/* base.css (unlayered) defines its own --color-text/--color-border, which
+   would win over the Tailwind theme layer for the semantic utilities;
+   re-assert the classic values here (unlayered, later in the sheet). */
+:root {
+  --color-text: var(--text);
+  --color-border: var(--border);
 }
 
 /* BuildInfo — port of apps/web/src/components/BuildInfo.vue styles */
@@ -116,65 +157,10 @@ nav a:first-of-type {
 }
 
 /* RecipeCalculator — port of the scoped styles from
-   RecipeCalculator.vue, UiModal.vue, IngredientLine/index.vue and Edit.vue */
-
-.scale_wrap {
-  font-size: large;
-  padding: 0.5em;
-}
-
-.scale_wrap > div {
-  padding-top: 1em;
-}
-
-.scale_wrap input {
-  font-size: larger;
-  width: 3em;
-}
-
-#parsed_recipe table {
-  width: 100%;
-}
+   RecipeCalculator.vue, IngredientLine/index.vue and Edit.vue */
 
 #raw_recipe {
-  width: 100%;
   height: 420px;
-}
-
-.modal {
-  position: fixed;
-  /*todo запрет скроллинга body.modal-open {overflow-y: hidden }*/
-  overflow-y: hidden;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgb(127, 127, 127, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal .modal-content {
-  text-align: center;
-  width: 100vw;
-  max-width: 640px;
-}
-
-.checked .name {
-  text-decoration-line: line-through;
-}
-
-.fraction {
-  font-feature-settings: afrc;
-  font-size: 1.5em;
-}
-
-@supports (font-variant-numeric: stacked-fractions) {
-  .fraction {
-    font-feature-settings: afrc;
-    font-variant-numeric: stacked-fractions;
-  }
 }
 
 .concentration {
@@ -183,76 +169,4 @@ nav a:first-of-type {
 
 .edit-value {
   width: 4em;
-}
-
-/* RecipeShare — port of RecipeShare.vue scoped style */
-
-.modal-content textarea {
-  width: 100%;
-  height: 50vh;
-}
-
-/* FavoritesList — port of RecipeFavoriteList.vue scoped style */
-
-.table {
-  width: 100%;
-}
-
-/* Visually hidden text, still announced by screen readers (clip technique). */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* AboutView — port of apps/web/src/views/AboutView.vue styles */
-
-/* In-text links must be distinguishable without relying on color
-   (axe: link-in-text-block). Nav links (nav a) are not in text blocks and stay as-is. */
-.about p a {
-  text-decoration: underline;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav .logo {
-    margin-left: auto;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-
-  #root {
-    width: 640px;
-  }
-
-  .about {
-    word-wrap: normal;
-  }
-
-  p {
-    padding-bottom: 1em;
-  }
 }

@@ -2,6 +2,7 @@ import { calculateConcentration } from "@repo/food-recipe-core/src/food_recipe/c
 import type { Ingredient } from "@repo/food-recipe-core/src/food_recipe/core/types/recipe";
 import type { Unit } from "@repo/food-recipe-core/src/food_recipe/core/unit/constants";
 import { convertIngredientUnit } from "@repo/food-recipe-core/src/food_recipe/core/unit/convert";
+import { CheckIcon, IconButton, Input } from "@repo/ui";
 import { useState } from "react";
 import { cloneDeep, isNumber } from "@/lib/utils";
 import UnitSelect from "./UnitSelect";
@@ -18,7 +19,7 @@ function setCalculated(draft: Ingredient, value: number): void {
 }
 
 /**
- * Inline editor row for a single ingredient.
+ * Inline editor controls for a single ingredient.
  * Port of apps/web/src/components/RecipeCalculator/IngredientLine/Edit.vue.
  *
  * Deliberate deviations from the Vue source (documented in the status doc):
@@ -106,61 +107,52 @@ function IngredientLineEdit({ ingredient, onSave }: IngredientLineEditProps) {
   };
 
   return (
-    <tr>
-      <td>
-        {isEditConcentration ? (
-          <>
-            Концентрация:{" "}
-            <input
-              className="concentration"
-              aria-label="Концентрация"
-              type="number"
-              min={1}
-              max={100}
-              required
-              value={editConcentration ?? ""}
-              onFocus={onFocusSelect}
-              onChange={(e) => {
-                const v = e.target.value;
-                if (v === "") {
-                  setEditConcentration(undefined);
-                  return;
-                }
-                const n = Number(v);
-                if (Number.isFinite(n)) {
-                  setEditConcentration(n);
-                }
-              }}
-              onBlur={() => updateConcentration(editConcentration)}
-            />
-          </>
-        ) : null}
-      </td>
-      <td>
-        <input
-          className="edit-value"
-          aria-label="Значение"
-          type="number"
-          value={valueText}
-          onFocus={onFocusSelect}
-          onChange={(e) => setValueText(e.target.value)}
-          onBlur={commitValue}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              commitValue(e);
-            }
-          }}
-        />
-      </td>
-      <td>
-        <UnitSelect ingredient={editIngredient} onChange={onUnitChange} />
-      </td>
-      <td>
-        <button type="button" onClick={saveCb}>
-          Сохранить
-        </button>
-      </td>
-    </tr>
+    <>
+      {isEditConcentration ? (
+        <span className="flex shrink-0 items-center gap-1.5 text-sm text-muted2">
+          Концентрация:
+          <Input
+            className="concentration"
+            aria-label="Концентрация"
+            type="number"
+            min={1}
+            max={100}
+            value={editConcentration === undefined ? "" : String(editConcentration)}
+            onFocus={onFocusSelect}
+            onChange={(v) => {
+              if (v === "") {
+                setEditConcentration(undefined);
+                return;
+              }
+              const n = Number(v);
+              if (Number.isFinite(n)) {
+                setEditConcentration(n);
+              }
+            }}
+            onBlur={() => updateConcentration(editConcentration)}
+          />
+        </span>
+      ) : null}
+      <Input
+        className="edit-value"
+        aria-label="Значение"
+        type="number"
+        highlighted
+        value={valueText}
+        onFocus={onFocusSelect}
+        onChange={(v) => setValueText(v)}
+        onBlur={(e) => commitValue(e)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            commitValue(e);
+          }
+        }}
+      />
+      <UnitSelect ingredient={editIngredient} onChange={onUnitChange} />
+      <IconButton variant="accent" aria-label="Сохранить" onClick={saveCb}>
+        <CheckIcon className="h-5 w-5" strokeWidth={2.5} />
+      </IconButton>
+    </>
   );
 }
 

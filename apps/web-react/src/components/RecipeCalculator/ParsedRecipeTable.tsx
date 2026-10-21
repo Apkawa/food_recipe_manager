@@ -1,6 +1,6 @@
 import type { LANG_TYPE } from "@repo/food-recipe-core/src/food_recipe/core/i18n";
 import type { Ingredient, Recipe } from "@repo/food-recipe-core/src/food_recipe/core/types/recipe";
-import { Fragment } from "react";
+import { Card, CardHeader, List } from "@repo/ui";
 import IngredientLine from "./IngredientLine";
 
 interface ParsedRecipeTableProps {
@@ -10,47 +10,29 @@ interface ParsedRecipeTableProps {
 }
 
 /**
- * Table of the parsed (already scaled) recipe.
+ * One card per ingredient group of the parsed (already scaled) recipe,
+ * each with a divided list of {@link IngredientLine} rows.
  * Port of the table markup in apps/web/src/components/RecipeCalculator/RecipeCalculator.vue.
  */
 function ParsedRecipeTable({ lang, recipe, onIngredientUpdate }: ParsedRecipeTableProps) {
   return (
-    <table className="recipeTable">
-      <colgroup>
-        <col span={3} style={{ width: "100%" }} />
-        <col span={3} style={{ width: "auto" }} />
-        <col span={3} style={{ width: "auto" }} />
-      </colgroup>
-      <thead>
-        <tr>
-          <th scope="col">Ингредиент</th>
-          <th scope="col">Значение</th>
-          <th scope="col">Ед. изм.</th>
-          <th scope="col">Действия</th>
-        </tr>
-      </thead>
-      <tbody>
-        {recipe.ingredient_groups.map((group, groupIndex) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: parity with Vue :key="'group_i:i'"
-          <Fragment key={groupIndex}>
-            {group.name ? (
-              <tr>
-                <th colSpan={4}>{group.name}</th>
-              </tr>
-            ) : null}
+    <>
+      {recipe.ingredient_groups.map((group, groupIndex) => (
+        <Card key={groupIndex}>
+          <CardHeader>{group.name || "Ингредиенты"}</CardHeader>
+          <List>
             {group.ingredients.map((ingredient, i) => (
               <IngredientLine
-                // biome-ignore lint/suspicious/noArrayIndexKey: parity with Vue :key="'group_i:i'"
                 key={`${groupIndex}:${i}`}
                 lang={lang}
                 ingredient={ingredient}
                 onUpdate={(updated) => onIngredientUpdate(updated, groupIndex, i)}
               />
             ))}
-          </Fragment>
-        ))}
-      </tbody>
-    </table>
+          </List>
+        </Card>
+      ))}
+    </>
   );
 }
 

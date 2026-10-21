@@ -1,0 +1,10 @@
+/*
+ * Theme schemes barrel.
+ * Import all color schemes; a scheme is activated by data-scheme="<name>"
+ * on <html> (the .dark class, also on <html>, switches light/dark values).
+ */
+@import "./scheme-anime.css";
+@import "./scheme-appetite.css";
+@import "./scheme-dos.css";
+@import "./scheme-retro90.css";
+@import "./scheme-win95.css";

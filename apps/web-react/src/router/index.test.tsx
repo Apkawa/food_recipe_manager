@@ -26,7 +26,7 @@ describe("routing", () => {
 
   it("renders the /favorite route (lazy)", async () => {
     renderAt("/favorite");
-    expect(await screen.findByRole("heading", { name: "Избранные рецепты" })).toBeDefined();
+    expect(await screen.findByRole("heading", { name: "Избранное" })).toBeDefined();
   });
 
   it("renders the /about route with project text and build info", async () => {
@@ -36,11 +36,11 @@ describe("routing", () => {
     expect(screen.getByRole("contentinfo")).toBeDefined();
   });
 
-  it("renders the /helpers route with three placeholder headings (lazy)", async () => {
+  it("renders the /helpers route with three placeholder items (lazy)", async () => {
     renderAt("/helpers");
-    const headings = await screen.findAllByRole("heading");
-    expect(headings).toHaveLength(3);
-    const [firstHeading] = headings;
-    expect(firstHeading?.textContent).toBe("Пересчет концентрации уксуса");
+    expect(await screen.findByRole("heading", { name: "Помощник" })).toBeDefined();
+    expect(await screen.findByText("Пересчет концентрации уксуса")).toBeDefined();
+    expect(screen.getByText("Конвертер единиц измерения")).toBeDefined();
+    expect(screen.getByText("Таблица плотности")).toBeDefined();
   });
 });

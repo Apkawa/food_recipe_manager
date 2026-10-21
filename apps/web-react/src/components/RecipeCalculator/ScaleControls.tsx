@@ -1,56 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-
-interface LazyNumberInputProps {
-  id: string;
-  value: number;
-  min?: number;
-  step?: number;
-  onCommit: (value: number) => void;
-}
-
-/**
- * Number input committing on blur/Enter — port of Vue's v-model.number.lazy.
- *
- * Commits Number(text), so an emptied field commits 0 and the container guard
- * reacts exactly like the Vue app (which stored "" and compared it as < 0.1).
- */
-function LazyNumberInput({ id, value, min, step, onCommit }: LazyNumberInputProps) {
-  const [text, setText] = useState<string>(String(value));
-  const focused = useRef(false);
-
-  useEffect(() => {
-    if (!focused.current) {
-      setText(String(value));
-    }
-  }, [value]);
-
-  const commit = (e: React.SyntheticEvent<HTMLInputElement>) => {
-    onCommit(Number((e.target as HTMLInputElement).value));
-  };
-
-  return (
-    <input
-      id={id}
-      type="number"
-      min={min}
-      step={step}
-      value={text}
-      onFocus={() => {
-        focused.current = true;
-      }}
-      onChange={(e) => setText(e.target.value)}
-      onBlur={(e) => {
-        focused.current = false;
-        commit(e);
-      }}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          commit(e);
-        }
-      }}
-    />
-  );
-}
+import { Button, Card, CardHeader, ProgressBar, Stepper } from "@repo/ui";
 
 interface ScaleControlsProps {
   scale: number;
@@ -59,26 +7,58 @@ interface ScaleControlsProps {
   onNewScaleChange: (newScale: number) => void;
 }
 
-/** Port of the "Рецепт на / Пересчитать на" controls in RecipeCalculator.vue. */
-function ScaleControls({ scale, newScale, onScaleChange, onNewScaleChange }: ScaleControlsProps) {
+/**
+ * Portion-rescale card: a stepper for the target portions, a progress bar
+ * of the scale ratio (newScale / scale) and a reset back to the original
+ * portions. Port of the "Рецепт на / Пересчитать на" controls in
+ * RecipeCalculator.vue — the original-portion input was replaced by the
+ * mockup's read-only "из N в оригинале" caption.
+ */
+function ScaleControls({
+  scale,
+  newScale,
+  onScaleChange: _onScaleChange,
+  onNewScaleChange,
+}: ScaleControlsProps) {
+  const progress = scale > 0 ? Math.round((newScale / scale) * 100) : 0;
+
   return (
-    <div className="scale_wrap">
-      <div>
-        <label htmlFor="scale">Рецепт на</label>{" "}
-        <LazyNumberInput id="scale" value={scale} min={1} onCommit={onScaleChange} /> порций
+    <Card>
+      <CardHeader>Готовим на</CardHeader>
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-3 p-4 pt-2">
+        <p className="flex items-baseline gap-2">
+          <span className="text-4xl font-extrabold tabular-nums tracking-tight">{newScale}</span>
+          <span className="text-sm text-muted">порций · из {scale} в оригинале</span>
+        </p>
+        <div className="ml-auto">
+          <Stepper
+            value={newScale}
+            onChange={onNewScaleChange}
+            min={1}
+            step={1}
+            ariaLabel="Порции"
+            ariaLabelDecrement="Меньше порций"
+            ariaLabelIncrement="Больше порций"
+          />
+        </div>
       </div>
-      <div>
-        <label htmlFor="new_scale">Пересчитать на</label>{" "}
-        <LazyNumberInput
-          id="new_scale"
-          value={newScale}
-          step={1}
-          min={1}
-          onCommit={onNewScaleChange}
-        />{" "}
-        порций
+      <p className="border-t border-border px-4 pt-3 text-sm text-muted">
+        Нажми ✎ у любого продукта и впиши, сколько его у тебя, — всё остальное пересчитается
+        пропорционально.
+      </p>
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border p-4 pt-4">
+        <div className="min-w-40 flex-1">
+          <div className="flex items-baseline justify-between">
+            <p className="text-sm font-semibold">Готовность</p>
+            <p className="text-sm font-bold tabular-nums text-accent">{progress}%</p>
+          </div>
+          <ProgressBar value={progress} label="Готовность" className="mt-1.5" />
+        </div>
+        <Button type="button" variant="secondary" onClick={() => onNewScaleChange(scale)}>
+          Сбросить
+        </Button>
       </div>
-    </div>
+    </Card>
   );
 }
 

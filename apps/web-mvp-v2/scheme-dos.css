@@ -1,0 +1,137 @@
+/* scheme-dos.css — DOS (green phosphor / CGA) */
+
+:root {
+  --page: #c9c9c0;
+  --inputd: #f0f0e8;
+  --card: #dcdcd2;
+  --card95: rgba(220, 220, 210, 0.95);
+  --input: #e8e8de;
+  --text: #101010;
+  --text2: #333330;
+  --muted: #5a5a52;
+  --muted2: #75756c;
+  --grip: #8a8a80;
+  --gripd: #6a6a62;
+  --accent: #007800;
+  --accent2: #005800;
+  --accentbg: #009911;
+  --accentbg2: #007800;
+  --accentbg3: #33cc4d;
+  --soft: rgba(0, 120, 0, 0.14);
+  --ring: rgba(0, 120, 0, 0.45);
+  --accentcontrast: #ffffff;
+  --border: #9a9a8e;
+  --border2: #8a8a80;
+  --divider: #b8b8ac;
+  --track: #b0b0a4;
+  --hover: #c8c8bc;
+}
+
+.dark {
+  --page: #050805;
+  --inputd: #061006;
+  --card: #0b140b;
+  --card95: rgba(11, 20, 11, 0.95);
+  --input: #081208;
+  --text: #4dff7a;
+  --text2: #35c463;
+  --muted: #23924a;
+  --muted2: #1b6e39;
+  --grip: #17562c;
+  --gripd: #12492a;
+  --accent: #00e64a;
+  --accent2: #5cff9a;
+  --accentbg: #00c23c;
+  --accentbg2: #00a832;
+  --accentbg3: #33ff70;
+  --soft: rgba(0, 230, 74, 0.12);
+  --ring: rgba(0, 230, 74, 0.45);
+  --accentcontrast: #001a08;
+  --border: #173517;
+  --border2: #1e4420;
+  --divider: #12240f;
+  --track: #102010;
+  --hover: #101f10;
+}
+
+body {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* page */
+.bg-stone-100 { background-color: var(--page) !important; }
+.dark .dark\:bg-stone-950 { background-color: var(--page) !important; }
+/* cards & surfaces */
+.bg-white { background-color: var(--card) !important; }
+.dark .dark\:bg-stone-900 { background-color: var(--card) !important; }
+.bg-white\/95 { background-color: var(--card95) !important; }
+.dark .dark\:bg-stone-900\/95 { background-color: var(--card95) !important; }
+/* inputs */
+.bg-stone-50 { background-color: var(--input) !important; }
+/* text */
+.text-stone-900 { color: var(--text) !important; }
+.dark .dark\:text-stone-100 { color: var(--text) !important; }
+.text-stone-600 { color: var(--text2) !important; }
+.dark .dark\:text-stone-300 { color: var(--text2) !important; }
+.text-stone-500 { color: var(--muted) !important; }
+.dark .dark\:text-stone-400 { color: var(--muted) !important; }
+.text-stone-400 { color: var(--muted2) !important; }
+.dark .dark\:text-stone-500 { color: var(--muted2) !important; }
+/* grips */
+.text-stone-300 { color: var(--grip) !important; }
+.dark .dark\:text-stone-600 { color: var(--gripd) !important; }
+/* accent text */
+.text-amber-600 { color: var(--accent) !important; }
+.dark .dark\:text-amber-400 { color: var(--accent) !important; }
+.text-amber-700 { color: var(--accent2) !important; }
+.dark .dark\:text-amber-300 { color: var(--accent2) !important; }
+/* accent buttons */
+.bg-amber-500 { background-color: var(--accentbg) !important; }
+.dark .dark\:bg-amber-400 { background-color: var(--accentbg) !important; }
+.hover\:bg-amber-600:hover { background-color: var(--accentbg2) !important; }
+.dark:hover .dark\:hover\:bg-amber-300 { background-color: var(--accentbg3) !important; }
+/* accent tints */
+.bg-amber-500\/10 { background-color: var(--soft) !important; }
+.border-amber-500 { border-color: var(--accentbg) !important; }
+.ring-amber-500\/40 { --tw-ring-color: var(--ring) !important; }
+/* accent contrast */
+.text-white { color: var(--accentcontrast) !important; }
+.dark .dark\:text-stone-900 { color: var(--accentcontrast) !important; }
+/* borders */
+.border-stone-200 { border-color: var(--border) !important; }
+.dark .dark\:border-stone-800 { border-color: var(--border) !important; }
+.border-stone-300 { border-color: var(--border2) !important; }
+.dark .dark\:border-stone-700 { border-color: var(--border2) !important; }
+.dark .dark\:border-stone-600 { border-color: var(--border2) !important; }
+/* dividers */
+.divide-stone-100 > * + * { border-color: var(--divider) !important; }
+.dark .dark\:divide-stone-800 > * + * { border-color: var(--divider) !important; }
+.border-stone-100 { border-color: var(--divider) !important; }
+/* track */
+.bg-stone-200 { background-color: var(--track) !important; }
+/* hovers */
+.hover\:bg-stone-50:hover { background-color: var(--hover) !important; }
+.hover\:bg-stone-100:hover { background-color: var(--hover) !important; }
+.dark:hover .dark\:hover\:bg-stone-800 { background-color: var(--hover) !important; }
+.hover\:text-stone-900:hover { color: var(--text) !important; }
+.dark:hover .dark\:hover\:text-stone-100 { color: var(--text) !important; }
+/* decorations */
+.decoration-stone-400 { text-decoration-color: var(--muted2) !important; }
+.dark .dark\:decoration-stone-600 { text-decoration-color: var(--muted2) !important; }
+.decoration-amber-600\/40 { text-decoration-color: var(--ring) !important; }
+.hover\:decoration-amber-600:hover { text-decoration-color: var(--accent) !important; }
+/* pencil hovers */
+.hover\:text-amber-600:hover { color: var(--accent) !important; }
+.dark:hover .dark\:hover\:text-amber-400 { color: var(--accent) !important; }
+
+/* structure — terminal: square corners, flat, no shadows */
+.rounded-md,
+.rounded-lg,
+.rounded-xl,
+.rounded-2xl,
+.rounded-full {
+  border-radius: 0 !important;
+}
+.shadow-sm {
+  box-shadow: none !important;
+}

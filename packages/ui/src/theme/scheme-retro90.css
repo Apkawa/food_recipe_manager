@@ -1,0 +1,78 @@
+/*
+ * scheme-retro90 — GeoCities 90s (silver/lemon/magenta / black+green+yellow).
+ * Source: apps/web-mvp-v2/scheme-retro90.css (static mockup).
+ * Activated by data-scheme="retro90" on <html>; dark mode adds the .dark class.
+ */
+
+[data-scheme="retro90"] {
+  /* colors */
+  --page: #c8c8c8;
+  --inputd: #fffff8;
+  --card: #ffffe0;
+  --card95: rgba(255, 255, 224, 0.95);
+  --input: #fffff0;
+  --text: #000000;
+  --text2: #222222;
+  --muted: #555555;
+  --muted2: #777777;
+  --grip: #9a9a9a;
+  --gripd: #7a7a7a;
+  --accent: #ff00ff;
+  --accent2: #cc00cc;
+  --accentbg: #ff00ff;
+  --accentbg2: #e600e6;
+  --accentbg3: #ff66ff;
+  --soft: rgba(255, 0, 255, 0.12);
+  --ring: rgba(255, 0, 255, 0.45);
+  --accentcontrast: #ffffff;
+  --border: #808080;
+  --border2: #6a6a6a;
+  --divider: #c0b888;
+  --track: #b8b088;
+  --hover: #f0f0d0;
+  /* structure — small radii, hard offset shadow, comic sans */
+  --rad-card: 6px;
+  --rad-control: 4px;
+  --rad-field: 3px;
+  --sh-card: 4px 4px 0 rgba(0, 0, 0, 0.35);
+  --font-body: "Comic Sans MS", Verdana, Geneva, sans-serif;
+}
+
+[data-scheme="retro90"].dark {
+  /* colors */
+  --page: #000000;
+  --inputd: #001018;
+  --card: #002233;
+  --card95: rgba(0, 34, 51, 0.95);
+  --input: #001820;
+  --text: #00ff66;
+  --text2: #33cc88;
+  --muted: #1a8f5a;
+  --muted2: #12693f;
+  --grip: #0f5a3a;
+  --gripd: #0c4a30;
+  --accent: #ffff00;
+  --accent2: #ffff66;
+  --accentbg: #e6d800;
+  --accentbg2: #c8bc00;
+  --accentbg3: #ffff55;
+  --soft: rgba(255, 255, 0, 0.14);
+  --ring: rgba(255, 255, 0, 0.45);
+  --accentcontrast: #201a00;
+  --border: #005f6b;
+  --border2: #007a8a;
+  --divider: #003844;
+  --track: #002a33;
+  --hover: #003040;
+  /* structure — small radii, hard offset shadow, comic sans */
+  --rad-card: 6px;
+  --rad-control: 4px;
+  --rad-field: 3px;
+  --sh-card: 4px 4px 0 rgba(0, 0, 0, 0.6);
+  --font-body: "Comic Sans MS", Verdana, Geneva, sans-serif;
+}
+
+/* structure — 90s: chunky 3px borders (2px "edited" field border) */
+[data-scheme="retro90"] .border-accentbg {
+  border-width: 3px;
+}

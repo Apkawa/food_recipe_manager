@@ -1,0 +1,73 @@
+/*
+ * scheme-appetite — warm cream / dark roast color scheme.
+ * Source: apps/web-mvp-v2/scheme-appetite.css (static mockup).
+ * Activated by data-scheme="appetite" on <html>; dark mode adds the .dark class.
+ */
+
+[data-scheme="appetite"] {
+  /* colors */
+  --page: #fff6ec;
+  --inputd: #fffaf4;
+  --card: #ffffff;
+  --card95: rgba(255, 255, 255, 0.95);
+  --input: #fffaf4;
+  --text: #402a1a;
+  --text2: #6b4e38;
+  --muted: #9c7f66;
+  --muted2: #b89a80;
+  --grip: #dcc4ab;
+  --gripd: #c0a588;
+  --accent: #e8590c;
+  --accent2: #c94a08;
+  --accentbg: #ee6c1a;
+  --accentbg2: #e8590c;
+  --accentbg3: #ff8a3d;
+  --soft: rgba(232, 89, 12, 0.13);
+  --ring: rgba(232, 89, 12, 0.45);
+  --accentcontrast: #ffffff;
+  --border: #eed9c4;
+  --border2: #e2c4a4;
+  --divider: #f2e2d0;
+  --track: #eed9c4;
+  --hover: #faead9;
+  /* structure — plush radii, warm soft shadow */
+  --rad-card: 20px;
+  --rad-control: 14px;
+  --rad-field: 10px;
+  --sh-card: 0 6px 18px rgba(200, 110, 40, 0.16);
+  --font-body: "Manrope", system-ui, sans-serif;
+}
+
+[data-scheme="appetite"].dark {
+  /* colors */
+  --page: #17100b;
+  --inputd: #120c08;
+  --card: #221810;
+  --card95: rgba(34, 24, 16, 0.95);
+  --input: #1a120c;
+  --text: #f8e9d9;
+  --text2: #cfae8d;
+  --muted: #9a7b5e;
+  --muted2: #6f5942;
+  --grip: #4a3826;
+  --gripd: #3d2f20;
+  --accent: #ff8b3e;
+  --accent2: #ffa368;
+  --accentbg: #ff8b3e;
+  --accentbg2: #ff7526;
+  --accentbg3: #ff9d5e;
+  --soft: rgba(255, 139, 62, 0.14);
+  --ring: rgba(255, 139, 62, 0.45);
+  --accentcontrast: #2a1204;
+  --border: #3d2c1d;
+  --border2: #4d3826;
+  --divider: #33251a;
+  --track: #2e2115;
+  --hover: #2e2115;
+  /* structure — plush radii, deep soft shadow */
+  --rad-card: 20px;
+  --rad-control: 14px;
+  --rad-field: 10px;
+  --sh-card: 0 8px 22px rgba(0, 0, 0, 0.4);
+  --font-body: "Manrope", system-ui, sans-serif;
+}

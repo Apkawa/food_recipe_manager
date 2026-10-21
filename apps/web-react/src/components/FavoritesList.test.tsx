@@ -65,12 +65,12 @@ describe("FavoritesList", () => {
     expect(rawRecipe).toBe(recipeToText(expected));
   });
 
-  it("removes a favorite via the X button", () => {
+  it("removes a favorite via the remove icon button", () => {
     useFavoritesStore.getState().add(makeFavorite("Борщ"));
     useFavoritesStore.getState().add(makeFavorite("Окрошка"));
     renderWithRouter();
 
-    const removeButtons = screen.getAllByRole("button");
+    const removeButtons = screen.getAllByRole("button", { name: "Удалить" });
     fireEvent.click(removeButtons[0]);
 
     expect(useFavoritesStore.getState().recipes.map((r) => r.name)).toEqual(["Окрошка"]);
