@@ -159,6 +159,20 @@ describe("Stepper", () => {
     expect(onChange).toHaveBeenCalledWith(8);
   });
 
+  it("snaps stepped values to the nearest step with roundToStep", () => {
+    const { onChange, dec, inc } = renderStepper({ value: 3.333, roundToStep: true });
+    fireEvent.click(inc);
+    expect(onChange).toHaveBeenCalledWith(4);
+    fireEvent.click(dec);
+    expect(onChange).toHaveBeenCalledWith(2);
+  });
+
+  it("checks min/max against the snapped value", () => {
+    const { dec, inc } = renderStepper({ value: 0.6, min: 1, roundToStep: true });
+    expect(dec.disabled).toBe(true);
+    expect(inc.disabled).toBe(false);
+  });
+
   it("disables the decrement button at min", () => {
     const { dec, inc } = renderStepper({ value: 0 });
     expect(dec.disabled).toBe(true);

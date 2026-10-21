@@ -20,8 +20,6 @@ function ScaleControls({
   onScaleChange: _onScaleChange,
   onNewScaleChange,
 }: ScaleControlsProps) {
-  const progress = scale > 0 ? Math.round((newScale / scale) * 100) : 0;
-
   return (
     <Card>
       <CardHeader>Готовим на</CardHeader>
@@ -36,27 +34,12 @@ function ScaleControls({
             onChange={onNewScaleChange}
             min={1}
             step={1}
+            roundToStep
             ariaLabel="Порции"
             ariaLabelDecrement="Меньше порций"
             ariaLabelIncrement="Больше порций"
           />
         </div>
-      </div>
-      <p className="border-t border-border px-4 pt-3 text-sm text-muted">
-        Нажми ✎ у любого продукта и впиши, сколько его у тебя, — всё остальное пересчитается
-        пропорционально.
-      </p>
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border p-4 pt-4">
-        <div className="min-w-40 flex-1">
-          <div className="flex items-baseline justify-between">
-            <p className="text-sm font-semibold">Готовность</p>
-            <p className="text-sm font-bold tabular-nums text-accent">{progress}%</p>
-          </div>
-          <ProgressBar value={progress} label="Готовность" className="mt-1.5" />
-        </div>
-        <Button type="button" variant="secondary" onClick={() => onNewScaleChange(scale)}>
-          Сбросить
-        </Button>
       </div>
     </Card>
   );

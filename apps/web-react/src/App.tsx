@@ -83,7 +83,7 @@ function App() {
         title={
           <>
             <img
-              src="/food_recipe_calculator_icon.png"
+              src="./food_recipe_calculator_icon.png"
               alt=""
               className="h-6 w-6 shrink-0 rounded-full object-cover"
             />

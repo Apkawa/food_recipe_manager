@@ -35,7 +35,7 @@ describe("List", () => {
     );
     const row = screen.getByTestId("row3");
     expect(row.tagName).toBe("LI");
-    expect(row.className).toContain("flex items-center gap-3 px-4 py-2.5");
+    expect(row.className).toContain("flex items-center gap-1 px-1 py-2.5");
     expect(row.textContent).toBe("item");
   });
 

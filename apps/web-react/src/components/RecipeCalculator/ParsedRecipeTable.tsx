@@ -19,7 +19,7 @@ function ParsedRecipeTable({ lang, recipe, onIngredientUpdate }: ParsedRecipeTab
     <>
       {recipe.ingredient_groups.map((group, groupIndex) => (
         <Card key={groupIndex}>
-          <CardHeader>{group.name || "Ингредиенты"}</CardHeader>
+          {group.name && <CardHeader>{group.name}</CardHeader>}
           <List>
             {group.ingredients.map((ingredient, i) => (
               <IngredientLine

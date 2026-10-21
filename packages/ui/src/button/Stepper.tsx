@@ -12,6 +12,12 @@ export type StepperProps = {
   max?: number;
   /** Step size. Defaults to `1`. */
   step?: number;
+  /**
+   * Snap the stepped value to the nearest multiple of `step`, so an
+   * off-step value (e.g. `3.333` with `step: 1`) becomes `4` on increment
+   * instead of `4.333`. Defaults to `false`.
+   */
+  roundToStep?: boolean;
   /** Extra classes for the wrapping group. */
   className?: string;
   /** Accessible name of the group. Defaults to `"Счётчик"`. */
@@ -30,6 +36,10 @@ export type StepperProps = {
  * portion-rescale control in the mockup. Both are disabled at the
  * `min`/`max` bounds; the current value is shown between them.
  *
+ * With `roundToStep` the stepped value is snapped to the nearest multiple
+ * of `step`, so pressing a button from an off-step value (e.g. `3.333`
+ * with `step: 1`) lands on a whole step (`4`) instead of `4.333`.
+ *
  * @param props - Stepper properties.
  */
 export function Stepper({
@@ -38,13 +48,18 @@ export function Stepper({
   min = 0,
   max = Infinity,
   step = 1,
+  roundToStep = false,
   className,
   ariaLabel = "Счётчик",
   ariaLabelDecrement = "Уменьшить",
   ariaLabelIncrement = "Увеличить",
 }: StepperProps) {
-  const canDecrement = value - step >= min;
-  const canIncrement = value + step <= max;
+  const snap = (v: number) =>
+    roundToStep ? Number((Math.round(v / step) * step).toPrecision(12)) : v;
+  const nextDecrement = snap(value - step);
+  const nextIncrement = snap(value + step);
+  const canDecrement = nextDecrement >= min;
+  const canIncrement = nextIncrement <= max;
   const groupClasses = ["flex items-center gap-2", className].filter(Boolean).join(" ");
   return (
     // biome-ignore lint/a11y/useSemanticElements: a stepper is a button group, not a form fieldset
@@ -53,7 +68,7 @@ export function Stepper({
         variant="bordered"
         aria-label={ariaLabelDecrement}
         disabled={!canDecrement}
-        onClick={() => onChange(value - step)}
+        onClick={() => onChange(nextDecrement)}
         className="text-xl font-bold"
       >
         −
@@ -63,7 +78,7 @@ export function Stepper({
         variant="accent"
         aria-label={ariaLabelIncrement}
         disabled={!canIncrement}
-        onClick={() => onChange(value + step)}
+        onClick={() => onChange(nextIncrement)}
         className="text-xl font-bold"
       >
         +
