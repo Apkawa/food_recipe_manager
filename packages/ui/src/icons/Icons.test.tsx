@@ -12,6 +12,7 @@ import {
   PencilIcon,
   ShareIcon,
   SunIcon,
+  SystemIcon,
 } from "./index";
 
 const strokeIcons = [
@@ -25,6 +26,7 @@ const strokeIcons = [
   PencilIcon,
   ShareIcon,
   SunIcon,
+  SystemIcon,
 ] as const;
 
 const allIcons = [GripIcon, ...strokeIcons] as const;
@@ -50,6 +52,15 @@ describe("icons", () => {
       expect(svgOf(container).getAttribute("class")).toBe("h-5 w-5");
     });
   }
+
+  it("renders the system icon as a circle with a diagonally filled half", () => {
+    const { container } = render(<SystemIcon />);
+    const svg = svgOf(container);
+    expect(svg.querySelector("circle")).toBeTruthy();
+    const filled = svg.querySelector("path[fill='currentColor']");
+    expect(filled).toBeTruthy();
+    expect(filled?.getAttribute("stroke")).toBe("none");
+  });
 
   it("renders the grip icon with fill=currentColor", () => {
     const { container } = render(<GripIcon />);

@@ -23,6 +23,19 @@ export default {
     const teardown = await jsdom.setup(global, options);
     global.AbortController = hostAbortController;
     global.AbortSignal = hostAbortSignal;
+    // jsdom does not implement `matchMedia`; provide a minimal always-false
+    // stub so components querying media features (e.g. `prefers-color-scheme`)
+    // can render.
+    global.matchMedia = (query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: () => false,
+    });
     return teardown;
   },
 };

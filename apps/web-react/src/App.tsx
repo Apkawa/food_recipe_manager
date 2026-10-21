@@ -10,6 +10,7 @@ import {
   SidebarBackdrop,
   SidebarLink,
   SunIcon,
+  SystemIcon,
 } from "@repo/ui";
 import { type ReactNode, useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
@@ -18,7 +19,7 @@ import BuildInfo from "./components/BuildInfo";
 import { SidebarContext } from "./lib/SidebarContext";
 import { useThemeSync } from "./lib/useThemeSync";
 import { useRecipeStore } from "./stores/recipe";
-import { Scheme, type SchemeId, useThemeStore } from "./stores/theme";
+import { Scheme, type SchemeId, type ThemeMode, useThemeStore } from "./stores/theme";
 
 /**
  * Shell navigation entry: label, route path, hash href and a leading icon.
@@ -48,6 +49,20 @@ const NAV_ITEMS: NavItem[] = [
   },
 ];
 
+/** Next mode in the theme button cycle: light → dark → system → light. */
+const NEXT_MODE: Record<ThemeMode, ThemeMode> = {
+  light: "dark",
+  dark: "system",
+  system: "light",
+};
+
+/** Accessible label for each theme mode. */
+const MODE_LABEL: Record<ThemeMode, string> = {
+  light: "Светлая тема",
+  dark: "Тёмная тема",
+  system: "Системная тема",
+};
+
 /**
  * Application layout shell: a fixed left sidebar (desktop) / off-canvas
  * drawer (mobile) with app nav + theme controls, a centered content column
@@ -72,9 +87,9 @@ function App() {
     useRecipeStore.getState().applyFromQuery(Object.fromEntries(new URLSearchParams(search)));
   }, [search]);
 
-  const dark = useThemeStore((state) => state.dark);
+  const mode = useThemeStore((state) => state.mode);
   const scheme = useThemeStore((state) => state.scheme);
-  const toggleDark = useThemeStore((state) => state.toggleDark);
+  const setMode = useThemeStore((state) => state.setMode);
   const setScheme = useThemeStore((state) => state.setScheme);
 
   // The index `/` is active only for exactly `/`; the other routes match by
@@ -104,10 +119,16 @@ function App() {
             <IconButton
               variant="bordered"
               className="self-start"
-              onClick={toggleDark}
-              aria-label={dark ? "Светлая тема" : "Тёмная тема"}
+              onClick={() => setMode(NEXT_MODE[mode])}
+              aria-label={MODE_LABEL[mode]}
             >
-              {dark ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
+              {mode === "light" ? (
+                <SunIcon className="h-5 w-5" />
+              ) : mode === "dark" ? (
+                <MoonIcon className="h-5 w-5" />
+              ) : (
+                <SystemIcon className="h-5 w-5" />
+              )}
             </IconButton>
             <label className="flex flex-col gap-1.5" htmlFor="scheme-select">
               <span className="sr-only">Цветовая схема</span>

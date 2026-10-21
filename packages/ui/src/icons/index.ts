@@ -10,3 +10,4 @@ export { MoonIcon } from "./MoonIcon";
 export { PencilIcon } from "./PencilIcon";
 export { ShareIcon } from "./ShareIcon";
 export { SunIcon } from "./SunIcon";
+export { SystemIcon } from "./SystemIcon";

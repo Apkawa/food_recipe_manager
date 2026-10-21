@@ -23,27 +23,42 @@ export const Scheme: readonly Scheme[] = [
   { id: "appetite", label: "Аппетитный" },
 ];
 
+/** Theme mode: a fixed light/dark theme, or follow the OS `prefers-color-scheme`. */
+export type ThemeMode = "light" | "dark" | "system";
+
 interface ThemeStore {
-  /** Dark mode switch, mirrored as the `dark` class on `<html>`. */
-  dark: boolean;
+  /** Theme mode; `"system"` follows the OS `prefers-color-scheme`. */
+  mode: ThemeMode;
   /** Active color scheme, mirrored as the `data-scheme` attribute on `<html>`. */
   scheme: SchemeId;
-  toggleDark: () => void;
+  setMode: (mode: ThemeMode) => void;
   setScheme: (scheme: SchemeId) => void;
 }
 
 /**
- * Theme store (dark mode + color scheme), persisted to localStorage under the
- * `"theme"` key. Defaults: light mode, classic scheme.
+ * Theme store (theme mode + color scheme), persisted to localStorage under the
+ * `"theme"` key. Defaults: system mode, classic scheme.
  */
 export const useThemeStore = create<ThemeStore>()(
   persist(
     (set) => ({
-      dark: false,
+      mode: "system",
       scheme: "classic",
-      toggleDark: () => set((state) => ({ dark: !state.dark })),
+      setMode: (mode) => set({ mode }),
       setScheme: (scheme) => set({ scheme }),
     }),
-    { name: "theme" },
+    {
+      name: "theme",
+      version: 1,
+      // Version 0 stored `{dark: boolean}`; map it onto the mode. The result
+      // is merged with the live state, so only the data fields need migrating.
+      migrate: (persisted) => {
+        const state = persisted as { dark?: boolean; scheme?: SchemeId };
+        return {
+          mode: state.dark ? "dark" : "light",
+          scheme: state.scheme ?? "classic",
+        } as ThemeStore;
+      },
+    },
   ),
 );
