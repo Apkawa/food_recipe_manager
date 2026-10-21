@@ -27,7 +27,7 @@ function FavoritesList() {
       newScale: recipe.calculated_portion ?? 0,
     };
     const url = saveStateToUrl(new URL(window.location.href), state);
-    navigate(url.pathname + url.search);
+    navigate({ pathname: "/", search: url.search });
   };
 
   return (
