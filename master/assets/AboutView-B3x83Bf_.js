@@ -1,4 +1,4 @@
-import{j as e,P as l,C as t,G as x,B as c}from"./index-B1bHASdV.js";const i=`
+import{j as e,P as l,C as t,G as x,B as c}from"./index-BBe1_Leq.js";const i=`
 Название рецепта (опционально)
 Группа продукта (опционально)
 Ингредиент 1 кг
