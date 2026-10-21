@@ -1,1 +1,0 @@
-import{j as e}from"./index-5OtMV-3S.js";function r(){return e.jsxs("main",{children:[e.jsx("h2",{children:"Пересчет концентрации уксуса"}),e.jsx("h2",{children:"Конвертер единиц измерения"}),e.jsx("h1",{className:"page-title",children:"Таблица плотности"})]})}export{r as default};
