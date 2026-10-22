@@ -36,11 +36,16 @@ function RecipeCalculator() {
   const parsed = useMemo(() => parseTextRecipe(rawRecipe), [rawRecipe]);
 
   // Port of Vue updateRecipeCb: adopt the "Рецепт на N порций" line as scale.
+  // Guard: only call setScale when the value actually changes. Calling it
+  // unconditionally re-mirrors the (stale) store into the URL on every
+  // re-parse (setScale → syncUrlToRouter → router.navigate) and, combined with
+  // the App applyFromQuery parent effect, drives a period-2 URL↔store
+  // phase-flip (React #185) after a favorites click.
   useEffect(() => {
-    if (parsed.portion) {
+    if (parsed.portion && scale !== Number(parsed.portion)) {
       setScale(Number(parsed.portion));
     }
-  }, [parsed, setScale]);
+  }, [parsed, setScale, scale]);
 
   // Port of the Vue guard watcher: scale/newScale below 0.1 are reset and
   // the GrandMother modal is shown.

@@ -1,7 +1,7 @@
 import { recipeToText } from "@repo/food-recipe-core/src/food_recipe/core/export";
 import { parseTextRecipe } from "@repo/food-recipe-core/src/food_recipe/core/parser/text";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { useRecipeStore } from "@/stores/recipe";
 import { EXAMPLE_RECIPE } from "./constants";
 import RecipeCalculator from "./RecipeCalculator";
@@ -55,6 +55,28 @@ describe("RecipeCalculator", () => {
     setup(recipeToText(recipe));
     // The scale is no longer an input; assert the adopted store state.
     expect(useRecipeStore.getState().scale).toBe(3);
+  });
+
+  it("does not re-call setScale when the parsed portion already equals the scale", () => {
+    // Regression guard for the favorites-click infinite cycle: the adopt-portion
+    // effect must be a no-op when scale already equals parsed.portion.
+    // Unconditionally calling setScale re-mirrors the (stale) store into the URL
+    // on every re-parse and feeds the child/parent effect phase-flip.
+    const recipe = parseTextRecipe("Тест\nВода 2 cup");
+    recipe.portion = 4;
+    const text = recipeToText(recipe);
+    localStorage.clear();
+    useRecipeStore.setState({ rawRecipe: text, scale: 4, newScale: 1 });
+    // Spy the setter on the live state object: the component's
+    // useRecipeStore((s) => s.setScale) picks up this exact property.
+    const setScaleSpy = vi.spyOn(useRecipeStore.getState(), "setScale");
+    try {
+      render(<RecipeCalculator />);
+      expect(setScaleSpy).not.toHaveBeenCalled();
+      expect(useRecipeStore.getState().scale).toBe(4);
+    } finally {
+      setScaleSpy.mockRestore();
+    }
   });
 
   it("edits an ingredient value and adjusts newScale", () => {
